@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
+<head>
+  <link href="screenshare.css" rel="stylesheet" type="text/css" />
+
+  <title>Screen and Application Sharing</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <script class="remove" src="http://www.w3.org/Tools/respec/respec-w3c-common"
+  type="text/javascript">
+//<![CDATA[
+  <!-- keep this comment -->
+  //]]>
+  </script>
+  <script class="remove" src="screenshare.js" type="text/javascript">
+//<![CDATA[
+  <!-- keep this comment -->
+  //]]>
+  </script>
+</head>
+
+<body>
+  <section id="abstract">
+    <p>TODO</p>
+  </section>
+
+
+  <section class="informative" id="intro">
+    <h2>Introduction</h2>
+
+
+    <p>TODO</p>
+  </section>
+
+
+  <section id="conformance">
+    <p>This specification defines conformance criteria that apply to a single
+    product: the <dfn>user agent</dfn> that implements the interfaces that it
+    contains.</p>
+
+
+    <p>Implementations that use ECMAScript to implement the APIs defined in
+    this specification must implement them in a manner consistent with the
+    ECMAScript Bindings defined in the Web IDL specification [[!WEBIDL]], as
+    this specification uses that specification and terminology.</p>
+  </section>
+
+
+  <section>
+    <h2>Terminology</h2>
+
+
+    <p>TODO</p>
+  </section>
+
+
+  <section>
+    <h2>Obtaining Screen Based Video</h2>
+    <!--
+      Interesting Links
+
+      https://bugzilla.mozilla.org/show_bug.cgi?id=742832
+
+      http://www.chromium.org/developers/design-documents/extensions/proposed-changes/apis-under-development/webrtc-tab-content-capture
+
+      https://docs.google.com/document/d/1-vFghorm8zDCeyg2Yk6kKFT-16GU1Ow1b1bor_jCqD8/edit
+      -->
+
+
+    <p>The video source does not have to be a camera, it can be some visible
+    portion of the users screen. This is useful for various screen sharing type
+    applications. This section describes an API for an application to indicate
+    that it wishes to capture video from a canvas element, browser tab,
+    application, or the whole desktop. Browsers are not required to implement
+    any of the mechanisms described in this section to be WebRTC compliant.
+    There are significant security concerns with capture of the users screen as
+    discussed in [[!RTCWEB-SECURITY-ARCH]] and [[!RTCWEB-SECURITY]].
+    Implementations need to ensure they provide adequate security as discussed
+    later in this section.</p>
+
+
+    <p>Capture of screen video is controlled by a new constraint called
+    "mediaSource" which takes string values such as "browser", "application",
+    "screen", or "camera". This constraint can be passed to the
+    <code><a>getUserMedia</a></code> call which can display a dialog that
+    allows the user to select the correct input as well as gather appropriate
+    permissions from the user. The dialog is different depending on the value
+    of the mediaSource but would typically show a list of thumbnails or names
+    of the video sources that are available and allow users to pick the
+    appropriate one.</p>
+
+
+    <p>The video generated MUST be from the portion of the screen belonging to
+    the item that was authorized and it MUST be visible. If an application is
+    being shared, but the top right corner of the application is covered by a
+    window from some other application, that top right corner needs to be
+    obscured in the video stream. A typical way to obscure it is by replacing
+    the obscured area with a grey rectangle. If an application is shared and
+    that application has multiple windows, the video stream to share is formed
+    by constructing the bounding box around all the windows in that application
+    and sharing a single video stream capturing all the windows in that
+    application. Of course any screen area that does not belong to that
+    application is obscured.</p>
+
+
+    <p class="note">Open Issue: Some systems obscure with the image of what was
+    visible before it was obscured. Imagine a use caser where Alice is sharing
+    a powerpoint presentation with with Bob. Alice gets an instant messages
+    which pops up a dialog box on top of th powerpoint application. In some
+    systems, the video sent to Bob will show a grey rectangle and Bob will know
+    an IM poped up even thought Bob can not see the contents of the IM. In
+    other systems, the obscuring will be done using the previously visible
+    bitmap so, as long as the powerpoint slide does not change before Alice
+    gets rid of the IM dialog box, Bob will not see a big ugly grey rectangle
+    in the middle of the slide he is trying to read. The down side is if the
+    window being shared was a video, the obscured rectangle will look frozen
+    and some users will perceive this as a bug in the system while the grey
+    rectangle users will generally understand was an obscured region. There can
+    also be cases where as windows in the application are moved around, "old"
+    data does not get cleared up as the system is using to generate obscured
+    data.</p>
+
+
+    <section>
+      <h3>Screen Based Video Constraints</h3>
+
+
+      <p class="note">Open Issue: This is described as a constraint but it may
+      get moved to be a setting.</p>
+
+
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>Property Name</th>
+
+            <th>Values</th>
+
+            <th>Notes</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+          <tr id="def-constraint-mediaSource">
+            <td><dfn>mediaSource</dfn>
+            </td>
+
+            <td><code><a>MediaSourceEnum</a></code>
+            </td>
+
+            <td>The source of the video from the users screen.</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <dl class="idl" title="enum MediaSourceEnum">
+        <dt>camera</dt>
+
+
+        <dd>The source is a camera. This is the default.</dd>
+        <!-- 
+        <dt>canvas</dt>
+        <dd>The source is a selected HTML canvas element. In this case the
+        canvas to be shared MUST be in the same origin and the identifier for the
+        canvas is supplied in the canvasId property. [[OPEN ISSUE: why is this
+        an integer? I would have expected it to be an id property and hence
+        a string.]]</dd>
+        -->
+
+
+        <dt>browser</dt>
+
+
+        <dd>The source is a tab in the same browsers. The identifier for the
+        tab to be shared is provided in the tabId property. OPEN ISSUE: What to
+        use as a handle to the tab?</dd>
+        <!--
+        <dt>window</dt>
+        <dd>The source is a single window in some application. No identifier
+        is supplied.</dd>
+        -->
+
+
+        <dt>application</dt>
+
+
+        <dd>The source is all the windows for some application. No identifier
+        is supplied.</dd>
+
+
+        <dt>screen</dt>
+
+
+        <dd>The source is the whole screen of one of the users monitors. No
+        identifier is supplied.</dd>
+        <!--
+        <dt>area</dt>
+        <dd>The source is a user selected portion of one of the users
+        monitors. Typically the area is selected by allowing the users to drag
+        out a rectangle on the screen. No identifier is supplied.</dd>
+        -->
+      </dl>
+
+
+      <p>The choice of source elements presented to the user for selection can
+      further be restricted by the additional constraints.</p>
+
+
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>Property Name</th>
+
+            <th>Values</th>
+
+            <th>Notes</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+          <tr id="def-constraint-tabId">
+            <td><dfn>tabId</dfn>
+            </td>
+
+            <td><code><a>long</a></code>
+            </td>
+
+            <td>Identifier that specifies which tab to capture.</td>
+          </tr>
+          <!--
+               <tr id="def-constraint-canvasId">
+            <td><dfn>canvasId</dfn>
+            </td>
+
+            <td><code><a>long</a></code>
+            </td>
+
+            <td> Identifier that specifies which canvas element to capture. </td>
+          </tr>
+          -->
+        </tbody>
+      </table>
+    </section>
+
+
+    <section>
+      <h3>Security and Permissions</h3>
+
+
+      <p>There are several security issues that need to be considered. One of
+      the most important is the case of an "evil" web page requesting sharing
+      of the browser then the "evil" page managing to open another web page,
+      such as a banking page, inside that browser. The "evil" web page could
+      then see the information displayed on the banking page. A similar
+      mechanism may be usable for bypassing CSRF protection. These attacks and
+      others are described in more detail in [[!RTCWEB-SECURITY]]. For this
+      reason, this specification only permits sharing of the browser via
+      "browser sharing" and requires a heightened permissions experience for
+      that use.</p>
+
+
+      <p>The approach to securing types of sharing where the webpage could
+      impact the content that is being shared is to require that web page have
+      a persistent permission acquired in some "install" like user experience.
+      This allows the "install" user experience to be a place to explain the
+      risk to the user. This is referred to as an "Application Permission".
+      Some browsers have a concept of an application store and application
+      install to support such permissions.</p>
+
+
+      <p>The approach to sharing where this is not easy for the webpage to
+      impact the content is to, each time getUserMedia is called, show the user
+      a dialog where they choose the content they wish to share. This type is
+      refered to as "User Choice Permission".</p>
+
+
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>Shared</th>
+
+            <th>Permission</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+          <!--
+          <tr> <td> canvas </td> <td> Some canvas will allow getImageData to
+            access the pixels in the canvas. These types of canvas do not need
+            any additional permission. Other canvas requires Application
+            Permission. In addition, if a specific canvasId is not provided,
+            there also needs to be a User Choice Permission to select the
+            tab.</td> </tr>
+            -->
+
+
+          <tr>
+            <td>browser</td>
+
+            <td>Requires Application Permission to use this and if a specific
+            tabId is not provided, there also needs to be a User Choice
+            Permission to select the tab.</td>
+          </tr>
+          <!--
+          <tr> <td> window </td> <td> Requires an User Choice Permission to
+            select the window. The window can not be a window of the same
+            browser doing the sharing. </td> </tr>
+            -->
+
+
+          <tr>
+            <td>application</td>
+
+            <td>Requires an User Choice Permission to select the application.
+            The application can not be the same browser doing the sharing.</td>
+          </tr>
+
+
+          <tr>
+            <td>screen</td>
+
+            <td>Requires Application Permission to use this as well as the User
+            Choice Permission to select the screen to share for multiscreen
+            system and to allow sharing to start for single screen systems. The
+            browser window must be masked in this case. [[OPEN ISSUE:
+            Consistent with above, but is it OK]]</td>
+          </tr>
+          <!--
+          <tr> <td> area </td> <td> Same as screen.  </td> </tr>
+          -->
+        </tbody>
+      </table>
+
+
+      <p>When content is being shared, it is important to consider what user
+      interface can be provided to remind the user which content is being
+      shared. In addition, there MUST be a way for the user to stop sharing.
+      Implementations can handle this in a simular way to how they handle
+      sharing of a camera or microphone.</p>
+    </section>
+  </section>
+
+
+  <section class="informative">
+    <h2>Implementation Suggestions</h2>
+
+
+    <div class="practice">
+      <span id="resource-reservation" class="practicelab">Resource
+      reservation</span>
+
+      <p class="practicedesc">The user agent is encouraged to reserve resources
+      when it has determined that a given call to <a href=
+      "#dom-navigator-getusermedia">getUserMedia()</a> will succeed. It is
+      preferable to reserve the resource prior to invoking the success callback
+      provided by the web page. Subsequent calls to <a href=
+      "#dom-navigator-getusermedia">getUserMedia()</a> (in this page or any
+      other) should treat the resource that was previously allocated, as well
+      as resources held by other applications, as busy. Resources marked as
+      busy should not be provided as sources to the current web page, unless
+      specified by the user. Optionally, the user agent may choose to provide a
+      stream sourced from a busy source but only to a page whose origin matches
+      the owner of the original stream that is keeping the source busy.</p>
+
+
+      <p class="practicedesc">This document recommends that in the permission
+      grant dialog or device selection interace (if one is present), the user
+      be allowed to select any available hardware as a source for the stream
+      requested by the page (provided the resource is able to fulfill mandatory
+      constraints, if any were specified), in addition to the ability to
+      substitute a video or audio source with local files and other media. A
+      file picker may be used to provide this functionality to the user.</p>
+
+
+      <p class="practicedesc">This document also recommends that the user be
+      shown all resources that are currently busy as a result of prior calls to
+      <a href="#dom-navigator-getusermedia">getUserMedia()</a> (in this page or
+      any other page that is still alive) and be allowed to terminate that
+      stream and utilize the resource for the current page instead. If possible
+      in the current operating environment, it is also suggested that resources
+      currently held by other applications be presented and treated in the same
+      manner. If the user chooses this option, the track corresponding to the
+      resource that was provided to the page whose stream was affected must be
+      removed.</p>
+    </div>
+
+
+    <div class="practice">
+      <span id="handling-devices" class="practicelab">Handling multiple
+      devices</span>
+
+      <p class="practicedesc">A <a>MediaStream</a> may contain more than one
+      video and audio track. This makes it possible to include video from two
+      or more webcams in a single stream object, for example. However, the
+      current API does not allow a page to express a need for multiple video
+      streams from independent sources.</p>
+
+
+      <p class="practicedesc">It is recommended for multiple calls to <a href=
+      "#dom-navigator-getusermedia">getUserMedia()</a> from the same page be
+      allowed as a way for pages to request multiple, discrete, video or audio
+      streams.</p>
+
+
+      <p class="practicedesc">A single call to <a href=
+      "#dom-navigator-getusermedia">getUserMedia()</a> will always return a
+      stream with either zero or one audio tracks, and either zero or one video
+      tracks. If a script calls <a href=
+      "#dom-navigator-getusermedia">getUserMedia()</a> multiple times before
+      reaching a stable state, this document advises the UI designer that the
+      permission dialogs should be merged, so that the user can give permission
+      for the use of multiple cameras and/or media sources in one dialog
+      interaction. The constraints on each getUserMedia call can be used to
+      decide which stream gets which media sources.</p>
+    </div>
+  </section>
+
+
+  <section>
+    <h2>Change Log</h2>
+
+
+    <p>This section will be removed before publication.</p>
+
+
+    <h2>Changes since TBD, 2014</h2>
+  </section>
+
+
+  <section class="appendix">
+    <h2>Acknowledgements</h2>
+
+
+    <p>The editors wish to thank ....</p>
+  </section>
+</body>
+</html>
