@@ -4,12 +4,12 @@
 <head>
   <link href="screenshare.css" rel="stylesheet" type="text/css" />
 
-  <title>Screen and Application Sharing</title>
+  <title>Screen Capture</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
   <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common"
   type="text/javascript">
 //<![CDATA[
-  <!-- keep this comment -->
+  <!-- keep this comment: what a frightening kludge -->
   //]]>
   </script>
   <script class="remove" src="screenshare.js" type="text/javascript">
@@ -39,6 +39,7 @@
     this API to access what a user agent displays could access confidential
     information from other origins.  That content would otherwise be
     inaccessible due to the protections offered by the user agent sandbox.</p>
+
   </section>
 
 
@@ -58,8 +59,41 @@
   <section>
     <h2>Terminology</h2>
 
+    <p>Screen capture encompasses the capture of several different types of
+    screen-based surfaces.  Collectively, these are referred to as <dfn>display
+    surfaces</dfn>, of which this document defines the following types:</p>
+    <ul>
+      <li>A <dfn>screen</dfn> <a>display surface</a> represents a physical
+      display. Some systems have multiple <a>screen</a>s, which can be
+      identified separately.  Multiple <a>screen</a>s might also be aggregated
+      into as a single logical <a>screen</a>.</li>
 
-    <p>TODO</p>
+      <li>A <dfn>window</dfn> <a>display surface</a> is a single contiguous
+      surface that is used by a single application.  A single application might
+      have several <a>window</a>s available to it, and those can be aggregated
+      into a single <dfn>application</dfn> surface, representing all the windows
+      available to that application.</li>
+
+      <li>A <dfn>browser</dfn> <a>display surface</a> is the rendered form of a
+      single document.  This is not strictly limited to HTML [[HTML5]]
+      documents, though the discussion in this document will address some
+      specific concerns with the capture of HTML.</li>
+    </ul>
+
+    <p>This document draws a distinction between two variants of each type of
+    display surface:</p>
+    <ul>
+      <li>The <dfn>logical display surface</dfn> is the surface that an
+      operating system makes available to an application for the purposes of
+      rendering.</li>
+
+      <li>The <dfn>visible display surface</dfn> is the portion of a <a>logical
+      display surface</a> that is rendered to a <a>screen</a>.</li>
+    </ul>
+
+    <p>Some operating systems permit windows from different applications to
+    occlude other windows, in whole or part, so the <a>logical display
+    surface</a> is a strict subset of the <a>logical display surface</a>.</p>
   </section>
 
 
@@ -74,7 +108,6 @@
 
       https://docs.google.com/document/d/1-vFghorm8zDCeyg2Yk6kKFT-16GU1Ow1b1bor_jCqD8/edit
       -->
-
 
     <p>The video source does not have to be a camera, it can be some visible
     portion of the users screen. This is useful for various screen sharing type
