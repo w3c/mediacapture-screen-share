@@ -21,15 +21,24 @@
 
 <body>
   <section id="abstract">
-    <p>TODO</p>
+    <p>This document defines how a user's display, or parts thereof, can be used
+    as the source of a video stream using the Media Capture API
+    [[!GETUSERMEDIA]].</p>
   </section>
 
 
   <section class="informative" id="intro">
     <h2>Introduction</h2>
 
+    <p>This document describes an extension to the Media Capture API
+    [[GETUSERMEDIA]] that enables the acquisition of a user's display, or part
+    thereof, in the form of a video stream.  This enables a number of
+    applications, including screen sharing using WebRTC [[WEBRTC]].</p>
 
-    <p>TODO</p>
+    <p>This feature has signficant security implications.  Application that use
+    this API to access what a user agent displays could access confidential
+    information from other origins.  That content would otherwise be
+    inaccessible due to the protections offered by the user agent sandbox.</p>
   </section>
 
 
@@ -160,7 +169,7 @@
 
 
         <dd>The source is a camera. This is the default.</dd>
-        <!-- 
+        <!--
         <dt>canvas</dt>
         <dd>The source is a selected HTML canvas element. In this case the
         canvas to be shared MUST be in the same origin and the identifier for the
