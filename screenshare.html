@@ -61,7 +61,7 @@
 
     <p>Screen capture encompasses the capture of several different types of
     screen-based surfaces.  Collectively, these are referred to as <dfn>display
-    surfaces</dfn>, of which this document defines the following types:</p>
+    surface</dfn>s, of which this document defines the following types:</p>
     <ul>
       <li>A <dfn>screen</dfn> <a>display surface</a> represents a physical
       display. Some systems have multiple <a>screen</a>s, which can be
@@ -109,28 +109,108 @@
       https://docs.google.com/document/d/1-vFghorm8zDCeyg2Yk6kKFT-16GU1Ow1b1bor_jCqD8/edit
       -->
 
-    <p>The video source does not have to be a camera, it can be some visible
-    portion of the users screen. This is useful for various screen sharing type
-    applications. This section describes an API for an application to indicate
-    that it wishes to capture video from a canvas element, browser tab,
-    application, or the whole desktop. Browsers are not required to implement
-    any of the mechanisms described in this section to be WebRTC compliant.
-    There are significant security concerns with capture of the users screen as
-    discussed in [[!RTCWEB-SECURITY-ARCH]] and [[!RTCWEB-SECURITY]].
-    Implementations need to ensure they provide adequate security as discussed
-    later in this section.</p>
+    <p>Screen capture is enabled through the addition of a new member to the
+    <code>MediaStreamConstraints</code> dictionary that is passed to
+    <code>getUserMedia</code> [[!GETUSERMEDIA]].</p>
 
+    <dl class="idl" title="partial dictionary MediaStreamConstraints">
+      <dt>MediaSourceType mediaSource = "capture"</dt>
+      <dd>
+        <p>The <code><a>mediaSource</a></code> member of
+        <code>MediaStreamConstraints</code> identifies the type of media source
+        that is requested.</p>
+      </dd>
+    </dl>
 
-    <p>Capture of screen video is controlled by a new constraint called
-    "mediaSource" which takes string values such as "browser", "application",
-    "screen", or "camera". This constraint can be passed to the
-    <code><a>getUserMedia</a></code> call which can display a dialog that
-    allows the user to select the correct input as well as gather appropriate
-    permissions from the user. The dialog is different depending on the value
-    of the mediaSource but would typically show a list of thumbnails or names
-    of the video sources that are available and allow users to pick the
-    appropriate one.</p>
+    <p>In order to ensure that the applications are able to reliably determine
+    whether the <a>user agent</a> supports or is aware of this feature, the
+    dictionary response from <code>getSupportedConstraints</code> includes the
+    key <code>"mediaSource"</code> if this feature is understood.</p>
 
+    <p>The <code><a>MediaSourceType</a></code> identifies whether media is to be
+    sourced from a camera or microphone; or, if the media is to be sourced from
+    a screen capture.</p>
+
+    <dl class="idl" title="enum MediaSourceType">
+      <dt>capture</dt>
+
+      <dd>The default, a media source type of "capture" indicates that the media
+      shall be acquired from a camera, microphone, or other media capture
+      device, such as a depth camera [[MEDIACAPTURE-DEPTH]].</dd>
+
+      <dt>display</dt>
+
+      <dd>A media source type of "display" indicates that the media shall be
+      acquired from a local display.</dd>
+    </dl>
+
+    <section>
+      <h2>Selecting a Display Surface</h2>
+
+      <p>Two constraints are defined that allow an application to limit the
+      display surfaces that are selected.</p>
+
+      <p>The <code><a
+      href="#widl-MediaTrackConstraintSet-screenSurface">screenSurface</a></code>
+      constraint allows an application to express a preference or requirement
+      for the type of <a>display surface</a> that is acquired.</p>
+
+      <p>The <code><a
+      href="#widl-MediaTrackConstraintSet-logicalSurface">logicalSurface</a></code>
+      constraint allows an application to express a preference or requirement to
+      capture the <a>logical display surface</a>, rather than the <a>visible
+      display surface</a>.</p>
+
+      <dl class="idl" title="partial dictionary MediaTrackConstraintSet">
+        <dt>ConstrainDOMString screenSurface</dt>
+
+        <dd>
+          <p>What type of <a>display surface</a> to capture.  This assumes
+          values from the <code><a>ScreenCaptureSurfaceType</a></code>
+          enumeration.</p>
+        </dd>
+
+        <dt>ConstrainBoolean logicalSurface</dt>
+
+        <dd>
+          <p>A value of <code>true</code> requests or requires capture of a
+          <a>logical display surface</a>; a value of <code>false</code> requests
+          or requires capture of a <a>visible display surface</a>.</p>
+        </dd>
+      </dl>
+
+      <p>The <code><a>ScreenCaptureSurfaceType</a></code> enumeration describes
+      the different types of display surface.</p>
+
+      <dl class="idl" title="enum ScreenCaptureSurfaceType">
+        <dt>screen</dt>
+
+        <dd>a <a>screen</a> <a>display surface</a>, physical display, or
+        collection of physical displays</dd>
+
+        <dt>window</dt>
+
+        <dd>a <a>window</a> <a>display surface</a>, or single application
+        window</dd>
+
+        <dt>application</dt>
+
+        <dd>an <a>application</a> <a>display surface</a>, or entire collection
+        of windows for an application</dd>
+
+        <dt>browser</dt>
+
+        <dd>a <a>browser</a> <a>display surface</a>, or single browser window</dd>
+      </dl>
+
+      <p class="issue"><a
+      href="https://github.com/w3c/mediacapture-screen-share/issues/9">Github#2</a>:
+      Determine whether we want to support application capture.</p>
+
+      <section>
+        <h2>Logical or Visible Display Surface</h2>
+
+        <p class="issue">The following is old text.</p>
 
     <p>The video generated MUST be from the portion of the screen belonging to
     the item that was authorized and it MUST be visible. If an application is
@@ -163,134 +243,21 @@
     data.</p>
 
 
-    <section>
-      <h3>Screen Based Video Constraints</h3>
-
-
-      <p class="note">Open Issue: This is described as a constraint but it may
-      get moved to be a setting.</p>
-
-
-      <table class="simple">
-        <thead>
-          <tr>
-            <th>Property Name</th>
-
-            <th>Values</th>
-
-            <th>Notes</th>
-          </tr>
-        </thead>
-
-
-        <tbody>
-          <tr id="def-constraint-mediaSource">
-            <td><dfn>mediaSource</dfn>
-            </td>
-
-            <td><code><a>MediaSourceEnum</a></code>
-            </td>
-
-            <td>The source of the video from the users screen.</td>
-          </tr>
-        </tbody>
-      </table>
-
-
-      <dl class="idl" title="enum MediaSourceEnum">
-        <dt>camera</dt>
-
-
-        <dd>The source is a camera. This is the default.</dd>
-        <!--
-        <dt>canvas</dt>
-        <dd>The source is a selected HTML canvas element. In this case the
-        canvas to be shared MUST be in the same origin and the identifier for the
-        canvas is supplied in the canvasId property. [[OPEN ISSUE: why is this
-        an integer? I would have expected it to be an id property and hence
-        a string.]]</dd>
-        -->
-
-
-        <dt>browser</dt>
-
-
-        <dd>The source is a tab in the same browsers. The identifier for the
-        tab to be shared is provided in the tabId property. OPEN ISSUE: What to
-        use as a handle to the tab?</dd>
-        <!--
-        <dt>window</dt>
-        <dd>The source is a single window in some application. No identifier
-        is supplied.</dd>
-        -->
-
-
-        <dt>application</dt>
-
-
-        <dd>The source is all the windows for some application. No identifier
-        is supplied.</dd>
-
-
-        <dt>screen</dt>
-
-
-        <dd>The source is the whole screen of one of the users monitors. No
-        identifier is supplied.</dd>
-        <!--
-        <dt>area</dt>
-        <dd>The source is a user selected portion of one of the users
-        monitors. Typically the area is selected by allowing the users to drag
-        out a rectangle on the screen. No identifier is supplied.</dd>
-        -->
-      </dl>
-
-
-      <p>The choice of source elements presented to the user for selection can
-      further be restricted by the additional constraints.</p>
-
-
-      <table class="simple">
-        <thead>
-          <tr>
-            <th>Property Name</th>
-
-            <th>Values</th>
-
-            <th>Notes</th>
-          </tr>
-        </thead>
-
-
-        <tbody>
-          <tr id="def-constraint-tabId">
-            <td><dfn>tabId</dfn>
-            </td>
-
-            <td><code><a>long</a></code>
-            </td>
-
-            <td>Identifier that specifies which tab to capture.</td>
-          </tr>
-          <!--
-               <tr id="def-constraint-canvasId">
-            <td><dfn>canvasId</dfn>
-            </td>
-
-            <td><code><a>long</a></code>
-            </td>
-
-            <td> Identifier that specifies which canvas element to capture. </td>
-          </tr>
-          -->
-        </tbody>
-      </table>
+      </section>
     </section>
 
+    <section>
+      <h2>User Consent</h2>
+
+    </section>
 
     <section>
-      <h3>Security and Permissions</h3>
+      <h2>Security and Permissions</h2>
 
+      <p>There are significant security concerns with screen capture, which is
+      discussed in detail in [[!RTCWEB-SECURITY-ARCH]] and [[!RTCWEB-SECURITY]].
+      This section discusses the implications of those security considerations
+      and recommends approaches to mitigate those concerns.</p>
 
       <p>There are several security issues that need to be considered. One of
       the most important is the case of an "evil" web page requesting sharing

@@ -66,6 +66,8 @@ var respecConfig = {
    // Team Contact.
    wgPatentURI:   ["http://www.w3.org/2004/01/pp-impl/47318/status","http://www.w3.org/2004/01/pp-impl/43696/status"],
 
+   noLegacyStyle: true,
+
    localBiblio:  {
       "mediastream-rec": {
         title: "MediaStream Recording",
