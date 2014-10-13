@@ -22,7 +22,7 @@
 <body>
   <section id="abstract">
     <p>This document defines how a user's display, or parts thereof, can be used
-    as the source of a video stream using the Media Capture API
+    as the source of a media stream using the Media Capture API
     [[!GETUSERMEDIA]].</p>
   </section>
 
@@ -40,6 +40,11 @@
     confidential information from other origins if that information is under the
     control of the application.  This includes content that would otherwise be
     inaccessible due to the protections offered by the user agent sandbox.</p>
+
+    <p>This document concerns itself primarily with video, but the general
+    mechanisms defined here could be extended to other types of media, of which
+    audio [[GETUSERMEDIA]] and depth [[MEDIACAPTURE-DEPTH]] are currently
+    defined.</p>
 
   </section>
 
@@ -96,11 +101,7 @@
     occlude other windows, in whole or part, so the <a>logical display
     surface</a> is a strict subset of the <a>logical display surface</a>.</p>
 
-    <p>This document concerns itself primarily with video, but the general
-    mechanisms defined here could be extended to other types of media, of which
-    audio [[GETUSERMEDIA]] and depth [[MEDIACAPTURE-DEPTH]] are currently
-    defined.</p>
-  </section>
+ </section>
 
 
   <section>
@@ -154,7 +155,9 @@
       <h2>Selecting a Display Surface</h2>
 
       <p>Two constraints are defined that allow an application to limit the
-      display surfaces that are selected.</p>
+      display surfaces that are selected.  This only allows an application to
+      control the type of surface that is selected, not to identify a specific
+      surface.</p>
 
       <p>The <code><a
       href="#widl-MediaTrackConstraintSet-screenSurface">screenSurface</a></code>
@@ -212,11 +215,55 @@
       <p class="issue"><a
       href="https://github.com/w3c/mediacapture-screen-share/issues/9">Github#2</a>:
       Determine whether we want to support application capture.</p>
+    </section>
 
-      <section>
-        <h2>Logical or Visible Display Surface</h2>
+    <section>
+      <h2>Setting <code>deviceId</code></h2>
 
-        <p class="issue">The following is old text.</p>
+      <p>Each potential source of capture is treated by this API as a discrete
+      media source.  However, display capture sources MUST NOT be enumerated by
+      <code><a
+      href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback">>enumerateDevices</a></code>,
+      since this would reveals too much information about the host system.</p>
+
+      <p>Display capture sources MUST NOT be selected with the
+      <code>deviceId</code> constraint, since this would allow applications to
+      influence selection.  A display capture source is represented in the
+      <code>MediaStreamTrack</code> API as having a <code>deviceId</code>
+      parameter that is randomized each time a <code>MediaStreamTrack</code> is
+      connected.  The only other constraint on this value is that it cannot
+      conflict with any existing values for <code>deviceId</code>.</p>
+    </section>
+  </section>
+
+  <section>
+    <h2>Security and Permissions</h2>
+
+    <p>Display capture presents a risk to the cross site request forgery
+    protections offered by the browser sandbox.  Display and capture of
+    information that is also under the control of an application, even
+    indirectly, can allow that application to access information that would
+    otherwise by inaccessible to it directly.  For example, the canvas API does
+    not permit sampling of a canvas, or conversion to an accessible form if it
+    is not origin-clean.[[CANVAS2D]]</p>
+
+    <p>Display capture that includes browser windows, particularly those that
+    are under any form of control by the application, risks violation of these
+    basic security protections.</p>
+
+    <p>This issue is discussed in further detail in [[!RTCWEB-SECURITY-ARCH]]
+    and [[!RTCWEB-SECURITY]].</p>
+
+    <section>
+      <h2>Permission Model</h2>
+
+      <p>This document recommends something else...</p>
+    </section>
+
+    <section>
+      <h2>Logical or Visible Display Surface</h2>
+
+      <p>Displaying a <a>logical display surface</a> can present
 
     <p>The video generated MUST be from the portion of the screen belonging to
     the item that was authorized and it MUST be visible. If an application is
@@ -250,24 +297,16 @@
 
 
       </section>
+    <section>
+      <h2>Authorizing Display Capture</h2>
+    </section>
     </section>
 
     <section>
-      <h2>User Consent</h2>
 
-    </section>
-
-    <section>
-      <h2>Security and Permissions</h2>
-
-      <p>There are significant security concerns with screen capture, which is
-      discussed in detail in [[!RTCWEB-SECURITY-ARCH]] and [[!RTCWEB-SECURITY]].
-      This section discusses the implications of those security considerations
-      and recommends approaches to mitigate those concerns.</p>
-
-      <p>There are several security issues that need to be considered. One of
-      the most important is the case of an "evil" web page requesting sharing
-      of the browser then the "evil" page managing to open another web page,
+      <p>One of
+      the most important concerns is the case of an "evil" web page that requests sharing
+      of the browser, which then opens another web page,
       such as a banking page, inside that browser. The "evil" web page could
       then see the information displayed on the banking page. A similar
       mechanism may be usable for bypassing CSRF protection. These attacks and
