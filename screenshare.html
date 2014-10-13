@@ -35,9 +35,10 @@
     thereof, in the form of a video stream.  This enables a number of
     applications, including screen sharing using WebRTC [[WEBRTC]].</p>
 
-    <p>This feature has signficant security implications.  Application that use
-    this API to access what a user agent displays could access confidential
-    information from other origins.  That content would otherwise be
+    <p>This feature has signficant security implications.  Applications that use
+    this API to access information that is displayed to users could access
+    confidential information from other origins if that information is under the
+    control of the application.  This includes content that would otherwise be
     inaccessible due to the protections offered by the user agent sandbox.</p>
 
   </section>
