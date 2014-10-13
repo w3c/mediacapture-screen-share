@@ -40,13 +40,12 @@
     control of the application.  This includes content that would otherwise be
     inaccessible due to the protections offered by the user agent sandbox.</p>
 
-    <p>This document concerns itself primarily with video, but the general
-    mechanisms defined here could be extended to other types of media, of which
-    audio [[GETUSERMEDIA]] and depth [[MEDIACAPTURE-DEPTH]] are currently
-    defined.</p>
+    <p>This document concerns itself primarily with the capture of video, but
+    the general mechanisms defined here could be extended to other types of
+    media, of which audio [[GETUSERMEDIA]] and depth [[MEDIACAPTURE-DEPTH]] are
+    currently defined.</p>
 
   </section>
-
 
   <section id="conformance">
     <p>This specification defines conformance criteria that apply to a single
@@ -158,7 +157,7 @@
       surface.</p>
 
       <p>The <code><a
-      href="#widl-MediaTrackConstraintSet-screenSurface">screenSurface</a></code>
+      href="#widl-MediaTrackConstraintSet-displaySurface">displaySurface</a></code>
       constraint allows an application to express a preference or requirement
       for the type of <a>display surface</a> that is acquired.</p>
 
@@ -169,7 +168,7 @@
       display surface</a>.</p>
 
       <dl class="idl" title="partial dictionary MediaTrackConstraintSet">
-        <dt>ConstrainDOMString screenSurface</dt>
+        <dt>ConstrainDOMString displaySurface</dt>
 
         <dd>
           <p>What type of <a>display surface</a> to capture.  This assumes
