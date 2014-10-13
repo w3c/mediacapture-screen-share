@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
 <head>
   <link href="screenshare.css" rel="stylesheet" type="text/css" />
@@ -100,8 +99,7 @@
     <p>Some operating systems permit windows from different applications to
     occlude other windows, in whole or part, so the <a>logical display
     surface</a> is a strict subset of the <a>logical display surface</a>.</p>
-
- </section>
+  </section>
 
 
   <section>
@@ -218,12 +216,12 @@
     </section>
 
     <section>
-      <h2>Setting <code>deviceId</code></h2>
+      <h2>Device Identifiers</h2>
 
       <p>Each potential source of capture is treated by this API as a discrete
       media source.  However, display capture sources MUST NOT be enumerated by
       <code><a
-      href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback">>enumerateDevices</a></code>,
+      href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback">enumerateDevices</a></code>,
       since this would reveals too much information about the host system.</p>
 
       <p>Display capture sources MUST NOT be selected with the
@@ -239,211 +237,175 @@
   <section>
     <h2>Security and Permissions</h2>
 
-    <p>Display capture presents a risk to the cross site request forgery
-    protections offered by the browser sandbox.  Display and capture of
+    <p>This section is informative; however, it notes some serious risks to
+    platform security if the advice it contains are not adhered to.</p>
+
+    <p class="issue">This is consistent with other documents, but the absence of
+    strong normative language here is a little worrying.</p>
+
+    <p>The risks to user privacy and security posed by capture of displayed
+    content are twofold.  The immediate and obvious risk is that users
+    inadvertently share content that they did not wish to share, or might not
+    have realized would be shared.</p>
+
+    <p>Display capture presents a less obvious risk to the cross site request
+    forgery protections offered by the browser sandbox.  Display and capture of
     information that is also under the control of an application, even
     indirectly, can allow that application to access information that would
     otherwise by inaccessible to it directly.  For example, the canvas API does
     not permit sampling of a canvas, or conversion to an accessible form if it
-    is not origin-clean.[[CANVAS2D]]</p>
-
-    <p>Display capture that includes browser windows, particularly those that
-    are under any form of control by the application, risks violation of these
-    basic security protections.</p>
+    is not origin-clean [[CANVAS2D]].</p>
 
     <p>This issue is discussed in further detail in [[!RTCWEB-SECURITY-ARCH]]
     and [[!RTCWEB-SECURITY]].</p>
 
-    <section>
-      <h2>Permission Model</h2>
+    <p>Display capture that includes browser windows, particularly those that
+    are under any form of control by the application, risks violation of these
+    basic security protections.  Though this risk is not entirely contained to
+    browser windows, since control channels between browser applications and
+    other applications, depending on the operating system.  The key
+    consideration is whether the captured <a>display surface</a> could be
+    somehow induced to present information that would otherwise be secret from
+    the application that is receiving the resulting media.</p>
 
-      <p>This document recommends something else...</p>
+    <section>
+      <h2>Capturing Logical or Visible Display Surfaces</h2>
+
+      <p>Capture of <a>logical display surface</a>s causes there to be a
+      potential for content to be shared that a user is not made aware of.  A
+      <a>logical display surface</a> might render information that a user did
+      not intend to expose.  This can be quickly rectified if this information
+      is visible.  Such means are of course ineffectual against a machine, but a
+      human recipient is less able to process content that appears only
+      briefly.</p>
+
+      <p>Information that is not currently rendered to the screen SHOULD be
+      obscured in captures unless the application has been specifically
+      authorized to access that content (this might require <a>elevated
+      permissions</a>).</p>
+
+      <p>How obscured areas of the <a>logical display surface</a> are captured
+      to produce a <a>visible display surface</a> capture MAY vary.  Some
+      applications, like presentation software, benefit from having obscured
+      portions of the screen render the image that appeared prior to being
+      obscured.  Freezing images can cause visual artifacts for changing
+      content, or hide the fact that content is being obscured.  Note that
+      frozen portions of a capture can be incorrectly perceived as a bug.
+      Alternatively, obscured areas might be replaced with content that marks
+      them as being obscured, such as a grey color or hatching.</p>
+
+      <p>Some systems MAY only capture the <a>logical display surface</a>.
+      Devices with small screens, for instance, do not typically have the
+      concept of a <a>window</a>, and render applications in full screen modes
+      only.  These systems might provide a capture of an application that is not
+      currently visible, which could be unusable without capturing the
+      <a>logical display surface</a>.</p>
     </section>
 
-    <section>
-      <h2>Logical or Visible Display Surface</h2>
-
-      <p>Displaying a <a>logical display surface</a> can present
-
-    <p>The video generated MUST be from the portion of the screen belonging to
-    the item that was authorized and it MUST be visible. If an application is
-    being shared, but the top right corner of the application is covered by a
-    window from some other application, that top right corner needs to be
-    obscured in the video stream. A typical way to obscure it is by replacing
-    the obscured area with a grey rectangle. If an application is shared and
-    that application has multiple windows, the video stream to share is formed
-    by constructing the bounding box around all the windows in that application
-    and sharing a single video stream capturing all the windows in that
-    application. Of course any screen area that does not belong to that
-    application is obscured.</p>
-
-
-    <p class="note">Open Issue: Some systems obscure with the image of what was
-    visible before it was obscured. Imagine a use caser where Alice is sharing
-    a powerpoint presentation with with Bob. Alice gets an instant messages
-    which pops up a dialog box on top of th powerpoint application. In some
-    systems, the video sent to Bob will show a grey rectangle and Bob will know
-    an IM poped up even thought Bob can not see the contents of the IM. In
-    other systems, the obscuring will be done using the previously visible
-    bitmap so, as long as the powerpoint slide does not change before Alice
-    gets rid of the IM dialog box, Bob will not see a big ugly grey rectangle
-    in the middle of the slide he is trying to read. The down side is if the
-    window being shared was a video, the obscured rectangle will look frozen
-    and some users will perceive this as a bug in the system while the grey
-    rectangle users will generally understand was an obscured region. There can
-    also be cases where as windows in the application are moved around, "old"
-    data does not get cleared up as the system is using to generate obscured
-    data.</p>
-
-
-      </section>
     <section>
       <h2>Authorizing Display Capture</h2>
-    </section>
+
+      <p>This document provides recommends that implementations provide
+      additional limitations on the mechanisms used to affirm user
+      consent. These limitations are designed to mitigate the security and
+      privacy risks that the API poses.</p>
+
+      <p>Two forms of consent interaction are described: <a>active user
+      consent</a> and a range of <a>elevated permissions</a>.  These are
+      non-normative recommandations only.</p>
+
+      <section>
+        <h2>Active User Consent</h2>
+
+        <p><dfn>Active user consent</dfn> is the process whereby a user is
+        prompted to share a display, but is responsible for selecting the shared
+        content.  Other than the need to actively select the target display
+        surface, this is identical to the sort of consent interaction
+        recommended by [[GETUSERMEDIA]].  This form of user interaction ensures
+        that there is reduced risk of a malicious application influencing the
+        choice in a way that would ensure access to otherwise inaccessible
+        content.</p>
+
+        <p><a>Active user consent</a> is sufficient where there is little or no
+        risk of an application gaining information that the user did not intend
+        to share.  These cases can be identified by those where the application
+        that requests capture has no control over what is rendered to the
+        captured <a>display surface</a>.</p>
+      </section>
+
+      <section>
+        <h2>Elevated Permissions</h2>
+
+        <p>It is strongly advised that <dfn>elevated permissions</dfn> be
+        required to access any <a>display surface</a> that might be used to
+        circumvent origin-based protections for content.  The key goal of this
+        consent process is not just to demonstrate that a user intends to share
+        content, but to also to determine that the user exhibits an elevated
+        level of trust in the application that is being granted access.</p>
+
+        <p>Several different controls might be provided to grant <a>elevated
+        permissions</a>.  This section describes several different capabilities
+        that could be independently granted.  A <a>user agent</a> might opt to
+        prohibit access to any capability that requires <a>elevated
+        permissions</a>.</p>
+
+        <p>If access to these surfaces is supported, it is strongly advised that
+        any mechanism to acquire <a>elevated permissions</a> not rely solely on
+        simple prompts for user consent.  Any action needs to ensure that a
+        decision to authorize an application with elevated privileges is
+        deliberate.  For instance, a <a>user agent</a> might require a process
+        equivalent to software installation to signify that user consent for
+        <a>elevated permissions</a> is granted.</p>
+
+        <p>An <a>elevated permissions</a> experience allows the <a>user
+        agent</a> to communicate the risks associated with enabling this
+        feature, or at least to convey the need for augmented trust in the
+        application.</p>
+
+        <p>Note that <a>elevated permissions</a> are not a substitute for
+        <a>active user consent</a>.  It is advised that <a>user agent</a>s still
+        present users with the ability to select what is shared, even for
+        applications that have <a>elevated permissions</a>.</p>
+      </section>
+
+      <section>
+        <h2>Capabilities Depending on Elevated Permissions</h2>
+
+        <p><a>Elevated permissions</a> are recommended as a prerequisite for
+        access to captures of <a>screen</a> or <a>browser</a> <a>display
+        surface</a>s.  Note that capture of a complete <a>screen</a> is included
+        because this could include a window from the <a>user agent</a>.</p>
+
+        <p>Similarly, <a>elevated permissions</a> are a recommended prerequisite
+        for access to <a>logical display surface</a>s, where that would not
+        ordinarily be provided.</p>
+
+        <p>A <a>user agent</a>  persist permissions that enable display
+        capture without <a>elevated permissions</a>.</p>
+      </section>
     </section>
 
     <section>
+      <h2>Feedback and Interface During Capture</h2>
 
-      <p>One of
-      the most important concerns is the case of an "evil" web page that requests sharing
-      of the browser, which then opens another web page,
-      such as a banking page, inside that browser. The "evil" web page could
-      then see the information displayed on the banking page. A similar
-      mechanism may be usable for bypassing CSRF protection. These attacks and
-      others are described in more detail in [[!RTCWEB-SECURITY]]. For this
-      reason, this specification only permits sharing of the browser via
-      "browser sharing" and requires a heightened permissions experience for
-      that use.</p>
+      <p>Implementations can handle feedback and control mechanism in a similar
+      way to how they handle sharing of a camera or microphone, as recommended
+      in [[GETUSERMEDIA]].</p>
 
+      <p>It is important that a user be aware that content is being shared when
+      content is actively being captured.  <a>User agent</a>s are advised to
+      display a prominent indicator while content is being captured.  In
+      addition to an indicator, a <a>user agent</a> is advised to provide a
+      means to learn precisely what is being shared; while this capability is
+      trivially provided by an application by rendering the captured content,
+      this information allows a user to accurately assess what is being
+      shared.</p>
 
-      <p>The approach to securing types of sharing where the webpage could
-      impact the content that is being shared is to require that web page have
-      a persistent permission acquired in some "install" like user experience.
-      This allows the "install" user experience to be a place to explain the
-      risk to the user. This is referred to as an "Application Permission".
-      Some browsers have a concept of an application store and application
-      install to support such permissions.</p>
+      <p>In addition to feedback mechanisms, a means to for the user to
+      stop any active capture is advisable.</p>
 
-
-      <p>The approach to sharing where this is not easy for the webpage to
-      impact the content is to, each time getUserMedia is called, show the user
-      a dialog where they choose the content they wish to share. This type is
-      refered to as "User Choice Permission".</p>
-
-
-      <table class="simple">
-        <thead>
-          <tr>
-            <th>Shared</th>
-
-            <th>Permission</th>
-          </tr>
-        </thead>
-
-
-        <tbody>
-          <!--
-          <tr> <td> canvas </td> <td> Some canvas will allow getImageData to
-            access the pixels in the canvas. These types of canvas do not need
-            any additional permission. Other canvas requires Application
-            Permission. In addition, if a specific canvasId is not provided,
-            there also needs to be a User Choice Permission to select the
-            tab.</td> </tr>
-            -->
-
-
-          <tr>
-            <td>browser</td>
-
-            <td>Requires Application Permission to use this and if a specific
-            tabId is not provided, there also needs to be a User Choice
-            Permission to select the tab.</td>
-          </tr>
-          <!--
-          <tr> <td> window </td> <td> Requires an User Choice Permission to
-            select the window. The window can not be a window of the same
-            browser doing the sharing. </td> </tr>
-            -->
-
-
-          <tr>
-            <td>application</td>
-
-            <td>Requires an User Choice Permission to select the application.
-            The application can not be the same browser doing the sharing.</td>
-          </tr>
-
-
-          <tr>
-            <td>screen</td>
-
-            <td>Requires Application Permission to use this as well as the User
-            Choice Permission to select the screen to share for multiscreen
-            system and to allow sharing to start for single screen systems. The
-            browser window must be masked in this case. [[OPEN ISSUE:
-            Consistent with above, but is it OK]]</td>
-          </tr>
-          <!--
-          <tr> <td> area </td> <td> Same as screen.  </td> </tr>
-          -->
-        </tbody>
-      </table>
-
-
-      <p>When content is being shared, it is important to consider what user
-      interface can be provided to remind the user which content is being
-      shared. In addition, there MUST be a way for the user to stop sharing.
-      Implementations can handle this in a simular way to how they handle
-      sharing of a camera or microphone.</p>
     </section>
   </section>
-
-
-  <section class="informative">
-    <h2>Implementation Suggestions</h2>
-
-
-    <div class="practice">
-      <span id="resource-reservation" class="practicelab">Resource
-      reservation</span>
-
-      <p class="practicedesc">The user agent is encouraged to reserve resources
-      when it has determined that a given call to <a href=
-      "#dom-navigator-getusermedia">getUserMedia()</a> will succeed. It is
-      preferable to reserve the resource prior to invoking the success callback
-      provided by the web page. Subsequent calls to <a href=
-      "#dom-navigator-getusermedia">getUserMedia()</a> (in this page or any
-      other) should treat the resource that was previously allocated, as well
-      as resources held by other applications, as busy. Resources marked as
-      busy should not be provided as sources to the current web page, unless
-      specified by the user. Optionally, the user agent may choose to provide a
-      stream sourced from a busy source but only to a page whose origin matches
-      the owner of the original stream that is keeping the source busy.</p>
-
-
-      <p class="practicedesc">This document recommends that in the permission
-      grant dialog or device selection interace (if one is present), the user
-      be allowed to select any available hardware as a source for the stream
-      requested by the page (provided the resource is able to fulfill mandatory
-      constraints, if any were specified), in addition to the ability to
-      substitute a video or audio source with local files and other media. A
-      file picker may be used to provide this functionality to the user.</p>
-
-
-      <p class="practicedesc">This document also recommends that the user be
-      shown all resources that are currently busy as a result of prior calls to
-      <a href="#dom-navigator-getusermedia">getUserMedia()</a> (in this page or
-      any other page that is still alive) and be allowed to terminate that
-      stream and utilize the resource for the current page instead. If possible
-      in the current operating environment, it is also suggested that resources
-      currently held by other applications be presented and treated in the same
-      manner. If the user chooses this option, the track corresponding to the
-      resource that was provided to the page whose stream was affected must be
-      removed.</p>
-    </div>
-
-  </section>
-
 
   <section>
     <h2>Change Log</h2>
