@@ -102,7 +102,7 @@
 
 
   <section>
-    <h2>Obtaining Displayed Media</h2>
+    <h2>Capturing Displayed Media</h2>
     <!--
       Interesting Links
 
@@ -115,41 +115,50 @@
 
     <p>Screen capture is enabled through the addition of a new member to the
     <code>MediaStreamConstraints</code> dictionary that is passed to
-    <code>getUserMedia</code> [[!GETUSERMEDIA]].</p>
-
-    <dl class="idl" title="partial dictionary MediaStreamConstraints">
-      <dt>MediaSourceType mediaSource = "capture"</dt>
-      <dd>
-        <p>The <code><a>mediaSource</a></code> member of
-        <code>MediaStreamConstraints</code> identifies the type of media source
-        that is requested.</p>
-      </dd>
-    </dl>
+    <code>getUserMedia</code> [[!GETUSERMEDIA]].  New constraints allow an
+    application to control what type of information is requested.</p>
 
     <p>In order to ensure that the applications are able to reliably determine
     whether the <a>user agent</a> supports or is aware of this feature, the
     dictionary response from <code>getSupportedConstraints</code> includes the
     key <code>"mediaSource"</code> if this feature is understood.</p>
 
-    <p>The <code><a>MediaSourceType</a></code> identifies whether media is to be
-    sourced from a camera or microphone; or, if the media is to be sourced from
-    a screen capture.</p>
+    <section>
+      <h2><code>MediaStreamConstraints</code> Additions</h2>
 
-    <dl class="idl" title="enum MediaSourceType">
-      <dt>capture</dt>
+      <dl class="idl" title="partial dictionary MediaStreamConstraints">
+        <dt>MediaSourceType mediaSource = "capture"</dt>
+        <dd>
+          <p>The <code><a>mediaSource</a></code> member of
+          <code>MediaStreamConstraints</code> identifies the type of media
+          source that is requested.</p>
+        </dd>
+      </dl>
 
-      <dd>The default, a media source type of "capture" indicates that the media
-      shall be acquired from a camera, microphone, or other media capture
-      device, such as a depth camera [[MEDIACAPTURE-DEPTH]].</dd>
+      <section>
+        <h2><code>MediaSourceType</code> Enumeration</h2>
 
-      <dt>display</dt>
+        <p>The <code><a>MediaSourceType</a></code> identifies whether media is
+        to be sourced from a camera or microphone; or, if the media is to be
+        sourced from a screen capture.</p>
 
-      <dd>A media source type of "display" indicates that the media shall be
-      acquired from a local display.</dd>
-    </dl>
+        <dl class="idl" title="enum MediaSourceType">
+          <dt>capture</dt>
+
+          <dd>The default, a media source type of "capture" indicates that the
+          media shall be acquired from a camera, microphone, or other media
+          capture device, such as a depth camera [[MEDIACAPTURE-DEPTH]].</dd>
+
+          <dt>display</dt>
+
+          <dd>A media source type of "display" indicates that the media shall be
+          acquired from a local display.</dd>
+        </dl>
+      </section>
+    </section>
 
     <section>
-      <h2>Selecting a Display Surface</h2>
+      <h2>Constraining Display Surface Selection</h2>
 
       <p>Two constraints are defined that allow an application to limit the
       display surfaces that are selected.  This only allows an application to
@@ -185,33 +194,37 @@
         </dd>
       </dl>
 
-      <p>The <code><a>ScreenCaptureSurfaceType</a></code> enumeration describes
-      the different types of display surface.</p>
+      <section>
+        <h2><code>ScreenCaptureSurfaceType</code></h2>
 
-      <dl class="idl" title="enum ScreenCaptureSurfaceType">
-        <dt>screen</dt>
+        <p>The <code><a>ScreenCaptureSurfaceType</a></code> enumeration
+        describes the different types of display surface.</p>
 
-        <dd>a <a>screen</a> <a>display surface</a>, physical display, or
-        collection of physical displays</dd>
+        <dl class="idl" title="enum ScreenCaptureSurfaceType">
+          <dt>screen</dt>
 
-        <dt>window</dt>
+          <dd>a <a>screen</a> <a>display surface</a>, physical display, or
+          collection of physical displays</dd>
 
-        <dd>a <a>window</a> <a>display surface</a>, or single application
-        window</dd>
+          <dt>window</dt>
 
-        <dt>application</dt>
+          <dd>a <a>window</a> <a>display surface</a>, or single application
+          window</dd>
 
-        <dd>an <a>application</a> <a>display surface</a>, or entire collection
-        of windows for an application</dd>
+          <dt>application</dt>
 
-        <dt>browser</dt>
+          <dd>an <a>application</a> <a>display surface</a>, or entire collection
+          of windows for an application</dd>
 
-        <dd>a <a>browser</a> <a>display surface</a>, or single browser window</dd>
-      </dl>
+          <dt>browser</dt>
 
-      <p class="issue"><a
-      href="https://github.com/w3c/mediacapture-screen-share/issues/9">Github#2</a>:
-      Determine whether we want to support application capture.</p>
+          <dd>a <a>browser</a> <a>display surface</a>, or single browser window</dd>
+        </dl>
+
+        <p class="issue"><a
+        href="https://github.com/w3c/mediacapture-screen-share/issues/9">Github#2</a>:
+        Determine whether we want to support application capture.</p>
+      </section>
     </section>
 
     <section>
