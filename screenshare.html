@@ -53,12 +53,48 @@
     contains.</p>
 
 
-    <p>Implementations that use ECMAScript to implement the APIs defined in
-    this specification must implement them in a manner consistent with the
-    ECMAScript Bindings defined in the Web IDL specification [[!WEBIDL]], as
-    this specification uses that specification and terminology.</p>
+    <p>Implementations that use ECMAScript [[ECMA262]] to implement the APIs
+    defined in this specification must implement them in a manner consistent
+    with the ECMAScript Bindings defined in the Web IDL specification
+    [[!WEBIDL]], as this specification uses that specification and
+    terminology.</p>
   </section>
 
+
+  <section>
+    <h2>Example</h2>
+
+    <p>The following example demonstrates a request for display capture using the <code>navigator.mediaDevices.getUserMedia</code> extensions in this document.</p>
+
+    <pre class="example highlight"><![CDATA[
+navigator.mediaDevices.getUserMedia({ video: true, source: display })
+  .then(stream => {
+    // we have a stream, attach it to a feedback <video> element
+    videoElement.srcObject = stream;
+  }, error => {
+    console.log("Unable to acquire screen capture", error);
+  });
+]]></pre>
+
+    <p>A more complicated example shows the use of constraints to limit the
+    choice to <a>window</a>s and their <a>visible display surface</a>.</p>
+
+    <pre class="example highlight"><![CDATA[
+navigator.mediaDevices.getUserMedia({
+  video: {
+    displaySurface: { exact: "window" },
+    logicalSurface: { exact: false }
+  },
+  source: display })
+  .then(stream => {
+    // we have a stream, attach it to a feedback <video> element
+    videoElement.srcObject = stream;
+  }, error => {
+    console.log("Unable to acquire screen capture", error);
+  });
+]]></pre>
+
+  </section>
 
   <section>
     <h2>Terminology</h2>
@@ -121,15 +157,15 @@
     <p>In order to ensure that the applications are able to reliably determine
     whether the <a>user agent</a> supports or is aware of this feature, the
     dictionary response from <code>getSupportedConstraints</code> includes the
-    key <code>"mediaSource"</code> if this feature is understood.</p>
+    key <code>source</code> if this feature is understood.</p>
 
     <section>
       <h2><code>MediaStreamConstraints</code> Additions</h2>
 
       <dl class="idl" title="partial dictionary MediaStreamConstraints">
-        <dt>MediaSourceType mediaSource = "capture"</dt>
+        <dt>MediaSourceType source = "capture"</dt>
         <dd>
-          <p>The <code><a>mediaSource</a></code> member of
+          <p>The <code><a>source</a></code> member of
           <code>MediaStreamConstraints</code> identifies the type of media
           source that is requested.</p>
         </dd>
