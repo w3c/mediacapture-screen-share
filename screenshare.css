@@ -1,7 +1,7 @@
 
 @media screen {
   html { background: #eeeeee; }
-  body { margin-bottom: 30%; border-bottom: thin solid #3c790a; }
+  body { margin-bottom: 30%; border-bottom: thin solid #3c790a; max-width: 720px; }
 }
 
 pre { margin-left: 2em; white-space: pre-wrap; }
