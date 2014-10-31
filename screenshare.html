@@ -64,12 +64,12 @@
   <section>
     <h2>Example</h2>
 
-    <p>The following example demonstrates a request for display capture using the <code>navigator.mediaDevices.getUserMedia</code> extensions in this document.</p>
+    <p>The following example demonstrates a request for display capture using the <code>navigator.mediaDevices.getOutputMedia</code> method defined in this document.</p>
 
     <pre class="example highlight"><![CDATA[
-navigator.mediaDevices.getUserMedia({ video: true, source: display })
+navigator.mediaDevices.getOutputMedia({ video: true })
   .then(stream => {
-    // we have a stream, attach it to a feedback <video> element
+    // we have a stream, attach it to a feedback video element
     videoElement.srcObject = stream;
   }, error => {
     console.log("Unable to acquire screen capture", error);
@@ -80,14 +80,13 @@ navigator.mediaDevices.getUserMedia({ video: true, source: display })
     choice to <a>window</a>s and their <a>visible display surface</a>.</p>
 
     <pre class="example highlight"><![CDATA[
-navigator.mediaDevices.getUserMedia({
+navigator.mediaDevices.getOutputMedia({
   video: {
     displaySurface: { exact: "window" },
     logicalSurface: { exact: false }
-  },
-  source: display })
-  .then(stream => {
-    // we have a stream, attach it to a feedback <video> element
+  }
+}).then(stream => {
+    // we have a stream, attach it to a feedback video element
     videoElement.srcObject = stream;
   }, error => {
     console.log("Unable to acquire screen capture", error);
@@ -103,10 +102,10 @@ navigator.mediaDevices.getUserMedia({
     screen-based surfaces.  Collectively, these are referred to as <dfn>display
     surface</dfn>s, of which this document defines the following types:</p>
     <ul>
-      <li>A <dfn>screen</dfn> <a>display surface</a> represents a physical
-      display. Some systems have multiple <a>screen</a>s, which can be
-      identified separately.  Multiple <a>screen</a>s might also be aggregated
-      into as a single logical <a>screen</a>.</li>
+      <li>A <dfn>monitor</dfn> <a>display surface</a> represents a physical
+      display. Some systems have multiple <a>monitor</a>s, which can be
+      identified separately.  Multiple <a>monitor</a>s might also be aggregated
+      into as a single logical <a>monitor</a>.</li>
 
       <li>A <dfn>window</dfn> <a>display surface</a> is a single contiguous
       surface that is used by a single application.  A single application might
@@ -138,7 +137,7 @@ navigator.mediaDevices.getUserMedia({
 
 
   <section>
-    <h2>Capturing Displayed Media</h2>
+    <h2>Capturing Output Media</h2>
     <!--
       Interesting Links
 
@@ -149,48 +148,19 @@ navigator.mediaDevices.getUserMedia({
       https://docs.google.com/document/d/1-vFghorm8zDCeyg2Yk6kKFT-16GU1Ow1b1bor_jCqD8/edit
       -->
 
-    <p>Screen capture is enabled through the addition of a new member to the
-    <code>MediaStreamConstraints</code> dictionary that is passed to
-    <code>getUserMedia</code> [[!GETUSERMEDIA]].  New constraints allow an
+    <p>Output capture is enabled through the addition of a new <code>getOutputMedia</code> method on the
+    <code>NavigatorMediaDevices</code> interface, that is similar to <code>getUserMedia</code> [[!GETUSERMEDIA]].  New constraints allow an
     application to control what type of information is requested.</p>
 
-    <p>In order to ensure that the applications are able to reliably determine
-    whether the <a>user agent</a> supports or is aware of this feature, the
-    dictionary response from <code>getSupportedConstraints</code> includes the
-    key <code>source</code> if this feature is understood.</p>
-
     <section>
-      <h2><code>MediaStreamConstraints</code> Additions</h2>
+      <h2><code>NavigatorUserMedia</code> Additions</h2>
 
-      <dl class="idl" title="partial dictionary MediaStreamConstraints">
-        <dt>MediaSourceType source = "capture"</dt>
+      <dl class="idl" title="partial interface NavigatorUserMedia">
+        <dt>Promise&lt;MediaStream> getOutputMedia(MediaStreamConstraints constraints)</dt>
         <dd>
-          <p>The <code><a>source</a></code> member of
-          <code>MediaStreamConstraints</code> identifies the type of media
-          source that is requested.</p>
+          <p>This method operates identically to <code>getUserMedia</code>, expect that it acquires media from output devices.</p>
         </dd>
       </dl>
-
-      <section>
-        <h2><code>MediaSourceType</code> Enumeration</h2>
-
-        <p>The <code><a>MediaSourceType</a></code> identifies whether media is
-        to be sourced from a camera or microphone; or, if the media is to be
-        sourced from a screen capture.</p>
-
-        <dl class="idl" title="enum MediaSourceType">
-          <dt>capture</dt>
-
-          <dd>The default, a media source type of "capture" indicates that the
-          media shall be acquired from a camera, microphone, or other media
-          capture device, such as a depth camera [[MEDIACAPTURE-DEPTH]].</dd>
-
-          <dt>display</dt>
-
-          <dd>A media source type of "display" indicates that the media shall be
-          acquired from a local display.</dd>
-        </dl>
-      </section>
     </section>
 
     <section>
@@ -217,7 +187,7 @@ navigator.mediaDevices.getUserMedia({
 
         <dd>
           <p>What type of <a>display surface</a> to capture.  This assumes
-          values from the <code><a>ScreenCaptureSurfaceType</a></code>
+          values from the <code><a>OutputCaptureSurfaceType</a></code>
           enumeration.</p>
         </dd>
 
@@ -231,15 +201,15 @@ navigator.mediaDevices.getUserMedia({
       </dl>
 
       <section>
-        <h2><code>ScreenCaptureSurfaceType</code></h2>
+        <h2><code>OutputCaptureSurfaceType</code></h2>
 
-        <p>The <code><a>ScreenCaptureSurfaceType</a></code> enumeration
+        <p>The <code><a>OutputCaptureSurfaceType</a></code> enumeration
         describes the different types of display surface.</p>
 
-        <dl class="idl" title="enum ScreenCaptureSurfaceType">
-          <dt>screen</dt>
+        <dl class="idl" title="enum OutputCaptureSurfaceType">
+          <dt>monitor</dt>
 
-          <dd>a <a>screen</a> <a>display surface</a>, physical display, or
+          <dd>a <a>monitor</a> <a>display surface</a>, physical display, or
           collection of physical displays</dd>
 
           <dt>window</dt>
@@ -270,7 +240,7 @@ navigator.mediaDevices.getUserMedia({
       media source.  However, display capture sources MUST NOT be enumerated by
       <code><a
       href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-void-MediaDeviceInfoCallback-resultCallback">enumerateDevices</a></code>,
-      since this would reveals too much information about the host system.</p>
+      since this would reveal too much information about the host system.</p>
 
       <p>Display capture sources MUST NOT be selected with the
       <code>deviceId</code> constraint, since this would allow applications to
@@ -350,7 +320,7 @@ navigator.mediaDevices.getUserMedia({
       <a>logical display surface</a>.</p>
     </section>
 
-    <section>
+    <section>  
       <h2>Authorizing Display Capture</h2>
 
       <p>This document provides recommends that implementations provide
@@ -365,14 +335,6 @@ navigator.mediaDevices.getUserMedia({
       <section>
         <h2>Active User Consent</h2>
 
-        <p><dfn>Active user consent</dfn> is the process whereby a user is
-        prompted to share a display, but is responsible for selecting the shared
-        content.  Other than the need to actively select the target display
-        surface, this is identical to the sort of consent interaction
-        recommended by [[GETUSERMEDIA]].  This form of user interaction ensures
-        that there is reduced risk of a malicious application influencing the
-        choice in a way that would ensure access to otherwise inaccessible
-        content.</p>
 
         <p><a>Active user consent</a> is sufficient where there is little or no
         risk of an application gaining information that the user did not intend
@@ -420,8 +382,8 @@ navigator.mediaDevices.getUserMedia({
         <h2>Capabilities Depending on Elevated Permissions</h2>
 
         <p><a>Elevated permissions</a> are recommended as a prerequisite for
-        access to captures of <a>screen</a> or <a>browser</a> <a>display
-        surface</a>s.  Note that capture of a complete <a>screen</a> is included
+        access to captures of <a>monitor</a> or <a>browser</a> <a>display
+        surface</a>s.  Note that capture of a complete <a>monitor</a> is included
         because this could include a window from the <a>user agent</a>.</p>
 
         <p>Similarly, <a>elevated permissions</a> are a recommended prerequisite
