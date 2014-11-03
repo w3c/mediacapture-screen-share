@@ -21,7 +21,7 @@
 <body>
   <section id="abstract">
     <p>This document defines how a user's display, or parts thereof, can be used
-    as the source of a media stream using the Media Capture API
+    as the source of a media stream using getOutputMedia, an extension to the Media Capture API
     [[!GETUSERMEDIA]].</p>
   </section>
 
@@ -382,7 +382,7 @@ navigator.mediaDevices.getOutputMedia({
         <h2>Capabilities Depending on Elevated Permissions</h2>
 
         <p><a>Elevated permissions</a> are recommended as a prerequisite for
-        access to captures of <a>monitor</a> or <a>browser</a> <a>display
+        access to capture of <a>monitor</a> or <a>browser</a> <a>display
         surface</a>s.  Note that capture of a complete <a>monitor</a> is included
         because this could include a window from the <a>user agent</a>.</p>
 
