@@ -21,7 +21,7 @@
 <body>
   <section id="abstract">
     <p>This document defines how a user's display, or parts thereof, can be used
-    as the source of a media stream using the Media Capture API
+    as the source of a media stream using getOutputMedia, an extension to the Media Capture API
     [[!GETUSERMEDIA]].</p>
   </section>
 
@@ -64,14 +64,12 @@
   <section>
     <h2>Example</h2>
 
-    <p>The following example demonstrates a request for display capture using
-    the <code>navigator.mediaDevices.getOutputMedia</code> method defined in
-    this document.</p>
+    <p>The following example demonstrates a request for display capture using the <code>navigator.mediaDevices.getOutputMedia</code> method defined in this document.</p>
 
     <pre class="example highlight"><![CDATA[
 navigator.mediaDevices.getOutputMedia({ video: true })
   .then(stream => {
-    // we have a stream, attach it to a feedback <video> element
+    // we have a stream, attach it to a feedback video element
     videoElement.srcObject = stream;
   }, error => {
     console.log("Unable to acquire screen capture", error);
@@ -88,7 +86,7 @@ navigator.mediaDevices.getOutputMedia({
     logicalSurface: { exact: false }
   }
 }).then(stream => {
-    // we have a stream, attach it to a feedback <video> element
+    // we have a stream, attach it to a feedback video element
     videoElement.srcObject = stream;
   }, error => {
     console.log("Unable to acquire screen capture", error);
@@ -337,14 +335,6 @@ navigator.mediaDevices.getOutputMedia({
       <section>
         <h2>Active User Consent</h2>
 
-        <p><dfn>Active user consent</dfn> is the process whereby a user is
-        prompted to share a display, but is responsible for selecting the shared
-        content.  Other than the need to actively select the target display
-        surface, this is identical to the sort of consent interaction
-        recommended by [[GETUSERMEDIA]].  This form of user interaction ensures
-        that there is reduced risk of a malicious application influencing the
-        choice in a way that would ensure access to otherwise inaccessible
-        content.</p>
 
         <p><a>Active user consent</a> is sufficient where there is little or no
         risk of an application gaining information that the user did not intend
@@ -392,7 +382,7 @@ navigator.mediaDevices.getOutputMedia({
         <h2>Capabilities Depending on Elevated Permissions</h2>
 
         <p><a>Elevated permissions</a> are recommended as a prerequisite for
-        access to captures of <a>monitor</a> or <a>browser</a> <a>display
+        access to capture of <a>monitor</a> or <a>browser</a> <a>display
         surface</a>s.  Note that capture of a complete <a>monitor</a> is included
         because this could include a window from the <a>user agent</a>.</p>
 
@@ -434,7 +424,10 @@ navigator.mediaDevices.getOutputMedia({
     <p>This section will be removed before publication.</p>
 
 
-    <h2>Changes since TBD, 2014</h2>
+
+    <h2>Changes since Oct 31st, 2014</h2>
+    <p>Using monitor to describe scren/display share.</p>
+    <p>Changed getUserMedia to new method getOutputMedia.</p>
   </section>
 
 
