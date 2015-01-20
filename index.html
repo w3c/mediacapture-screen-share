@@ -66,7 +66,7 @@
 
     <p>The following example demonstrates a request for display capture using the <code>navigator.mediaDevices.getOutputMedia</code> method defined in this document.</p>
 
-    <pre class="example highlight"><![CDATA[
+    <pre class="example highlight">
 navigator.mediaDevices.getOutputMedia({ video: true })
   .then(stream => {
     // we have a stream, attach it to a feedback video element
@@ -74,12 +74,12 @@ navigator.mediaDevices.getOutputMedia({ video: true })
   }, error => {
     console.log("Unable to acquire screen capture", error);
   });
-]]></pre>
+</pre>
 
     <p>A more complicated example shows the use of constraints to limit the
     choice to <a>window</a>s and their <a>visible display surface</a>.</p>
 
-    <pre class="example highlight"><![CDATA[
+    <pre class="example highlight">
 navigator.mediaDevices.getOutputMedia({
   video: {
     displaySurface: { exact: "window" },
@@ -91,7 +91,7 @@ navigator.mediaDevices.getOutputMedia({
   }, error => {
     console.log("Unable to acquire screen capture", error);
   });
-]]></pre>
+</pre>
 
   </section>
 
