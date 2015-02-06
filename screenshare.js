@@ -84,41 +84,5 @@ var respecConfig = {
         }
       ]
     }
-  ],
-
-  localBiblio:  {
-    "mediastream-rec": {
-      title: "MediaStream Recording",
-      href: "https://dvcs.w3.org/hg/dap/raw-file/tip/media-stream-capture/MediaRecorder.html",
-      authors:  [
-        "Jim Barnett",
-        "Travis Leithead"
-      ],
-      status:   "WD",
-      publisher:  "W3C"
-    },
-    "mediastream-imagecap": {
-      title: "MediaStream Image Capture",
-      href: "http://www.w3.org/TR/image-capture/",
-      authors:  [
-        "Giridhar Mandyam"
-      ],
-      status:   "WD",
-      publisher:  "W3C"
-    },
-    "CANVAS2D": {
-      title: "HTML Canvas 2D Context",
-      href: "http://www.w3.org/TR/2dcontext/",
-      authors: [
-        "Rik Cabanier",
-        "Jatinder Mann",
-        "Jay Munro",
-        "Tom Wiltzius",
-        "Ian Hickson"
-      ],
-      status: "REC",
-      publisher: "W3C"
-
-    }
-  }
+  ]
 };
