@@ -1,6 +1,6 @@
 var respecConfig = {
   // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
-  specStatus:           "unofficial", // "base",
+  specStatus:           "ED", // "base",
 
   // the specification's short name, as in http://www.w3.org/TR/short-name/
   shortName:            "screen-share",
@@ -12,17 +12,17 @@ var respecConfig = {
   // publishDate:  "2009-08-06",
 
   // new ability to override the copyright completely
-  overrideCopyright:  "This document is licensed under a <a href='http://creativecommons.org/licenses/by-nd/4.0/legalcode'>Creative Commons Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0) License. </a> Copyright 2014 Cisco and Mozilla. ",
+  // overrideCopyright:  "This document is licensed under a <a href='http://creativecommons.org/licenses/by-nd/4.0/legalcode'>Creative Commons Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0) License. </a> Copyright 2014 Cisco and Mozilla. ",
 
   // if the specification's copyright date is a range of years, specify
   // the start date here:
-  // copyrightStart: "2005",
+  copyrightStart: "2015",
 
   // if there is a previously published draft, uncomment this and set its YYYY-MM-DD
   // prevED: "http://dev.w3.org/2011/webrtc/editor/archives/20140321/screenshare.html",
 
   // if there a publicly available Editor's Draft, this is the link
-  //edDraftURI:           "http://dev.w3.org/2011/webrtc/editor/screenshare.html",
+  edDraftURI:           "http://w3c.github.io/mediacapture-screen-share/",
 
   // if this is a LCWD, uncomment and set the end of its review period
   // lcEnd: "2009-08-05",
