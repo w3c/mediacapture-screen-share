@@ -3,7 +3,7 @@ var respecConfig = {
   specStatus:           "ED", // "base",
 
   // the specification's short name, as in http://www.w3.org/TR/short-name/
-  shortName:            "screen-share",
+  shortName:            "screen-capture",
   // if your specification has a subtitle that goes below the main
   // formal title, define it here
   // subtitle   :  "an excellent document",
