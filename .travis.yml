@@ -6,9 +6,7 @@ install:
  - git clone https://github.com/halindrome/linkchecker.git
  - cd widlproc && make obj/widlproc && cd ..
  - pip install html5lib lxml
- - sudo apt-get install libwww-perl libcss-dom-perl
 script:
  - phantomjs --ssl-protocol=tlsv1 respec/tools/respec2html.js -e -w index.html output.html
  - python webidl-checker/webidl-check output.html
- - "! (perl -T linkchecker/bin/checklink -S 0  -q -b output.html |grep  \"^\")"
 env: WIDLPROC_PATH=$TRAVIS_BUILD_DIR/widlproc/obj/widlproc
