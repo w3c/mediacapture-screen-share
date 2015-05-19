@@ -395,8 +395,10 @@ navigator.mediaDevices.getOutputMedia({
         for access to <a>logical display surface</a>s, where that would not
         ordinarily be provided.</p>
 
-        <p>A <a>user agent</a>  persist permissions that enable display
-        capture without <a>elevated permissions</a>.</p>
+        <p>A <a>user agent</a> SHOULD persist any <a>elevated permissions</a>
+        that are granted to an origin. An <a>elevated permissions</a> process in
+        part relies on its novelty to ensure that it correctly captures user
+        intent.</p>
       </section>
     </section>
 
