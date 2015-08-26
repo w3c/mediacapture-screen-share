@@ -21,7 +21,7 @@
 <body>
   <section id="abstract">
     <p>This document defines how a user's display, or parts thereof, can be used
-    as the source of a media stream using getOutputMedia, an extension to the Media Capture API
+    as the source of a media stream using getDisplayMedia, an extension to the Media Capture API
     [[!GETUSERMEDIA]].</p>
   </section>
 
@@ -69,10 +69,12 @@
   <section>
     <h2>Example</h2>
 
-    <p>The following example demonstrates a request for display capture using the <code>navigator.mediaDevices.getOutputMedia</code> method defined in this document.</p>
+    <p>The following example demonstrates a request for display capture using
+    the <code>navigator.mediaDevices.getDisplayMedia</code> method defined in
+    this document.</p>
 
     <pre class="example highlight">
-navigator.mediaDevices.getOutputMedia({ video: true })
+navigator.mediaDevices.getDisplayMedia({ video: true })
   .then(stream => {
     // we have a stream, attach it to a feedback video element
     videoElement.srcObject = stream;
@@ -85,7 +87,7 @@ navigator.mediaDevices.getOutputMedia({ video: true })
     choice to <a>window</a>s and their <a>visible display surface</a>.</p>
 
     <pre class="example highlight">
-navigator.mediaDevices.getOutputMedia({
+navigator.mediaDevices.getDisplayMedia({
   video: {
     displaySurface: { exact: "window" },
     logicalSurface: { exact: false }
@@ -153,17 +155,19 @@ navigator.mediaDevices.getOutputMedia({
       https://docs.google.com/document/d/1-vFghorm8zDCeyg2Yk6kKFT-16GU1Ow1b1bor_jCqD8/edit
       -->
 
-    <p>Output capture is enabled through the addition of a new <code>getOutputMedia</code> method on the
-    <code>NavigatorMediaDevices</code> interface, that is similar to <code>getUserMedia</code> [[!GETUSERMEDIA]].  New constraints allow an
+    <p>Output capture is enabled through the addition of a new <code>getDisplayMedia</code> method on the
+    <code>NavigatorMediaDevices</code> interface, that is similar
+    to <code>getUserMedia</code> [[!GETUSERMEDIA]].  New constraints allow an
     application to control what type of information is requested.</p>
 
     <section>
       <h2><code>NavigatorUserMedia</code> Additions</h2>
 
       <dl class="idl" title="partial interface NavigatorUserMedia">
-        <dt>Promise&lt;MediaStream> getOutputMedia(MediaStreamConstraints constraints)</dt>
+        <dt>Promise&lt;MediaStream> getDisplayMedia(MediaStreamConstraints constraints)</dt>
         <dd>
-          <p>This method operates identically to <code>getUserMedia</code>, expect that it acquires media from output devices.</p>
+          <p>This method operates identically to <code>getUserMedia</code>,
+          expect that it acquires media from output devices.</p>
         </dd>
       </dl>
     </section>
@@ -430,9 +434,10 @@ navigator.mediaDevices.getOutputMedia({
 
     <p>This section will be removed before publication.</p>
 
+    <h2>Changes since 2014-02-07</h2>
+    <p>Changed from getOuputMedia to getDisplayMedia</p>
 
-
-    <h2>Changes since Oct 31st, 2014</h2>
+    <h2>Changes since 2014-10-31</h2>
     <p>Using monitor to describe scren/display share.</p>
     <p>Changed getUserMedia to new method getOutputMedia.</p>
   </section>
