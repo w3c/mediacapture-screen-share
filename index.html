@@ -54,9 +54,8 @@
 
   <section id="conformance">
     <p>This specification defines conformance criteria that apply to a single
-    product: the <dfn>user agent</dfn> that implements the interfaces that it
+    product: the <dfn data-lt="user agents">user agent</dfn> that implements the interfaces that it
     contains.</p>
-
 
     <p>Implementations that use ECMAScript [[ECMA-262]] to implement the APIs
     defined in this specification must implement them in a manner consistent
@@ -82,41 +81,29 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
     console.log("Unable to acquire screen capture", error);
   });
 </pre>
-
-    <p>A more complicated example shows the use of constraints to limit the
-    choice to <a>window</a>s and their <a>visible display surface</a>.</p>
-
-    <pre class="example highlight">
-navigator.mediaDevices.getDisplayMedia({
-  video: {
-    displaySurface: { exact: "window" },
-    logicalSurface: { exact: false }
-  }
-}).then(stream => {
-    // we have a stream, attach it to a feedback video element
-    videoElement.srcObject = stream;
-  }, error => {
-    console.log("Unable to acquire screen capture", error);
-  });
-</pre>
-
   </section>
 
   <section>
     <h2>Terminology</h2>
 
+    <p>This document uses the definition
+    of <code><dfn><a href="https://w3c.github.io/mediacapture-main/#navigatorusermedia">NavigatorUserMedia</a></dfn></code>, <code><dfn><a href="https://w3c.github.io/mediacapture-main/#mediastreamtrack">MediaStreamTrack</a></dfn></code>,
+    and <code><dfn><a href="https://w3c.github.io/mediacapture-main/#interface-definition">ConstrainablePattern</a></dfn></code>
+    from [[!GETUSERMEDIA]].</p>
+
     <p>Screen capture encompasses the capture of several different types of
-    screen-based surfaces.  Collectively, these are referred to as <dfn>display
-    surface</dfn>s, of which this document defines the following types:</p>
+    screen-based surfaces.  Collectively, these are referred to
+    as <dfn data-lt="display surface">display surfaces</dfn>, of which this
+    document defines the following types:</p>
     <ul>
       <li>A <dfn>monitor</dfn> <a>display surface</a> represents a physical
       display. Some systems have multiple <a>monitor</a>s, which can be
       identified separately.  Multiple <a>monitor</a>s might also be aggregated
       into as a single logical <a>monitor</a>.</li>
 
-      <li>A <dfn>window</dfn> <a>display surface</a> is a single contiguous
+      <li>A <dfn data-lt="windows">window</dfn> <a>display surface</a> is a single contiguous
       surface that is used by a single application.  A single application might
-      have several <a>window</a>s available to it, and those can be aggregated
+      have several <a>windows</a> available to it, and those can be aggregated
       into a single <dfn>application</dfn> surface, representing all the windows
       available to that application.</li>
 
@@ -129,11 +116,11 @@ navigator.mediaDevices.getDisplayMedia({
     <p>This document draws a distinction between two variants of each type of
     display surface:</p>
     <ul>
-      <li>The <dfn>logical display surface</dfn> is the surface that an
-      operating system makes available to an application for the purposes of
-      rendering.</li>
+      <li>A <dfn data-lt="logical display surfaces">logical display surface</dfn>
+      is the surface that an operating system makes available to an application
+      for the purposes of rendering.</li>
 
-      <li>The <dfn>visible display surface</dfn> is the portion of a <a>logical
+      <li>a <dfn>visible display surface</dfn> is the portion of a <a>logical
       display surface</a> that is rendered to a <a>monitor</a>.</li>
     </ul>
 
@@ -142,9 +129,8 @@ navigator.mediaDevices.getDisplayMedia({
     surface</a> is a strict subset of the <a>logical display surface</a>.</p>
   </section>
 
-
   <section>
-    <h2>Capturing Output Media</h2>
+    <h2>Capturing Displayed Media</h2>
     <!--
       Interesting Links
 
@@ -155,10 +141,18 @@ navigator.mediaDevices.getDisplayMedia({
       https://docs.google.com/document/d/1-vFghorm8zDCeyg2Yk6kKFT-16GU1Ow1b1bor_jCqD8/edit
       -->
 
-    <p>Output capture is enabled through the addition of a new <code>getDisplayMedia</code> method on the
-    <code>NavigatorMediaDevices</code> interface, that is similar
-    to <code>getUserMedia</code> [[!GETUSERMEDIA]].  New constraints allow an
-    application to control what type of information is requested.</p>
+    <p>Capture of displayed media is enabled through the addition of a
+    new <code><dfn>getDisplayMedia</dfn></code> method on the
+    <code><a>NavigatorUserMedia</a></code> interface, that is similar
+    to <code><dfn><a href="https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></dfn></code>
+    [[!GETUSERMEDIA]].</p>
+
+    <p><code><a>getDisplayMedia</a></code> supports all constraints that are
+    defined for use with <code><a>getUserMedia</a></code>, however it does not
+    use these constraints to select a specific source or to narrow the set of
+    options for source selection (see <a href="#constraints"></a>).  Two new
+    constraints allow an application to observe what type of information was
+    acquired.</p>
 
     <section>
       <h2><code>NavigatorUserMedia</code> Additions</h2>
@@ -167,78 +161,88 @@ navigator.mediaDevices.getDisplayMedia({
         <dt>Promise&lt;MediaStream> getDisplayMedia(MediaStreamConstraints constraints)</dt>
         <dd>
           <p>This method operates identically to <code>getUserMedia</code>,
-          expect that it acquires media from output devices.</p>
+          except that it acquires media from output devices.</p>
         </dd>
       </dl>
     </section>
 
     <section>
-      <h2>Constraining Display Surface Selection</h2>
+      <h2 id="constraints">Constraining Display Surface Selection</h2>
 
-      <p>Two constraints are defined that allow an application to limit the
-      display surfaces that are selected.  This only allows an application to
-      control the type of surface that is selected, not to identify a specific
-      surface.</p>
+      <p>The <code><a>getDisplayMedia</a></code> function permits the use of
+      constraints in the same way that constraints are defined
+      for <code><a>getUserMedia</a></code>.  However, these constraints MUST NOT
+      constrain the selection of choices that are presented to users in the same
+      way.</p>
 
-      <p>The <code><a
-      href="#widl-MediaTrackConstraintSet-displaySurface">displaySurface</a></code>
-      constraint allows an application to express a preference or requirement
-      for the type of <a>display surface</a> that is acquired.</p>
-
-      <p>The <code><a
-      href="#widl-MediaTrackConstraintSet-logicalSurface">logicalSurface</a></code>
-      constraint allows an application to express a preference or requirement to
-      capture the <a>logical display surface</a>, rather than the <a>visible
-      display surface</a>.</p>
-
-      <dl class="idl" title="partial dictionary MediaTrackConstraintSet">
-        <dt>ConstrainDOMString displaySurface</dt>
-
-        <dd>
-          <p>What type of <a>display surface</a> to capture.  This assumes
-          values from the <code><a>OutputCaptureSurfaceType</a></code>
-          enumeration.</p>
-        </dd>
-
-        <dt>ConstrainBoolean logicalSurface</dt>
-
-        <dd>
-          <p>A value of <code>true</code> requests or requires capture of a
-          <a>logical display surface</a>; a value of <code>false</code> requests
-          or requires capture of a <a>visible display surface</a>.</p>
-        </dd>
-      </dl>
+      <p>Once a <a>display surface</a> has been selected, constraints apply to
+      the <a>MediaStreamTrack</a> instances that are returned.  This allows for
+      changes such as adjustments to frame rate or resolution, or other
+      constraints.</p>
 
       <section>
-        <h2><code>OutputCaptureSurfaceType</code></h2>
+        <h2>New Constraints for Captured Display Surfaces</h2>
+        <p>Two constraints are defined that allow an application to observe
+        properties of the selected <a>display surface</a>.  Since the source of
+        media cannot be changed after a <code>MediaStreamTrack</code> has been
+        returned, these constraints cannot be changed by an application.</p>
 
-        <p>The <code><a>OutputCaptureSurfaceType</a></code> enumeration
-        describes the different types of display surface.</p>
+        <p>The <code><a href="#widl-MediaTrackConstraintSet-displaySurface">displaySurface</a></code>
+        constraint allows an application to observe the type of <a>display
+        surface</a> that is being captured.</p>
 
-        <dl class="idl" title="enum OutputCaptureSurfaceType">
-          <dt>monitor</dt>
+        <p>The <code><a href="#widl-MediaTrackConstraintSet-logicalSurface">logicalSurface</a></code>
+        constraint allows an application to express a preference or requirement
+        to capture the <a>logical display surface</a>, rather than
+        the <a>visible display surface</a>.</p>
 
-          <dd>a <a>monitor</a> <a>display surface</a>, physical display, or
-          collection of physical displays</dd>
+        <dl class="idl" title="partial dictionary MediaTrackConstraintSet">
+          <dt>ConstrainDOMString displaySurface</dt>
 
-          <dt>window</dt>
+          <dd>
+            <p>The type of <a>display surface</a> that is being captured.  This
+            assumes values from
+            the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.</p>
+          </dd>
 
-          <dd>a <a>window</a> <a>display surface</a>, or single application
-          window</dd>
+          <dt>ConstrainBoolean logicalSurface</dt>
 
-          <dt>application</dt>
-
-          <dd>an <a>application</a> <a>display surface</a>, or entire collection
-          of windows for an application</dd>
-
-          <dt>browser</dt>
-
-          <dd>a <a>browser</a> <a>display surface</a>, or single browser window</dd>
+          <dd>
+            <p>A value of <code>true</code> indicates capture of a
+            <a>logical display surface</a>; a value of <code>false</code>
+            indicates a capture capture of a <a>visible display
+            surface</a>.</p>
+          </dd>
         </dl>
 
-        <p class="issue"><a
-        href="https://github.com/w3c/mediacapture-screen-share/issues/9">Github#2</a>:
-        Determine whether we want to support application capture.</p>
+        <section>
+          <h2><code>DisplayCaptureSurfaceType</code></h2>
+
+          <p>The <code><a>DisplayCaptureSurfaceType</a></code> enumeration
+          describes the different types of display surface.</p>
+
+          <dl class="idl" title="enum DisplayCaptureSurfaceType">
+            <dt>monitor</dt>
+
+            <dd>a <a>monitor</a> <a>display surface</a>, physical display, or
+            collection of physical displays</dd>
+
+            <dt>window</dt>
+
+            <dd>a <a>window</a> <a>display surface</a>, or single application
+            window</dd>
+
+            <dt>application</dt>
+
+            <dd>an <a>application</a> <a>display surface</a>, or entire collection
+            of windows for an application</dd>
+
+            <dt>browser</dt>
+
+            <dd>a <a>browser</a> <a>display surface</a>, or single browser window</dd>
+          </dl>
+
+        </section>
       </section>
     </section>
 
@@ -257,7 +261,7 @@ navigator.mediaDevices.getDisplayMedia({
       <code>MediaStreamTrack</code> API as having a <code>deviceId</code>
       parameter that is randomized each time a <code>MediaStreamTrack</code> is
       connected.  The only other constraint on this value is that it cannot
-      conflict with any existing values for <code>deviceId</code>.</p>
+      duplicate any existing values for <code>deviceId</code>.</p>
     </section>
   </section>
 
@@ -298,13 +302,13 @@ navigator.mediaDevices.getDisplayMedia({
     <section>
       <h2>Capturing Logical or Visible Display Surfaces</h2>
 
-      <p>Capture of <a>logical display surface</a>s causes there to be a
+      <p>Capture of <a>logical display surfaces</a> causes there to be a
       potential for content to be shared that a user is not made aware of.  A
       <a>logical display surface</a> might render information that a user did
-      not intend to expose.  This can be quickly rectified if this information
-      is visible.  Such means are of course ineffectual against a machine, but a
-      human recipient is less able to process content that appears only
-      briefly.</p>
+      not intend to expose.  This can be more easily recognized if this
+      information is visible.  Such means are likely ineffectual against a
+      machine, but a human recipient is less able to process content that
+      appears only briefly.</p>
 
       <p>Information that is not currently rendered to the screen SHOULD be
       obscured in captures unless the application has been specifically
@@ -344,12 +348,16 @@ navigator.mediaDevices.getDisplayMedia({
       <section>
         <h2>Active User Consent</h2>
 
-
         <p><dfn>Active user consent</dfn> is sufficient where there is little or no
         risk of an application gaining information that the user did not intend
         to share.  These cases can be identified by those where the application
         that requests capture has no control over what is rendered to the
-        captured <a>display surface</a>.</p>
+          captured <a>display surface</a>.</p>
+
+        <p>To prevent applications from limiting the available choices presented
+        to a user with the goal of promoting a particular choice,
+        the <code><a>getDisplayMedia</a></code> API does not permit the use of
+        constraints to narrow the set of options presented.</p>
       </section>
 
       <section>
@@ -357,7 +365,7 @@ navigator.mediaDevices.getDisplayMedia({
 
         <p>It is strongly advised that <dfn>elevated permissions</dfn> be
         required to access any <a>display surface</a> that might be used to
-        circumvent origin-based protections for content.  The key goal of this
+        circumvent cross-origin protections for content.  The key goal of this
         consent process is not just to demonstrate that a user intends to share
         content, but to also to determine that the user exhibits an elevated
         level of trust in the application that is being granted access.</p>
@@ -376,13 +384,13 @@ navigator.mediaDevices.getDisplayMedia({
         equivalent to software installation to signify that user consent for
         <a>elevated permissions</a> is granted.</p>
 
-        <p>An <a>elevated permissions</a> experience allows the <a>user
+        <p>An <a>elevated permissions</a> experience could allow the <a>user
         agent</a> to communicate the risks associated with enabling this
         feature, or at least to convey the need for augmented trust in the
         application.</p>
 
         <p>Note that <a>elevated permissions</a> are not a substitute for
-        <a>active user consent</a>.  It is advised that <a>user agent</a>s still
+        <a>active user consent</a>.  It is advised that <a>user agents</a> still
         present users with the ability to select what is shared, even for
         applications that have <a>elevated permissions</a>.</p>
       </section>
@@ -392,11 +400,11 @@ navigator.mediaDevices.getDisplayMedia({
 
         <p><a>Elevated permissions</a> are recommended as a prerequisite for
         access to capture of <a>monitor</a> or <a>browser</a> <a>display
-        surface</a>s.  Note that capture of a complete <a>monitor</a> is included
+        surfaces</a>.  Note that capture of a complete <a>monitor</a> is included
         because this could include a window from the <a>user agent</a>.</p>
 
         <p>Similarly, <a>elevated permissions</a> are a recommended prerequisite
-        for access to <a>logical display surface</a>s, where that would not
+        for access to <a>logical display surfaces</a>, where that would not
         ordinarily be provided.</p>
 
         <p>A <a>user agent</a> SHOULD persist any <a>elevated permissions</a>
@@ -409,12 +417,12 @@ navigator.mediaDevices.getDisplayMedia({
     <section>
       <h2>Feedback and Interface During Capture</h2>
 
-      <p>Implementations can handle feedback and control mechanism in a similar
-      way to how they handle sharing of a camera or microphone, as recommended
-      in [[GETUSERMEDIA]].</p>
+      <p>Implementations are advised to provide user feedback and control
+      mechanisms similar to those offered users when sharing a camera or
+      microphone, as recommended in [[GETUSERMEDIA]].</p>
 
       <p>It is important that a user be aware that content is being shared when
-      content is actively being captured.  <a>User agent</a>s are advised to
+      content is actively being captured.  <a>User agents</a> are advised to
       display a prominent indicator while content is being captured.  In
       addition to an indicator, a <a>user agent</a> is advised to provide a
       means to learn precisely what is being shared; while this capability is
