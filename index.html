@@ -99,13 +99,17 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
       <li>A <dfn>monitor</dfn> <a>display surface</a> represents a physical
       display. Some systems have multiple <a>monitor</a>s, which can be
       identified separately.  Multiple <a>monitor</a>s might also be aggregated
-      into as a single logical <a>monitor</a>.</li>
+      into as a single logical <a>monitor</a>.  An aggregated <a>display
+      surface</a> is captured as a
+      single <code><a>MediaStreamTrack</a></code>.</li>
 
-      <li>A <dfn data-lt="windows">window</dfn> <a>display surface</a> is a single contiguous
-      surface that is used by a single application.  A single application might
-      have several <a>windows</a> available to it, and those can be aggregated
-      into a single <dfn>application</dfn> surface, representing all the windows
-      available to that application.</li>
+      <li>A <dfn data-lt="windows">window</dfn> <a>display surface</a> is a
+        single contiguous surface that is used by a single application.</li>
+
+      <li>A single application might have several <a>windows</a> available to
+      it, and those can be aggregated into a single <dfn>application</dfn>
+      surface, representing all the windows available to that application and
+      therefore presented as a single <code><a>MediaStreamTrack</a></code>.</li>
 
       <li>A <dfn>browser</dfn> <a>display surface</a> is the rendered form of a
       single document.  This is not strictly limited to HTML [[HTML5]]
