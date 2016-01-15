@@ -104,7 +104,7 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
       single <code><a>MediaStreamTrack</a></code>.</li>
 
       <li>A <dfn data-lt="windows">window</dfn> <a>display surface</a> is a
-        single contiguous surface that is used by a single application.</li>
+      single contiguous surface that is used by a single application.</li>
 
       <li>A single application might have several <a>windows</a> available to
       it, and those can be aggregated into a single <dfn>application</dfn>
@@ -335,6 +335,11 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
       only.  These systems might provide a capture of an application that is not
       currently visible, which could be unusable without capturing the
       <a>logical display surface</a>.</p>
+
+      <p>An important consideration when capturing a <a>window</a> or other
+      <a>display surface</a> that is partially transparent is that content from
+      the background might be shared.  A <a>user agent</a> MUST NOT capture
+      content from the background of a captured <a>display surface</a>.</p>
     </section>
 
     <section>
