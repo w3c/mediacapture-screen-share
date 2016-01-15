@@ -206,7 +206,9 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
           <dd>
             <p>The type of <a>display surface</a> that is being captured.  This
             assumes values from
-            the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.</p>
+            the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.  This
+            value is a unchangeable property of the source of media and cannot
+            be changed once a source is selected.</p>
           </dd>
 
           <dt>ConstrainBoolean logicalSurface</dt>
@@ -214,8 +216,9 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
           <dd>
             <p>A value of <code>true</code> indicates capture of a
             <a>logical display surface</a>; a value of <code>false</code>
-            indicates a capture capture of a <a>visible display
-            surface</a>.</p>
+            indicates a capture capture of a <a>visible display surface</a>.
+            This value is a unchangeable property of the source of media and
+            cannot be changed once a source is selected.</p>
           </dd>
         </dl>
 
