@@ -30,3 +30,12 @@ install:
  - make travissetup
 script:
  - make check
+
+env:
+  global:
+    - URL="https://w3c.github.io/mediacapture-screen-share/W3CTRMANIFEST"
+    - DECISION="https://lists.w3.org/Archives/Public/public-media-capture/2015Dec/0031.html"
+    - secure: "JATWG7VDH4Z9YpGWfkSgBc/p4gRZDdBcPCcS8qRPJp9APrdLaycyhvJisa2tWxt8mzKVC9FUA8pcY0uy8g4AL/fxLDdOzfdgP11Fti7m1OU7BsGxJ3duh/t3cgqy2zN8XpzZE3cTqQdVObzNdvKsjGB1sCUSIx5HE6FxF7KtgVA="
+
+after_success:
+  - test $TRAVIS_BRANCH = "gh-pages" -a $TRAVIS_PULL_REQUEST = false && curl "https://labs.w3.org/echidna/api/request" --data "url=$URL" --data "decision=$DECISION" --data "token=$TOKEN"
