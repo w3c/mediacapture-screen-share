@@ -51,10 +51,10 @@ var respecConfig = {
   //],
 
   // name of the WG
-  wg: ["Web Real-Time Communication Working Group", "Device APIs Working Group"]          ,
+  wg: ["Device and Sensors Working Group", "Web Real-Time Communications Working Group"],
 
   // URI of the public WG page
-  wgURI:["http://www.w3.org/2011/04/webrtc/","http://www.w3.org/2009/dap"],
+  wgURI: ["http://www.w3.org/2009/dap/", "http://www.w3.org/2011/04/webrtc/"],
 
   // name (without the @w3.org) of the public mailing to which comments are due
   wgPublicList: "public-media-capture",
@@ -64,7 +64,7 @@ var respecConfig = {
   // This is important for Rec-track documents, do not copy a patent URI from a random
   // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
   // Team Contact.
-  wgPatentURI:   ["http://www.w3.org/2004/01/pp-impl/47318/status","http://www.w3.org/2004/01/pp-impl/43696/status"],
+  wgPatentURI: ["http://www.w3.org/2004/01/pp-impl/43696/status","http://www.w3.org/2004/01/pp-impl/47318/status"],
 
   otherLinks: [
     {
