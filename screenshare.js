@@ -22,7 +22,7 @@ var respecConfig = {
   // prevED: "http://dev.w3.org/2011/webrtc/editor/archives/20140321/screenshare.html",
 
   // if there a publicly available Editor's Draft, this is the link
-  edDraftURI:           "http://w3c.github.io/mediacapture-screen-share/",
+  edDraftURI:           "https://w3c.github.io/mediacapture-screen-share/",
 
   // if this is a LCWD, uncomment and set the end of its review period
   // lcEnd: "2009-08-05",
@@ -37,8 +37,8 @@ var respecConfig = {
   editors:  [
     // { name: "Your Name", url: "http://example.org/",
     // company: "Your Company", companyURL: "http://example.com/" },
-    { name: "Martin Thomson", company: "Mozilla" },
-    { name: "Keith Griffin", company: "Cisco" }
+    { name: "Martin Thomson", company: "Mozilla", w3cid: 68503 },
+    { name: "Keith Griffin", company: "Cisco", w3cid: 65606 }
   ],
 
   // authors, add as many as you like.
@@ -51,10 +51,10 @@ var respecConfig = {
   //],
 
   // name of the WG
-  wg: ["Web Real-Time Communication Working Group", "Device APIs Working Group"]          ,
+  wg: ["Device and Sensors Working Group", "Web Real-Time Communications Working Group"],
 
   // URI of the public WG page
-  wgURI:["http://www.w3.org/2011/04/webrtc/","http://www.w3.org/2009/dap"],
+  wgURI: ["http://www.w3.org/2009/dap/", "http://www.w3.org/2011/04/webrtc/"],
 
   // name (without the @w3.org) of the public mailing to which comments are due
   wgPublicList: "public-media-capture",
@@ -64,7 +64,7 @@ var respecConfig = {
   // This is important for Rec-track documents, do not copy a patent URI from a random
   // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
   // Team Contact.
-  wgPatentURI:   ["http://www.w3.org/2004/01/pp-impl/47318/status","http://www.w3.org/2004/01/pp-impl/43696/status"],
+  wgPatentURI: ["http://www.w3.org/2004/01/pp-impl/43696/status","http://www.w3.org/2004/01/pp-impl/47318/status"],
 
   otherLinks: [
     {
@@ -72,7 +72,7 @@ var respecConfig = {
       data: [
         {
           value: "Mailing list",
-          href: "http://lists.w3.org/Archives/Public/public-media-capture/"
+          href: "https://lists.w3.org/Archives/Public/public-media-capture/"
         },
         {
           value: "Browse open issues",

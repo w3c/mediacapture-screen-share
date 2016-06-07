@@ -1,10 +1,5 @@
 *~
-old
-old?
-foo
-bar
 .DS_Store
-screenshare.diff.html
-screenshare.orig.html
-screenshare.orig.txt
-screenshare.txt
+build
+support
+webrtc-respec-ci
