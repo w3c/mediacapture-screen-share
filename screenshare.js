@@ -22,7 +22,7 @@ var respecConfig = {
   // prevED: "http://dev.w3.org/2011/webrtc/editor/archives/20140321/screenshare.html",
 
   // if there a publicly available Editor's Draft, this is the link
-  edDraftURI:           "http://w3c.github.io/mediacapture-screen-share/",
+  edDraftURI:           "https://w3c.github.io/mediacapture-screen-share/",
 
   // if this is a LCWD, uncomment and set the end of its review period
   // lcEnd: "2009-08-05",
@@ -72,7 +72,7 @@ var respecConfig = {
       data: [
         {
           value: "Mailing list",
-          href: "http://lists.w3.org/Archives/Public/public-media-capture/"
+          href: "https://lists.w3.org/Archives/Public/public-media-capture/"
         },
         {
           value: "Browse open issues",
