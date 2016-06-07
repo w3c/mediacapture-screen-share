@@ -37,8 +37,8 @@ var respecConfig = {
   editors:  [
     // { name: "Your Name", url: "http://example.org/",
     // company: "Your Company", companyURL: "http://example.com/" },
-    { name: "Martin Thomson", company: "Mozilla" },
-    { name: "Keith Griffin", company: "Cisco" }
+    { name: "Martin Thomson", company: "Mozilla", w3cid: 68503 },
+    { name: "Keith Griffin", company: "Cisco", w3cid: 65606 }
   ],
 
   // authors, add as many as you like.
