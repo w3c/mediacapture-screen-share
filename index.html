@@ -345,23 +345,22 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
     <section>
       <h2>Authorizing Display Capture</h2>
 
-      <p>This document provides recommends that implementations provide
+      <p>This document recommends that implementations provide
       additional limitations on the mechanisms used to affirm user
       consent. These limitations are designed to mitigate the security and
       privacy risks that the API poses.</p>
 
       <p>Two forms of consent interaction are described: <a>active user
-      consent</a> and a range of <a>elevated permissions</a>.  These are
-      non-normative recommandations only.</p>
+      consent</a> and a range of <a>elevated permissions</a>.  These
+      recommendations are non-normative.</p>
 
       <section>
         <h2>Active User Consent</h2>
 
         <p><dfn>Active user consent</dfn> is sufficient where there is little or no
         risk of an application gaining information that the user did not intend
-        to share.  These cases can be identified by those where the application
-        that requests capture has no control over what is rendered to the
-          captured <a>display surface</a>.</p>
+        to share.  In these cases the application that requests capture has
+        no control over what is rendered to the captured <a>display surface</a>.</p>
 
         <p>To prevent applications from limiting the available choices presented
         to a user with the goal of promoting a particular choice,
@@ -439,7 +438,7 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
       this information allows a user to accurately assess what is being
       shared.</p>
 
-      <p>In addition to feedback mechanisms, a means to for the user to
+      <p>In addition to feedback mechanisms, a means for the user to
       stop any active capture is advisable.</p>
 
     </section>
