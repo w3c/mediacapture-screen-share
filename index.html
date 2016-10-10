@@ -1,78 +1,81 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
-  <link href="screenshare.css" rel="stylesheet" type="text/css">
-
-  <title>Screen Capture</title>
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common"
-  type="text/javascript">
-//<![CDATA[
-  <!-- keep this comment: what a frightening kludge -->
-  //]]>
-  </script>
-  <script class="remove" src="screenshare.js" type="text/javascript">
-//<![CDATA[
-  <!-- keep this comment -->
-  //]]>
-  </script>
-</head>
-
-<body>
-  <section id="abstract">
-    <p>This document defines how a user's display, or parts thereof, can be used
-    as the source of a media stream using getDisplayMedia, an extension to the Media Capture API
-    [[!GETUSERMEDIA]].</p>
-  </section>
-
-  <section id="sotd">
-    <p>This document is not complete. It is subject to major changes and, while
-    early experimentations are encouraged, it is therefore not intended for
-    implementation.</p>
-  </section>
-
-  <section class="informative" id="intro">
-    <h2>Introduction</h2>
-
-    <p>This document describes an extension to the Media Capture API
-    [[GETUSERMEDIA]] that enables the acquisition of a user's display, or part
-    thereof, in the form of a video stream.  This enables a number of
-    applications, including screen sharing using WebRTC [[WEBRTC]].</p>
-
-    <p>This feature has signficant security implications.  Applications that use
-    this API to access information that is displayed to users could access
-    confidential information from other origins if that information is under the
-    control of the application.  This includes content that would otherwise be
-    inaccessible due to the protections offered by the user agent sandbox.</p>
-
-    <p>This document concerns itself primarily with the capture of video, but
-    the general mechanisms defined here could be extended to other types of
-    media, of which audio [[GETUSERMEDIA]] and depth [[MEDIACAPTURE-DEPTH]] are
-    currently defined.</p>
-
-  </section>
-
-  <section id="conformance">
-    <p>This specification defines conformance criteria that apply to a single
-    product: the <dfn data-lt="user agents">user agent</dfn> that implements the interfaces that it
-    contains.</p>
-
-    <p>Implementations that use ECMAScript [[ECMA-262]] to implement the APIs
-    defined in this specification must implement them in a manner consistent
-    with the ECMAScript Bindings defined in the Web IDL specification
-    [[!WEBIDL]], as this specification uses that specification and
-    terminology.</p>
-  </section>
-
-
-  <section>
-    <h2>Example</h2>
-
-    <p>The following example demonstrates a request for display capture using
-    the <code>navigator.mediaDevices.getDisplayMedia</code> method defined in
-    this document.</p>
-
-    <pre class="example highlight">navigator.mediaDevices.getDisplayMedia({ video: true })
+  <head>
+    <link href="screenshare.css" rel="stylesheet" type="text/css">
+    <title>
+      Screen Capture
+    </title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common" type=
+    "text/javascript">
+    //<![CDATA[
+    <!-- keep this comment: what a frightening kludge -->
+    //]]>
+    </script>
+    <script class="remove" src="screenshare.js" type="text/javascript">
+    //<![CDATA[
+    <!-- keep this comment -->
+    //]]>
+    </script>
+  </head>
+  <body>
+    <section id="abstract">
+      <p>
+        This document defines how a user's display, or parts thereof, can be used as the source of
+        a media stream using getDisplayMedia, an extension to the Media Capture API
+        [[!GETUSERMEDIA]].
+      </p>
+    </section>
+    <section id="sotd">
+      <p>
+        This document is not complete. It is subject to major changes and, while early
+        experimentations are encouraged, it is therefore not intended for implementation.
+      </p>
+    </section>
+    <section class="informative" id="intro">
+      <h2>
+        Introduction
+      </h2>
+      <p>
+        This document describes an extension to the Media Capture API [[GETUSERMEDIA]] that enables
+        the acquisition of a user's display, or part thereof, in the form of a video stream. This
+        enables a number of applications, including screen sharing using WebRTC [[WEBRTC]].
+      </p>
+      <p>
+        This feature has signficant security implications. Applications that use this API to access
+        information that is displayed to users could access confidential information from other
+        origins if that information is under the control of the application. This includes content
+        that would otherwise be inaccessible due to the protections offered by the user agent
+        sandbox.
+      </p>
+      <p>
+        This document concerns itself primarily with the capture of video, but the general
+        mechanisms defined here could be extended to other types of media, of which audio
+        [[GETUSERMEDIA]] and depth [[MEDIACAPTURE-DEPTH]] are currently defined.
+      </p>
+    </section>
+    <section id="conformance">
+      <p>
+        This specification defines conformance criteria that apply to a single product: the
+        <dfn data-lt="user agents">user agent</dfn> that implements the interfaces that it
+        contains.
+      </p>
+      <p>
+        Implementations that use ECMAScript [[ECMA-262]] to implement the APIs defined in this
+        specification must implement them in a manner consistent with the ECMAScript Bindings
+        defined in the Web IDL specification [[!WEBIDL]], as this specification uses that
+        specification and terminology.
+      </p>
+    </section>
+    <section>
+      <h2>
+        Example
+      </h2>
+      <p>
+        The following example demonstrates a request for display capture using the
+        <code>navigator.mediaDevices.getDisplayMedia</code> method defined in this document.
+      </p>
+      <pre class="example highlight">navigator.mediaDevices.getDisplayMedia({ video: true })
   .then(stream =&gt; {
     // we have a stream, attach it to a feedback video element
     videoElement.srcObject = stream;
@@ -80,61 +83,65 @@
     console.log("Unable to acquire screen capture", error);
   });
 </pre>
-  </section>
-
-  <section>
-    <h2>Terminology</h2>
-
-    <p>This document uses the definition
-    of <code><dfn><a href="https://w3c.github.io/mediacapture-main/#navigatorusermedia">NavigatorUserMedia</a></dfn></code>, <code><dfn><a href="https://w3c.github.io/mediacapture-main/#mediastreamtrack">MediaStreamTrack</a></dfn></code>,
-    and <code><dfn><a href="https://w3c.github.io/mediacapture-main/#interface-definition">ConstrainablePattern</a></dfn></code>
-    from [[!GETUSERMEDIA]].</p>
-
-    <p>Screen capture encompasses the capture of several different types of
-    screen-based surfaces.  Collectively, these are referred to
-    as <dfn data-lt="display surface">display surfaces</dfn>, of which this
-    document defines the following types:</p>
-    <ul>
-      <li>A <dfn>monitor</dfn> <a>display surface</a> represents a physical
-      display. Some systems have multiple <a>monitor</a>s, which can be
-      identified separately.  Multiple <a>monitor</a>s might also be aggregated
-      into as a single logical <a>monitor</a>.  An aggregated <a>display
-      surface</a> is captured as a
-      single <code><a>MediaStreamTrack</a></code>.</li>
-
-      <li>A <dfn data-lt="windows">window</dfn> <a>display surface</a> is a
-      single contiguous surface that is used by a single application.</li>
-
-      <li>A single application might have several <a>windows</a> available to
-      it, and those can be aggregated into a single <dfn>application</dfn>
-      surface, representing all the windows available to that application and
-      therefore presented as a single <code><a>MediaStreamTrack</a></code>.</li>
-
-      <li>A <dfn>browser</dfn> <a>display surface</a> is the rendered form of a
-      single document.  This is not strictly limited to HTML [[HTML5]]
-      documents, though the discussion in this document will address some
-      specific concerns with the capture of HTML.</li>
-    </ul>
-
-    <p>This document draws a distinction between two variants of each type of
-    display surface:</p>
-    <ul>
-      <li>A <dfn data-lt="logical display surfaces">logical display surface</dfn>
-      is the surface that an operating system makes available to an application
-      for the purposes of rendering.</li>
-
-      <li>a <dfn>visible display surface</dfn> is the portion of a <a>logical
-      display surface</a> that is rendered to a <a>monitor</a>.</li>
-    </ul>
-
-    <p>Some operating systems permit windows from different applications to
-    occlude other windows, in whole or part, so the <a>visible display
-    surface</a> is a strict subset of the <a>logical display surface</a>.</p>
-  </section>
-
-  <section>
-    <h2>Capturing Displayed Media</h2>
-    <!--
+    </section>
+    <section>
+      <h2>
+        Terminology
+      </h2>
+      <p>
+        This document uses the definition of <code><dfn><a href=
+        "https://w3c.github.io/mediacapture-main/#navigatorusermedia">NavigatorUserMedia</a></dfn></code>,
+        <code><dfn><a href=
+        "https://w3c.github.io/mediacapture-main/#mediastreamtrack">MediaStreamTrack</a></dfn></code>,
+        and <code><dfn><a href=
+        "https://w3c.github.io/mediacapture-main/#interface-definition">ConstrainablePattern</a></dfn></code>
+        from [[!GETUSERMEDIA]].
+      </p>
+      <p>
+        Screen capture encompasses the capture of several different types of screen-based surfaces.
+        Collectively, these are referred to as <dfn data-lt="display surface">display
+        surfaces</dfn>, of which this document defines the following types:
+      </p>
+      <ul>
+        <li>A <dfn>monitor</dfn> <a>display surface</a> represents a physical display. Some systems
+        have multiple <a>monitor</a>s, which can be identified separately. Multiple <a>monitor</a>s
+        might also be aggregated into as a single logical <a>monitor</a>. An aggregated <a>display
+        surface</a> is captured as a single <code><a>MediaStreamTrack</a></code>.
+        </li>
+        <li>A <dfn data-lt="windows">window</dfn> <a>display surface</a> is a single contiguous
+        surface that is used by a single application.
+        </li>
+        <li>A single application might have several <a>windows</a> available to it, and those can
+        be aggregated into a single <dfn>application</dfn> surface, representing all the windows
+        available to that application and therefore presented as a single
+        <code><a>MediaStreamTrack</a></code>.
+        </li>
+        <li>A <dfn>browser</dfn> <a>display surface</a> is the rendered form of a single document.
+        This is not strictly limited to HTML [[HTML5]] documents, though the discussion in this
+        document will address some specific concerns with the capture of HTML.
+        </li>
+      </ul>
+      <p>
+        This document draws a distinction between two variants of each type of display surface:
+      </p>
+      <ul>
+        <li>A <dfn data-lt="logical display surfaces">logical display surface</dfn> is the surface
+        that an operating system makes available to an application for the purposes of rendering.
+        </li>
+        <li>a <dfn>visible display surface</dfn> is the portion of a <a>logical display surface</a>
+        that is rendered to a <a>monitor</a>.
+        </li>
+      </ul>
+      <p>
+        Some operating systems permit windows from different applications to occlude other windows,
+        in whole or part, so the <a>visible display surface</a> is a strict subset of the
+        <a>logical display surface</a>.
+      </p>
+    </section>
+    <section>
+      <h2>
+        Capturing Displayed Media
+      </h2><!--
       Interesting Links
 
       https://bugzilla.mozilla.org/show_bug.cgi?id=742832
@@ -143,310 +150,460 @@
 
       https://docs.google.com/document/d/1-vFghorm8zDCeyg2Yk6kKFT-16GU1Ow1b1bor_jCqD8/edit
       -->
-
-    <p>Capture of displayed media is enabled through the addition of a
-    new <code><dfn>getDisplayMedia</dfn></code> method on the
-    <code><a>NavigatorUserMedia</a></code> interface, that is similar
-    to <code><dfn><a href="https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></dfn></code>
-    [[!GETUSERMEDIA]].</p>
-
-    <p><code><a>getDisplayMedia</a></code> supports all constraints that are
-    defined for use with <code><a>getUserMedia</a></code>, however it does not
-    use these constraints to select a specific source or to narrow the set of
-    options for source selection (see <a href="#constraints"></a>).  Two new
-    constraints allow an application to observe what type of information was
-    acquired.</p>
-
-    <section>
-      <h2><code>NavigatorUserMedia</code> Additions</h2>
-
-      <div><pre class="idl">partial interface NavigatorUserMedia {
-    Promise&lt;MediaStream&gt; getDisplayMedia (MediaStreamConstraints constraints);
-};</pre><section><h2>Methods</h2><dl data-link-for="NavigatorUserMedia" data-dfn-for="NavigatorUserMedia" class="methods"><dt><dfn><code>getDisplayMedia</code></dfn></dt><dd>
-          <p>This method operates identically to <code>getUserMedia</code>,
-          except that it acquires media from output devices.</p>
-        <table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">constraints</td><td class="prmType"><code>MediaStreamConstraints</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc"></td></tr></tbody></table><div><em>Return type: </em><code>Promise&lt;MediaStream&gt;</code></div></dd></dl></section></div>
-    </section>
-
-    <section>
-      <h2 id="constraints">Constraining Display Surface Selection</h2>
-
-      <p>The <code><a>getDisplayMedia</a></code> function permits the use of
-      constraints in the same way that constraints are defined
-      for <code><a>getUserMedia</a></code>.  However, these constraints MUST NOT
-      constrain the selection of choices that are presented to users in the same
-      way.</p>
-
-      <p>Once a <a>display surface</a> has been selected, constraints apply to
-      the <a>MediaStreamTrack</a> instances that are returned.  This allows for
-      changes such as adjustments to frame rate or resolution, or other
-      constraints.</p>
-
+      <p>
+        Capture of displayed media is enabled through the addition of a new
+        <code><dfn>getDisplayMedia</dfn></code> method on the
+        <code><a>NavigatorUserMedia</a></code> interface, that is similar to <code><dfn><a href=
+        "https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></dfn></code>
+        [[!GETUSERMEDIA]].
+      </p>
+      <p>
+        <code><a>getDisplayMedia</a></code> supports all constraints that are defined for use with
+        <code><a>getUserMedia</a></code>, however it does not use these constraints to select a
+        specific source or to narrow the set of options for source selection (see <a href=
+        "#constraints"></a>). Two new constraints allow an application to observe what type of
+        information was acquired.
+      </p>
       <section>
-        <h2>New Constraints for Captured Display Surfaces</h2>
-        <p>Two constraints are defined that allow an application to observe
-        properties of the selected <a>display surface</a>.  Since the source of
-        media cannot be changed after a <code>MediaStreamTrack</code> has been
-        returned, these constraints cannot be changed by an application.</p>
-
-        <p>The <code><a data-link-for="MediaTrackConstraintSet">displaySurface</a></code>
-        constraint allows an application to observe the type of <a>display
-        surface</a> that is being captured.</p>
-
-        <p>The <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code>
-        constraint allows an application to express a preference or requirement
-        to capture the <a>logical display surface</a>, rather than
-        the <a>visible display surface</a>.</p>
-
-        <div><pre class="idl">partial dictionary MediaTrackConstraintSet {
+        <h2>
+          <code>NavigatorUserMedia</code> Additions
+        </h2>
+        <div>
+          <pre class="idl">partial interface NavigatorUserMedia {
+    Promise&lt;MediaStream&gt; getDisplayMedia (MediaStreamConstraints constraints);
+};</pre>
+          <section>
+            <h2>
+              Methods
+            </h2>
+            <dl data-link-for="NavigatorUserMedia" data-dfn-for="NavigatorUserMedia" class=
+            "methods">
+              <dt>
+                <dfn><code>getDisplayMedia</code></dfn>
+              </dt>
+              <dd>
+                <p>
+                  This method operates identically to <code>getUserMedia</code>, except that it
+                  acquires media from output devices.
+                </p>
+                <table class="parameters">
+                  <tbody>
+                    <tr>
+                      <th>
+                        Parameter
+                      </th>
+                      <th>
+                        Type
+                      </th>
+                      <th>
+                        Nullable
+                      </th>
+                      <th>
+                        Optional
+                      </th>
+                      <th>
+                        Description
+                      </th>
+                    </tr>
+                    <tr>
+                      <td class="prmName">
+                        constraints
+                      </td>
+                      <td class="prmType">
+                        <code>MediaStreamConstraints</code>
+                      </td>
+                      <td class="prmNullFalse">
+                        <span role="img" aria-label="False">✘</span>
+                      </td>
+                      <td class="prmOptFalse">
+                        <span role="img" aria-label="False">✘</span>
+                      </td>
+                      <td class="prmDesc"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div>
+                  <em>Return type:</em> <code>Promise&lt;MediaStream&gt;</code>
+                </div>
+              </dd>
+            </dl>
+          </section>
+        </div>
+      </section>
+      <section>
+        <h2 id="constraints">
+          Constraining Display Surface Selection
+        </h2>
+        <p>
+          The <code><a>getDisplayMedia</a></code> function permits the use of constraints in the
+          same way that constraints are defined for <code><a>getUserMedia</a></code>. However,
+          these constraints MUST NOT constrain the selection of choices that are presented to users
+          in the same way.
+        </p>
+        <p>
+          Once a <a>display surface</a> has been selected, constraints apply to the
+          <a>MediaStreamTrack</a> instances that are returned. This allows for changes such as
+          adjustments to frame rate or resolution, or other constraints.
+        </p>
+        <section>
+          <h2>
+            New Constraints for Captured Display Surfaces
+          </h2>
+          <p>
+            Two constraints are defined that allow an application to observe properties of the
+            selected <a>display surface</a>. Since the source of media cannot be changed after a
+            <code>MediaStreamTrack</code> has been returned, these constraints cannot be changed by
+            an application.
+          </p>
+          <p>
+            The <code><a data-link-for="MediaTrackConstraintSet">displaySurface</a></code>
+            constraint allows an application to observe the type of <a>display surface</a> that is
+            being captured.
+          </p>
+          <p>
+            The <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code>
+            constraint allows an application to express a preference or requirement to capture the
+            <a>logical display surface</a>, rather than the <a>visible display surface</a>.
+          </p>
+          <div>
+            <pre class="idl">partial dictionary MediaTrackConstraintSet {
              ConstrainDOMString displaySurface;
              ConstrainBoolean   logicalSurface;
-};</pre><section><h2>Dictionary <a class="idlType">MediaTrackConstraintSet</a> Members</h2><dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class="dictionary-members"><dt><dfn><code>displaySurface</code></dfn> of type <span class="idlMemberType"><a>ConstrainDOMString</a></span></dt><dd>
-            <p>The type of <a>display surface</a> that is being captured.  This
-            assumes values from
-            the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.</p>
-          </dd><dt><dfn><code>logicalSurface</code></dfn> of type <span class="idlMemberType"><a>ConstrainBoolean</a></span></dt><dd>
-            <p>A value of <code>true</code> indicates capture of a
-            <a>logical display surface</a>; a value of <code>false</code>
-            indicates a capture capture of a <a>visible display
-            surface</a>.</p>
-          </dd></dl></section></div>
-
-        <section>
-          <h2><code>DisplayCaptureSurfaceType</code></h2>
-
-          <p>The <code><a>DisplayCaptureSurfaceType</a></code> enumeration
-          describes the different types of display surface.</p>
-
-          <div><pre class="idl">enum DisplayCaptureSurfaceType {
+};</pre>
+            <section>
+              <h2>
+                Dictionary <a class="idlType">MediaTrackConstraintSet</a> Members
+              </h2>
+              <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet"
+              class="dictionary-members">
+                <dt>
+                  <dfn><code>displaySurface</code></dfn> of type <span class=
+                  "idlMemberType"><a>ConstrainDOMString</a></span>
+                </dt>
+                <dd>
+                  <p>
+                    The type of <a>display surface</a> that is being captured. This assumes values
+                    from the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.
+                  </p>
+                </dd>
+                <dt>
+                  <dfn><code>logicalSurface</code></dfn> of type <span class=
+                  "idlMemberType"><a>ConstrainBoolean</a></span>
+                </dt>
+                <dd>
+                  <p>
+                    A value of <code>true</code> indicates capture of a <a>logical display
+                    surface</a>; a value of <code>false</code> indicates a capture capture of a
+                    <a>visible display surface</a>.
+                  </p>
+                </dd>
+              </dl>
+            </section>
+          </div>
+          <section>
+            <h2>
+              <code>DisplayCaptureSurfaceType</code>
+            </h2>
+            <p>
+              The <code><a>DisplayCaptureSurfaceType</a></code> enumeration describes the different
+              types of display surface.
+            </p>
+            <div>
+              <pre class="idl">enum DisplayCaptureSurfaceType {
     "monitor",
     "window",
     "application",
     "browser"
-};</pre><table data-link-for="DisplayCaptureSurfaceType" data-dfn-for="DisplayCaptureSurfaceType" class="simple"><tbody><tr><th colspan="2">Enumeration description</th></tr><tr><td><dfn><code id="idl-def-DisplayCaptureSurfaceType.monitor">monitor</code></dfn></td><td>a <a>monitor</a> <a>display surface</a>, physical display, or
-            collection of physical displays</td></tr><tr><td><dfn><code id="idl-def-DisplayCaptureSurfaceType.window">window</code></dfn></td><td>a <a>window</a> <a>display surface</a>, or single application
-            window</td></tr><tr><td><dfn><code id="idl-def-DisplayCaptureSurfaceType.application">application</code></dfn></td><td>an <a>application</a> <a>display surface</a>, or entire collection
-            of windows for an application</td></tr><tr><td><dfn><code id="idl-def-DisplayCaptureSurfaceType.browser">browser</code></dfn></td><td>a <a>browser</a> <a>display surface</a>, or single browser window</td></tr></tbody></table></div>
-
+};</pre>
+              <table data-link-for="DisplayCaptureSurfaceType" data-dfn-for=
+              "DisplayCaptureSurfaceType" class="simple">
+                <tbody>
+                  <tr>
+                    <th colspan="2">
+                      Enumeration description
+                    </th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <dfn><code id=
+                      "idl-def-DisplayCaptureSurfaceType.monitor">monitor</code></dfn>
+                    </td>
+                    <td>
+                      a <a>monitor</a> <a>display surface</a>, physical display, or collection of
+                      physical displays
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <dfn><code id="idl-def-DisplayCaptureSurfaceType.window">window</code></dfn>
+                    </td>
+                    <td>
+                      a <a>window</a> <a>display surface</a>, or single application window
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <dfn><code id=
+                      "idl-def-DisplayCaptureSurfaceType.application">application</code></dfn>
+                    </td>
+                    <td>
+                      an <a>application</a> <a>display surface</a>, or entire collection of windows
+                      for an application
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <dfn><code id=
+                      "idl-def-DisplayCaptureSurfaceType.browser">browser</code></dfn>
+                    </td>
+                    <td>
+                      a <a>browser</a> <a>display surface</a>, or single browser window
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
       </section>
-    </section>
-
-    <section>
-      <h2>Device Identifiers</h2>
-
-      <p>Each potential source of capture is treated by this API as a discrete
-      media source.  However, display capture sources MUST NOT be enumerated by
-      <code><a href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-Promise-sequence-MediaDeviceInfo">enumerateDevices</a></code>,
-      since this would reveal too much information about the host system.</p>
-
-      <p>Display capture sources MUST NOT be selected with the
-      <code>deviceId</code> constraint, since this would allow applications to
-      influence selection.  A display capture source is represented in the
-      <code>MediaStreamTrack</code> API as having a <code>deviceId</code>
-      parameter that is randomized each time a <code>MediaStreamTrack</code> is
-      connected.  The only other constraint on this value is that it cannot
-      duplicate any existing values for <code>deviceId</code>.</p>
-    </section>
-  </section>
-
-  <section>
-    <h2>Security and Permissions</h2>
-
-    <p>This section is informative; however, it notes some serious risks to
-    platform security if the advice it contains are not adhered to.</p>
-
-    <p class="issue">This is consistent with other documents, but the absence of
-    strong normative language here is a little worrying.</p>
-
-    <p>The risks to user privacy and security posed by capture of displayed
-    content are twofold.  The immediate and obvious risk is that users
-    inadvertently share content that they did not wish to share, or might not
-    have realized would be shared.</p>
-
-    <p>Display capture presents a less obvious risk to the cross site request
-    forgery protections offered by the browser sandbox.  Display and capture of
-    information that is also under the control of an application, even
-    indirectly, can allow that application to access information that would
-    otherwise by inaccessible to it directly.  For example, the canvas API does
-    not permit sampling of a canvas, or conversion to an accessible form if it
-    is not origin-clean [[2DCONTEXT]].</p>
-
-    <p>This issue is discussed in further detail in [[!RTCWEB-SECURITY-ARCH]]
-    and [[!RTCWEB-SECURITY]].</p>
-
-    <p>Display capture that includes browser windows, particularly those that
-    are under any form of control by the application, risks violation of these
-    basic security protections.  Though this risk is not entirely contained to
-    browser windows, since control channels between browser applications and
-    other applications, depending on the operating system.  The key
-    consideration is whether the captured <a>display surface</a> could be
-    somehow induced to present information that would otherwise be secret from
-    the application that is receiving the resulting media.</p>
-
-    <section>
-      <h2>Capturing Logical or Visible Display Surfaces</h2>
-
-      <p>Capture of <a>logical display surfaces</a> causes there to be a
-      potential for content to be shared that a user is not made aware of.  A
-      <a>logical display surface</a> might render information that a user did
-      not intend to expose.  This can be more easily recognized if this
-      information is visible.  Such means are likely ineffectual against a
-      machine, but a human recipient is less able to process content that
-      appears only briefly.</p>
-
-      <p>Information that is not currently rendered to the screen SHOULD be
-      obscured in captures unless the application has been specifically
-      authorized to access that content (this might require <a>elevated
-      permissions</a>).</p>
-
-      <p>How obscured areas of the <a>logical display surface</a> are captured
-      to produce a <a>visible display surface</a> capture MAY vary.  Some
-      applications, like presentation software, benefit from having obscured
-      portions of the screen render the image that appeared prior to being
-      obscured.  Freezing images can cause visual artifacts for changing
-      content, or hide the fact that content is being obscured.  Note that
-      frozen portions of a capture can be incorrectly perceived as a bug.
-      Alternatively, obscured areas might be replaced with content that marks
-      them as being obscured, such as a grey color or hatching.</p>
-
-      <p>Some systems MAY only capture the <a>logical display surface</a>.
-      Devices with small screens, for instance, do not typically have the
-      concept of a <a>window</a>, and render applications in full screen modes
-      only.  These systems might provide a capture of an application that is not
-      currently visible, which could be unusable without capturing the
-      <a>logical display surface</a>.</p>
-
-      <p>An important consideration when capturing a <a>window</a> or other
-      <a>display surface</a> that is partially transparent is that content from
-      the background might be shared.  A <a>user agent</a> MUST NOT capture
-      content from the background of a captured <a>display surface</a>.</p>
-    </section>
-
-    <section>
-      <h2>Authorizing Display Capture</h2>
-
-      <p>This document provides recommends that implementations provide
-      additional limitations on the mechanisms used to affirm user
-      consent. These limitations are designed to mitigate the security and
-      privacy risks that the API poses.</p>
-
-      <p>Two forms of consent interaction are described: <a>active user
-      consent</a> and a range of <a>elevated permissions</a>.  These are
-      non-normative recommandations only.</p>
-
       <section>
-        <h2>Active User Consent</h2>
-
-        <p><dfn>Active user consent</dfn> is sufficient where there is little or no
-        risk of an application gaining information that the user did not intend
-        to share.  These cases can be identified by those where the application
-        that requests capture has no control over what is rendered to the
-          captured <a>display surface</a>.</p>
-
-        <p>To prevent applications from limiting the available choices presented
-        to a user with the goal of promoting a particular choice,
-        the <code><a>getDisplayMedia</a></code> API does not permit the use of
-        constraints to narrow the set of options presented.</p>
-      </section>
-
-      <section>
-        <h2>Elevated Permissions</h2>
-
-        <p>It is strongly advised that <dfn>elevated permissions</dfn> be
-        required to access any <a>display surface</a> that might be used to
-        circumvent cross-origin protections for content.  The key goal of this
-        consent process is not just to demonstrate that a user intends to share
-        content, but to also to determine that the user exhibits an elevated
-        level of trust in the application that is being granted access.</p>
-
-        <p>Several different controls might be provided to grant <a>elevated
-        permissions</a>.  This section describes several different capabilities
-        that could be independently granted.  A <a>user agent</a> might opt to
-        prohibit access to any capability that requires <a>elevated
-        permissions</a>.</p>
-
-        <p>If access to these surfaces is supported, it is strongly advised that
-        any mechanism to acquire <a>elevated permissions</a> not rely solely on
-        simple prompts for user consent.  Any action needs to ensure that a
-        decision to authorize an application with elevated privileges is
-        deliberate.  For instance, a <a>user agent</a> might require a process
-        equivalent to software installation to signify that user consent for
-        <a>elevated permissions</a> is granted.</p>
-
-        <p>An <a>elevated permissions</a> experience could allow the <a>user
-        agent</a> to communicate the risks associated with enabling this
-        feature, or at least to convey the need for augmented trust in the
-        application.</p>
-
-        <p>Note that <a>elevated permissions</a> are not a substitute for
-        <a>active user consent</a>.  It is advised that <a>user agents</a> still
-        present users with the ability to select what is shared, even for
-        applications that have <a>elevated permissions</a>.</p>
-      </section>
-
-      <section>
-        <h2>Capabilities Depending on Elevated Permissions</h2>
-
-        <p><a>Elevated permissions</a> are recommended as a prerequisite for
-        access to capture of <a>monitor</a> or <a>browser</a> <a>display
-        surfaces</a>.  Note that capture of a complete <a>monitor</a> is included
-        because this could include a window from the <a>user agent</a>.</p>
-
-        <p>Similarly, <a>elevated permissions</a> are a recommended prerequisite
-        for access to <a>logical display surfaces</a>, where that would not
-        ordinarily be provided.</p>
-
-        <p>A <a>user agent</a> SHOULD persist any <a>elevated permissions</a>
-        that are granted to an origin. An <a>elevated permissions</a> process in
-        part relies on its novelty to ensure that it correctly captures user
-        intent.</p>
+        <h2>
+          Device Identifiers
+        </h2>
+        <p>
+          Each potential source of capture is treated by this API as a discrete media source.
+          However, display capture sources MUST NOT be enumerated by <code><a href=
+          "https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-Promise-sequence-MediaDeviceInfo">
+          enumerateDevices</a></code>, since this would reveal too much information about the host
+          system.
+        </p>
+        <p>
+          Display capture sources MUST NOT be selected with the <code>deviceId</code> constraint,
+          since this would allow applications to influence selection. A display capture source is
+          represented in the <code>MediaStreamTrack</code> API as having a <code>deviceId</code>
+          parameter that is randomized each time a <code>MediaStreamTrack</code> is connected. The
+          only other constraint on this value is that it cannot duplicate any existing values for
+          <code>deviceId</code>.
+        </p>
       </section>
     </section>
-
     <section>
-      <h2>Feedback and Interface During Capture</h2>
-
-      <p>Implementations are advised to provide user feedback and control
-      mechanisms similar to those offered users when sharing a camera or
-      microphone, as recommended in [[GETUSERMEDIA]].</p>
-
-      <p>It is important that a user be aware that content is being shared when
-      content is actively being captured.  <a>User agents</a> are advised to
-      display a prominent indicator while content is being captured.  In
-      addition to an indicator, a <a>user agent</a> is advised to provide a
-      means to learn precisely what is being shared; while this capability is
-      trivially provided by an application by rendering the captured content,
-      this information allows a user to accurately assess what is being
-      shared.</p>
-
-      <p>In addition to feedback mechanisms, a means to for the user to
-      stop any active capture is advisable.</p>
-
+      <h2>
+        Security and Permissions
+      </h2>
+      <p>
+        This section is informative; however, it notes some serious risks to platform security if
+        the advice it contains are not adhered to.
+      </p>
+      <p class="issue">
+        This is consistent with other documents, but the absence of strong normative language here
+        is a little worrying.
+      </p>
+      <p>
+        The risks to user privacy and security posed by capture of displayed content are twofold.
+        The immediate and obvious risk is that users inadvertently share content that they did not
+        wish to share, or might not have realized would be shared.
+      </p>
+      <p>
+        Display capture presents a less obvious risk to the cross site request forgery protections
+        offered by the browser sandbox. Display and capture of information that is also under the
+        control of an application, even indirectly, can allow that application to access
+        information that would otherwise by inaccessible to it directly. For example, the canvas
+        API does not permit sampling of a canvas, or conversion to an accessible form if it is not
+        origin-clean [[2DCONTEXT]].
+      </p>
+      <p>
+        This issue is discussed in further detail in [[!RTCWEB-SECURITY-ARCH]] and
+        [[!RTCWEB-SECURITY]].
+      </p>
+      <p>
+        Display capture that includes browser windows, particularly those that are under any form
+        of control by the application, risks violation of these basic security protections. Though
+        this risk is not entirely contained to browser windows, since control channels between
+        browser applications and other applications, depending on the operating system. The key
+        consideration is whether the captured <a>display surface</a> could be somehow induced to
+        present information that would otherwise be secret from the application that is receiving
+        the resulting media.
+      </p>
+      <section>
+        <h2>
+          Capturing Logical or Visible Display Surfaces
+        </h2>
+        <p>
+          Capture of <a>logical display surfaces</a> causes there to be a potential for content to
+          be shared that a user is not made aware of. A <a>logical display surface</a> might render
+          information that a user did not intend to expose. This can be more easily recognized if
+          this information is visible. Such means are likely ineffectual against a machine, but a
+          human recipient is less able to process content that appears only briefly.
+        </p>
+        <p>
+          Information that is not currently rendered to the screen SHOULD be obscured in captures
+          unless the application has been specifically authorized to access that content (this
+          might require <a>elevated permissions</a>).
+        </p>
+        <p>
+          How obscured areas of the <a>logical display surface</a> are captured to produce a
+          <a>visible display surface</a> capture MAY vary. Some applications, like presentation
+          software, benefit from having obscured portions of the screen render the image that
+          appeared prior to being obscured. Freezing images can cause visual artifacts for changing
+          content, or hide the fact that content is being obscured. Note that frozen portions of a
+          capture can be incorrectly perceived as a bug. Alternatively, obscured areas might be
+          replaced with content that marks them as being obscured, such as a grey color or
+          hatching.
+        </p>
+        <p>
+          Some systems MAY only capture the <a>logical display surface</a>. Devices with small
+          screens, for instance, do not typically have the concept of a <a>window</a>, and render
+          applications in full screen modes only. These systems might provide a capture of an
+          application that is not currently visible, which could be unusable without capturing the
+          <a>logical display surface</a>.
+        </p>
+        <p>
+          An important consideration when capturing a <a>window</a> or other <a>display surface</a>
+          that is partially transparent is that content from the background might be shared. A
+          <a>user agent</a> MUST NOT capture content from the background of a captured <a>display
+          surface</a>.
+        </p>
+      </section>
+      <section>
+        <h2>
+          Authorizing Display Capture
+        </h2>
+        <p>
+          This document provides recommends that implementations provide additional limitations on
+          the mechanisms used to affirm user consent. These limitations are designed to mitigate
+          the security and privacy risks that the API poses.
+        </p>
+        <p>
+          Two forms of consent interaction are described: <a>active user consent</a> and a range of
+          <a>elevated permissions</a>. These are non-normative recommandations only.
+        </p>
+        <section>
+          <h2>
+            Active User Consent
+          </h2>
+          <p>
+            <dfn>Active user consent</dfn> is sufficient where there is little or no risk of an
+            application gaining information that the user did not intend to share. These cases can
+            be identified by those where the application that requests capture has no control over
+            what is rendered to the captured <a>display surface</a>.
+          </p>
+          <p>
+            To prevent applications from limiting the available choices presented to a user with
+            the goal of promoting a particular choice, the <code><a>getDisplayMedia</a></code> API
+            does not permit the use of constraints to narrow the set of options presented.
+          </p>
+        </section>
+        <section>
+          <h2>
+            Elevated Permissions
+          </h2>
+          <p>
+            It is strongly advised that <dfn>elevated permissions</dfn> be required to access any
+            <a>display surface</a> that might be used to circumvent cross-origin protections for
+            content. The key goal of this consent process is not just to demonstrate that a user
+            intends to share content, but to also to determine that the user exhibits an elevated
+            level of trust in the application that is being granted access.
+          </p>
+          <p>
+            Several different controls might be provided to grant <a>elevated permissions</a>. This
+            section describes several different capabilities that could be independently granted. A
+            <a>user agent</a> might opt to prohibit access to any capability that requires
+            <a>elevated permissions</a>.
+          </p>
+          <p>
+            If access to these surfaces is supported, it is strongly advised that any mechanism to
+            acquire <a>elevated permissions</a> not rely solely on simple prompts for user consent.
+            Any action needs to ensure that a decision to authorize an application with elevated
+            privileges is deliberate. For instance, a <a>user agent</a> might require a process
+            equivalent to software installation to signify that user consent for <a>elevated
+            permissions</a> is granted.
+          </p>
+          <p>
+            An <a>elevated permissions</a> experience could allow the <a>user agent</a> to
+            communicate the risks associated with enabling this feature, or at least to convey the
+            need for augmented trust in the application.
+          </p>
+          <p>
+            Note that <a>elevated permissions</a> are not a substitute for <a>active user
+            consent</a>. It is advised that <a>user agents</a> still present users with the ability
+            to select what is shared, even for applications that have <a>elevated permissions</a>.
+          </p>
+        </section>
+        <section>
+          <h2>
+            Capabilities Depending on Elevated Permissions
+          </h2>
+          <p>
+            <a>Elevated permissions</a> are recommended as a prerequisite for access to capture of
+            <a>monitor</a> or <a>browser</a> <a>display surfaces</a>. Note that capture of a
+            complete <a>monitor</a> is included because this could include a window from the
+            <a>user agent</a>.
+          </p>
+          <p>
+            Similarly, <a>elevated permissions</a> are a recommended prerequisite for access to
+            <a>logical display surfaces</a>, where that would not ordinarily be provided.
+          </p>
+          <p>
+            A <a>user agent</a> SHOULD persist any <a>elevated permissions</a> that are granted to
+            an origin. An <a>elevated permissions</a> process in part relies on its novelty to
+            ensure that it correctly captures user intent.
+          </p>
+        </section>
+      </section>
+      <section>
+        <h2>
+          Feedback and Interface During Capture
+        </h2>
+        <p>
+          Implementations are advised to provide user feedback and control mechanisms similar to
+          those offered users when sharing a camera or microphone, as recommended in
+          [[GETUSERMEDIA]].
+        </p>
+        <p>
+          It is important that a user be aware that content is being shared when content is
+          actively being captured. <a>User agents</a> are advised to display a prominent indicator
+          while content is being captured. In addition to an indicator, a <a>user agent</a> is
+          advised to provide a means to learn precisely what is being shared; while this capability
+          is trivially provided by an application by rendering the captured content, this
+          information allows a user to accurately assess what is being shared.
+        </p>
+        <p>
+          In addition to feedback mechanisms, a means to for the user to stop any active capture is
+          advisable.
+        </p>
+      </section>
     </section>
-  </section>
-
-  <section>
-    <h2>Change Log</h2>
-
-
-    <p>This section will be removed before publication.</p>
-
-    <h2>Changes since 2014-02-07</h2>
-    <p>Changed from getOuputMedia to getDisplayMedia</p>
-
-    <h2>Changes since 2014-10-31</h2>
-    <p>Using monitor to describe scren/display share.</p>
-    <p>Changed getUserMedia to new method getOutputMedia.</p>
-  </section>
-
-
-  <section class="appendix">
-    <h2>Acknowledgements</h2>
-
-
-    <p>The editors wish to thank ....</p>
-  </section>
-
-
-</body></html>
+    <section>
+      <h2>
+        Change Log
+      </h2>
+      <p>
+        This section will be removed before publication.
+      </p>
+      <h2>
+        Changes since 2014-02-07
+      </h2>
+      <p>
+        Changed from getOuputMedia to getDisplayMedia
+      </p>
+      <h2>
+        Changes since 2014-10-31
+      </h2>
+      <p>
+        Using monitor to describe scren/display share.
+      </p>
+      <p>
+        Changed getUserMedia to new method getOutputMedia.
+      </p>
+    </section>
+    <section class="appendix">
+      <h2>
+        Acknowledgements
+      </h2>
+      <p>
+        The editors wish to thank ....
+      </p>
+    </section>
+  </body>
+</html>
