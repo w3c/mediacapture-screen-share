@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
+<html lang="en-us">
 <head>
-  <link href="screenshare.css" rel="stylesheet" type="text/css" />
+  <link href="screenshare.css" rel="stylesheet" type="text/css">
 
   <title>Screen Capture</title>
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common"
   type="text/javascript">
 //<![CDATA[
@@ -72,12 +72,11 @@
     the <code>navigator.mediaDevices.getDisplayMedia</code> method defined in
     this document.</p>
 
-    <pre class="example highlight">
-navigator.mediaDevices.getDisplayMedia({ video: true })
-  .then(stream => {
+    <pre class="example highlight">navigator.mediaDevices.getDisplayMedia({ video: true })
+  .then(stream =&gt; {
     // we have a stream, attach it to a feedback video element
     videoElement.srcObject = stream;
-  }, error => {
+  }, error =&gt; {
     console.log("Unable to acquire screen capture", error);
   });
 </pre>
@@ -161,13 +160,12 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
     <section>
       <h2><code>NavigatorUserMedia</code> Additions</h2>
 
-      <dl class="idl" title="partial interface NavigatorUserMedia">
-        <dt>Promise&lt;MediaStream> getDisplayMedia(MediaStreamConstraints constraints)</dt>
-        <dd>
+      <div><pre class="idl">partial interface NavigatorUserMedia {
+    Promise&lt;MediaStream&gt; getDisplayMedia (MediaStreamConstraints constraints);
+};</pre><section><h2>Methods</h2><dl data-link-for="NavigatorUserMedia" data-dfn-for="NavigatorUserMedia" class="methods"><dt><dfn><code>getDisplayMedia</code></dfn></dt><dd>
           <p>This method operates identically to <code>getUserMedia</code>,
           except that it acquires media from output devices.</p>
-        </dd>
-      </dl>
+        <table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">constraints</td><td class="prmType"><code>MediaStreamConstraints</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc"></td></tr></tbody></table><div><em>Return type: </em><code>Promise&lt;MediaStream&gt;</code></div></dd></dl></section></div>
     </section>
 
     <section>
@@ -191,33 +189,28 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
         media cannot be changed after a <code>MediaStreamTrack</code> has been
         returned, these constraints cannot be changed by an application.</p>
 
-        <p>The <code><a href="#widl-MediaTrackConstraintSet-displaySurface">displaySurface</a></code>
+        <p>The <code><a data-link-for="MediaTrackConstraintSet">displaySurface</a></code>
         constraint allows an application to observe the type of <a>display
         surface</a> that is being captured.</p>
 
-        <p>The <code><a href="#widl-MediaTrackConstraintSet-logicalSurface">logicalSurface</a></code>
+        <p>The <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code>
         constraint allows an application to express a preference or requirement
         to capture the <a>logical display surface</a>, rather than
         the <a>visible display surface</a>.</p>
 
-        <dl class="idl" title="partial dictionary MediaTrackConstraintSet">
-          <dt>ConstrainDOMString displaySurface</dt>
-
-          <dd>
+        <div><pre class="idl">partial dictionary MediaTrackConstraintSet {
+             ConstrainDOMString displaySurface;
+             ConstrainBoolean   logicalSurface;
+};</pre><section><h2>Dictionary <a class="idlType">MediaTrackConstraintSet</a> Members</h2><dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class="dictionary-members"><dt><dfn><code>displaySurface</code></dfn> of type <span class="idlMemberType"><a>ConstrainDOMString</a></span></dt><dd>
             <p>The type of <a>display surface</a> that is being captured.  This
             assumes values from
             the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.</p>
-          </dd>
-
-          <dt>ConstrainBoolean logicalSurface</dt>
-
-          <dd>
+          </dd><dt><dfn><code>logicalSurface</code></dfn> of type <span class="idlMemberType"><a>ConstrainBoolean</a></span></dt><dd>
             <p>A value of <code>true</code> indicates capture of a
             <a>logical display surface</a>; a value of <code>false</code>
             indicates a capture capture of a <a>visible display
             surface</a>.</p>
-          </dd>
-        </dl>
+          </dd></dl></section></div>
 
         <section>
           <h2><code>DisplayCaptureSurfaceType</code></h2>
@@ -225,26 +218,15 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
           <p>The <code><a>DisplayCaptureSurfaceType</a></code> enumeration
           describes the different types of display surface.</p>
 
-          <dl class="idl" title="enum DisplayCaptureSurfaceType">
-            <dt>monitor</dt>
-
-            <dd>a <a>monitor</a> <a>display surface</a>, physical display, or
-            collection of physical displays</dd>
-
-            <dt>window</dt>
-
-            <dd>a <a>window</a> <a>display surface</a>, or single application
-            window</dd>
-
-            <dt>application</dt>
-
-            <dd>an <a>application</a> <a>display surface</a>, or entire collection
-            of windows for an application</dd>
-
-            <dt>browser</dt>
-
-            <dd>a <a>browser</a> <a>display surface</a>, or single browser window</dd>
-          </dl>
+          <div><pre class="idl">enum DisplayCaptureSurfaceType {
+    "monitor",
+    "window",
+    "application",
+    "browser"
+};</pre><table data-link-for="DisplayCaptureSurfaceType" data-dfn-for="DisplayCaptureSurfaceType" class="simple"><tbody><tr><th colspan="2">Enumeration description</th></tr><tr><td><dfn><code id="idl-def-DisplayCaptureSurfaceType.monitor">monitor</code></dfn></td><td>a <a>monitor</a> <a>display surface</a>, physical display, or
+            collection of physical displays</td></tr><tr><td><dfn><code id="idl-def-DisplayCaptureSurfaceType.window">window</code></dfn></td><td>a <a>window</a> <a>display surface</a>, or single application
+            window</td></tr><tr><td><dfn><code id="idl-def-DisplayCaptureSurfaceType.application">application</code></dfn></td><td>an <a>application</a> <a>display surface</a>, or entire collection
+            of windows for an application</td></tr><tr><td><dfn><code id="idl-def-DisplayCaptureSurfaceType.browser">browser</code></dfn></td><td>a <a>browser</a> <a>display surface</a>, or single browser window</td></tr></tbody></table></div>
 
         </section>
       </section>
@@ -255,8 +237,7 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
 
       <p>Each potential source of capture is treated by this API as a discrete
       media source.  However, display capture sources MUST NOT be enumerated by
-      <code><a
-      href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-Promise-sequence-MediaDeviceInfo">enumerateDevices</a></code>,
+      <code><a href="https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-Promise-sequence-MediaDeviceInfo">enumerateDevices</a></code>,
       since this would reveal too much information about the host system.</p>
 
       <p>Display capture sources MUST NOT be selected with the
@@ -466,5 +447,6 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
 
     <p>The editors wish to thank ....</p>
   </section>
-</body>
-</html>
+
+
+</body></html>
