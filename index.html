@@ -202,16 +202,17 @@
           </dt>
           <dd>
             <p>
-              This method operates identically to <code>getUserMedia</code>, except that it
-              acquires media from display devices.
+              This method operates identically to <code><a>getUserMedia</a></code>, except that it
+              acquires media from display devices and the <code>constraints</code> argument does
+              not accept <code><a href=
+              "https://w3c.github.io/mediacapture-main/#idl-def-mediatrackconstraints">MediaTrackConstraints</a></code>
+              values. This prevents an application from influencing the section of sources, see
+              <a href="#constraints"></a> for details.
             </p>
             <p>
-              The value of the <code><a href=
-              "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-video">video</a></code>
-              and <code><a href=
-              "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-audio">audio</a></code>
-              attributes of the optional <code>constraints</code> argument does not affect the
-              selection of a <a>display source</a>. See <a href="#constraints"></a> for details.
+              In addition to drawing from a different set of sources and requiring user selection,
+              <code><a>getDisplayMedia</a></code> also differs from
+              <code><a>getUserMedia</a></code> in that permissions cannot be persisted.
             </p>
             <p>
               If the <code>constraints</code> argument is omitted, a default value containing a
@@ -267,35 +268,21 @@
           The <code><a>getDisplayMedia</a></code> function does not permit the use of constraints
           for selection of a source as described in the <a href=
           "https://w3c.github.io/mediacapture-main/#dom-mediadevices-getusermedia"><dfn>getUserMedia()
-          algorithm</dfn></a>. A modified copy of the <code><a href=
-          "https://w3c.github.io/mediacapture-main/#idl-def-mediastreamconstraints">MediaStreamConstraints</a></code>
-          argument is passed to the <a>GetUserMedia() algorithm</a> to prevent an application from
-          altering the set of options that are presented to a user.
-        </p>
-        <p>
-          If either of the <code><a href=
-          "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-video">video</a></code>
-          and <code><a href=
+          algorithm</dfn></a>. Prior to invoking the <a>getUserMedia() algorithm</a>, if either of
+          the <a href=
+          "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-video">video</a> and
+          <code><a href=
           "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-audio">audio</a></code>
-          attributes of the <code>constraints</code> argument have a value that is an instance of
-          <code><a href=
-          "https://w3c.github.io/mediacapture-main/#idl-def-mediatrackconstraints">MediaTrackConstraints</a></code>,
-          that value is replaced with a simple Boolean <code>true</code>. All other attributes are
-          copied without modification.
-        </p>
-        <p>
-          Once a <a>display surface</a> has been selected by the user, any constraints apply to the
-          corresponding <a>MediaStreamTrack</a> instances that are returned. This allows for
-          changes such as adjustments to frame rate or resolution, or other constraints. If
-          <code><a href=
+          attributes are set to a <code><a href=
           "https://w3c.github.io/mediacapture-main/#idl-def-mediatrackconstraints">MediaTrackConstraints</a></code>
-          values are replaced, the <a>MediaStreamTrack</a> instances that are returned are
-          constrained as though the <a href=
-          "https://w3c.github.io/mediacapture-main/#dom-mediastreamtrack-applyconstraints">applyConstraints</a>
-          method of the <a>MediaStreamTrack</a> were called. Note that an <a href=
-          "https://w3c.github.io/mediacapture-main/#event-mediastreamtrack-overconstrained">overconstrained
-          event</a> cannot be fired if constraints cause the returned tracks to become
-          overconstrained.
+          value (as opposed to being absent or set to a Boolean value), reject the promise and
+          abort.
+        </p>
+        <p class="fingerprint">
+          Not accepting constraints for source selection means that
+          <code><a>getDisplayMedia</a></code> only provides fingerprinting surface that exposes
+          whether audio, video or audio and video sources are present. <img alt=
+          "(This is a fingerprinting vector.)" src="images/fingerprint.png" width="15" height="21">
         </p>
       </section>
       <section>
