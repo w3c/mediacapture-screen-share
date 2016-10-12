@@ -275,7 +275,8 @@
           "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-audio">audio</a></code>
           attributes are set to a <code><a href=
           "https://w3c.github.io/mediacapture-main/#idl-def-mediatrackconstraints">MediaTrackConstraints</a></code>
-          value (as opposed to being absent or set to a Boolean value), reject the promise and
+          value (as opposed to being absent or set to a Boolean value), reject the promise with a
+          <a href="https://heycam.github.io/webidl/#invalidaccesserror">InvalidAccessError</a> and
           abort.
         </p>
         <p class="fingerprint">
