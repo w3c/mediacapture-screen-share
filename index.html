@@ -186,13 +186,11 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
 
       <section>
         <h2>New Constraints for Captured Display Surfaces</h2>
-        <p>Three constraints are defined that allow an application to observe
-        properties of the selected <a>display surface</a>.  Since the source of
-        media cannot be changed after a <code>MediaStreamTrack</code> has been
+        <p>The constraints are defined that allow an application to observe
+        properties of the selected <a>display surface</a> and control whether
+        to mute the audio of <a>display surface</a>. Since the source of media
+        cannot be changed after a <code>MediaStreamTrack</code> has been
         returned, these constraints cannot be changed by an application.</p>
-
-        <p>The <code><a href="#widl-MediaTrackConstraintSet-disableLocalEcho">disableLocalEcho</a></code>
-        constraint allows an application to suppress local playback of the captured audio.</p>
 
         <p>The <code><a href="#widl-MediaTrackConstraintSet-displaySurface">displaySurface</a></code>
         constraint allows an application to observe the type of <a>display
@@ -203,16 +201,10 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
         to capture the <a>logical display surface</a>, rather than
         the <a>visible display surface</a>.</p>
 
+        <p>The <code><a href="#widl-MediaTrackConstraintSet-muteAudioForSource">muteAudioForSource</a></code>
+        constraint allows an application to suppress local playback of the captured audio.</p>
+
         <dl class="idl" title="partial dictionary MediaTrackConstraintSet">
-          <dt>ConstrainBoolean disableLocalEcho</dt>
-
-          <dd>
-            <p>A value of <code>true</code> indicates that we mute the local
-            playback for the captured content. For example, when capturing a
-            browser tab, the tab will be muted then; when capturing the full
-            screen with audio, then the system audio will be muted then.</p>
-          </dd>
-
           <dt>ConstrainDOMString displaySurface</dt>
 
           <dd>
@@ -228,6 +220,15 @@ navigator.mediaDevices.getDisplayMedia({ video: true })
             <a>logical display surface</a>; a value of <code>false</code>
             indicates a capture capture of a <a>visible display
             surface</a>.</p>
+          </dd>
+
+          <dt>ConstrainBoolean muteAudioForSource</dt>
+
+          <dd>
+            <p>A value of <code>true</code> indicates that we mute the local
+            playback for the captured content. For example, when capturing a
+            browser tab, the tab will be muted; when capturing the full screen
+            with audio, then the system audio will be muted.</p>
           </dd>
         </dl>
 
