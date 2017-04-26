@@ -152,8 +152,8 @@
       -->
       <p>
         Capture of displayed media is enabled through the addition of a new
-        <code><dfn>getDisplayMedia</dfn></code> method on the
-        <code><a>NavigatorUserMedia</a></code> interface, that is similar to <code><dfn><a href=
+        <code><a>getDisplayMedia</a></code> method on the <code><a>NavigatorUserMedia</a></code>
+        interface, that is similar to <code><dfn><a href=
         "https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></dfn></code>
         [[!GETUSERMEDIA]].
       </p>
@@ -164,210 +164,245 @@
         "#constraints"></a>). Two new constraints allow an application to observe what type of
         information was acquired.
       </p>
+      <div class="note">
+        <p>
+          Though all constraints are supported for display device capture, not all constraints will
+          have an effect. Usually, this is because a display device cannot alter its behavior in a
+          way that the constraint implies, just as a video camera cannot alter <a href=
+          "https://w3c.github.io/mediacapture-main/#def-constraint-volume">volume</a>.
+        </p>
+        <p>
+          For instance, it is unlikely that setting the following constraints will have any useful
+          effect (other than an <a href=
+          "https://w3c.github.io/mediacapture-main/#event-mediastreamtrack-overconstrained">overconstrained</a>
+          error): <a href=
+          "https://w3c.github.io/mediacapture-main/#def-constraint-aspectratio">aspectRatio</a>,
+          <a href=
+          "https://w3c.github.io/mediacapture-main/#def-constraint-facingmode">facingMode</a>, and
+          <a href=
+          "https://w3c.github.io/mediacapture-main/#def-constraint-echocancellation">echoCancellation</a>.
+        </p>
+        <p>
+          See <a href="#deviceId"></a> for information on the <a href=
+          "https://w3c.github.io/mediacapture-main/#def-constraint-deviceid">deviceId</a> and
+          <a href="https://w3c.github.io/mediacapture-main/#def-constraint-groupId">groupId</a>
+          constraints.
+        </p>
+      </div>
       <section>
         <h2>
           <code>NavigatorUserMedia</code> Additions
         </h2>
-        <div>
-          <pre class="idl">partial interface NavigatorUserMedia {
-    Promise&lt;MediaStream&gt; getDisplayMedia (MediaStreamConstraints constraints);
+        <pre class="idl">partial interface NavigatorUserMedia {
+    Promise&lt;MediaStream&gt; getDisplayMedia (optional MediaStreamConstraints constraints);
 };</pre>
-          <section>
-            <h2>
-              Methods
-            </h2>
-            <dl data-link-for="NavigatorUserMedia" data-dfn-for="NavigatorUserMedia" class=
-            "methods">
-              <dt>
-                <dfn><code>getDisplayMedia</code></dfn>
-              </dt>
-              <dd>
-                <p>
-                  This method operates identically to <code>getUserMedia</code>, except that it
-                  acquires media from output devices.
-                </p>
-                <table class="parameters">
-                  <tbody>
-                    <tr>
-                      <th>
-                        Parameter
-                      </th>
-                      <th>
-                        Type
-                      </th>
-                      <th>
-                        Nullable
-                      </th>
-                      <th>
-                        Optional
-                      </th>
-                      <th>
-                        Description
-                      </th>
-                    </tr>
-                    <tr>
-                      <td class="prmName">
-                        constraints
-                      </td>
-                      <td class="prmType">
-                        <code>MediaStreamConstraints</code>
-                      </td>
-                      <td class="prmNullFalse">
-                        <span role="img" aria-label="False">✘</span>
-                      </td>
-                      <td class="prmOptFalse">
-                        <span role="img" aria-label="False">✘</span>
-                      </td>
-                      <td class="prmDesc"></td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div>
-                  <em>Return type:</em> <code>Promise&lt;MediaStream&gt;</code>
-                </div>
-              </dd>
-            </dl>
-          </section>
-        </div>
+        <dl data-link-for="NavigatorUserMedia" data-dfn-for="NavigatorUserMedia" class="methods">
+          <dt>
+            <code><dfn data-dfn-for="getDisplayMedia">getDisplayMedia</dfn></code>
+          </dt>
+          <dd>
+            <p>
+              This method operates identically to <code><a>getUserMedia</a></code>, except that it
+              acquires media from display devices, and the <code>constraints</code> argument does
+              not accept <code><a href=
+              "https://w3c.github.io/mediacapture-main/#idl-def-mediatrackconstraints">MediaTrackConstraints</a></code>
+              values. This prevents an application from influencing the selection of sources, see
+              <a href="#constraints"></a> for details.
+            </p>
+            <p>
+              In addition to drawing from a different set of sources and requiring user selection,
+              <code><a>getDisplayMedia</a></code> also differs from
+              <code><a>getUserMedia</a></code> in that permissions cannot be persisted.
+            </p>
+            <p>
+              If the <code>constraints</code> argument is omitted, a default value containing a
+              single <code>video</code> attribute set to <code>true</code> is assumed.
+            </p>
+            <table class="parameters">
+              <tbody>
+                <tr>
+                  <th>
+                    Parameter
+                  </th>
+                  <th>
+                    Type
+                  </th>
+                  <th>
+                    Nullable
+                  </th>
+                  <th>
+                    Optional
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+                <tr>
+                  <td class="prmName">
+                    constraints
+                  </td>
+                  <td class="prmType">
+                    <code>MediaStreamConstraints</code>
+                  </td>
+                  <td class="prmNullFalse">
+                    <span role="img" aria-label="False">✘</span>
+                  </td>
+                  <td class="prmOptFalse">
+                    <span role="img" aria-label="True">✓</span>
+                  </td>
+                  <td class="prmDesc"></td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <em>Return type:</em> <code>Promise&lt;MediaStream&gt;</code>
+            </div>
+          </dd>
+        </dl>
       </section>
       <section>
         <h2 id="constraints">
           Constraining Display Surface Selection
         </h2>
         <p>
-          The <code><a>getDisplayMedia</a></code> function permits the use of constraints in the
-          same way that constraints are defined for <code><a>getUserMedia</a></code>. However,
-          these constraints MUST NOT constrain the selection of choices that are presented to users
-          in the same way.
+          The <code><a>getDisplayMedia</a></code> function does not permit the use of constraints
+          for selection of a source as described in the <a href=
+          "https://w3c.github.io/mediacapture-main/#dom-mediadevices-getusermedia"><dfn>getUserMedia()
+          algorithm</dfn></a>. Prior to invoking the <a>getUserMedia() algorithm</a>, if either of
+          the <a href=
+          "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-video">video</a> and
+          <code><a href=
+          "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-audio">audio</a></code>
+          attributes are set to a <code><a href=
+          "https://w3c.github.io/mediacapture-main/#idl-def-mediatrackconstraints">MediaTrackConstraints</a></code>
+          value (as opposed to being absent or set to a Boolean value), reject the promise with a
+          <a href="https://heycam.github.io/webidl/#invalidaccesserror">InvalidAccessError</a> and
+          abort.
+        </p>
+        <p class="fingerprint">
+          Not accepting constraints for source selection means that
+          <code><a>getDisplayMedia</a></code> only provides fingerprinting surface that exposes
+          whether audio, video or audio and video sources are present. <img alt=
+          "(This is a fingerprinting vector.)" src="images/fingerprint.png" width="15" height="21">
+        </p>
+      </section>
+      <section>
+        <h2 id="display-constraints">
+          New Constraints for Captured Display Surfaces
+        </h2>
+        <p>
+          Two constraints are defined that allow an application to observe properties of the
+          selected <a>display surface</a>. Since the source of media cannot be changed after a
+          <code>MediaStreamTrack</code> has been returned and constraints do not affect the
+          selection of <a>display surfaces</a>, these constraints cannot be changed by an
+          application.
         </p>
         <p>
-          Once a <a>display surface</a> has been selected, constraints apply to the
-          <a>MediaStreamTrack</a> instances that are returned. This allows for changes such as
-          adjustments to frame rate or resolution, or other constraints.
+          The <code><a data-link-for="MediaTrackConstraintSet">displaySurface</a></code> constraint
+          allows an application to observe the type of <a>display surface</a> that is being
+          captured.
+        </p>
+        <p>
+          The <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code> constraint
+          allows an application to observe whether the surface that is captured is a <a>logical
+          display surface</a>, rather than the <a>visible display surface</a>.
         </p>
         <section>
           <h2>
-            New Constraints for Captured Display Surfaces
+            Extensions to <a class="idlType">MediaTrackConstraintSet</a>
           </h2>
-          <p>
-            Two constraints are defined that allow an application to observe properties of the
-            selected <a>display surface</a>. Since the source of media cannot be changed after a
-            <code>MediaStreamTrack</code> has been returned, these constraints cannot be changed by
-            an application.
-          </p>
-          <p>
-            The <code><a data-link-for="MediaTrackConstraintSet">displaySurface</a></code>
-            constraint allows an application to observe the type of <a>display surface</a> that is
-            being captured.
-          </p>
-          <p>
-            The <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code>
-            constraint allows an application to express a preference or requirement to capture the
-            <a>logical display surface</a>, rather than the <a>visible display surface</a>.
-          </p>
-          <div>
-            <pre class="idl">partial dictionary MediaTrackConstraintSet {
+          <pre class="idl">partial dictionary MediaTrackConstraintSet {
              ConstrainDOMString displaySurface;
              ConstrainBoolean   logicalSurface;
 };</pre>
-            <section>
-              <h2>
-                Dictionary <a class="idlType">MediaTrackConstraintSet</a> Members
-              </h2>
-              <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet"
-              class="dictionary-members">
-                <dt>
-                  <dfn><code>displaySurface</code></dfn> of type <span class=
-                  "idlMemberType"><a>ConstrainDOMString</a></span>
-                </dt>
-                <dd>
-                  <p>
-                    The type of <a>display surface</a> that is being captured. This assumes values
-                    from the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.
-                  </p>
-                </dd>
-                <dt>
-                  <dfn><code>logicalSurface</code></dfn> of type <span class=
-                  "idlMemberType"><a>ConstrainBoolean</a></span>
-                </dt>
-                <dd>
-                  <p>
-                    A value of <code>true</code> indicates capture of a <a>logical display
-                    surface</a>; a value of <code>false</code> indicates a capture capture of a
-                    <a>visible display surface</a>.
-                  </p>
-                </dd>
-              </dl>
-            </section>
-          </div>
-          <section>
-            <h2>
-              <code>DisplayCaptureSurfaceType</code>
-            </h2>
-            <p>
-              The <code><a>DisplayCaptureSurfaceType</a></code> enumeration describes the different
-              types of display surface.
-            </p>
-            <div>
-              <pre class="idl">enum DisplayCaptureSurfaceType {
+          <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
+          "dictionary-members">
+            <dt>
+              <dfn><code>displaySurface</code></dfn> of type <span class=
+              "idlMemberType"><a>ConstrainDOMString</a></span>
+            </dt>
+            <dd>
+              <p>
+                The type of <a>display surface</a> that is being captured. This assumes values from
+                the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.
+              </p>
+            </dd>
+            <dt>
+              <dfn><code>logicalSurface</code></dfn> of type <span class=
+              "idlMemberType"><a>ConstrainBoolean</a></span>
+            </dt>
+            <dd>
+              <p>
+                A value of <code>true</code> indicates capture of a <a>logical display surface</a>;
+                a value of <code>false</code> indicates a capture capture of a <a>visible display
+                surface</a>.
+              </p>
+            </dd>
+          </dl>
+        </section>
+        <section>
+          <h2>
+            <code>DisplayCaptureSurfaceType</code>
+          </h2>
+          <p>
+            The <code><a>DisplayCaptureSurfaceType</a></code> enumeration describes the different
+            types of display surface.
+          </p>
+          <pre class="idl">enum DisplayCaptureSurfaceType {
     "monitor",
     "window",
     "application",
     "browser"
 };</pre>
-              <table data-link-for="DisplayCaptureSurfaceType" data-dfn-for=
-              "DisplayCaptureSurfaceType" class="simple">
-                <tbody>
-                  <tr>
-                    <th colspan="2">
-                      Enumeration description
-                    </th>
-                  </tr>
-                  <tr>
-                    <td>
-                      <dfn><code id=
-                      "idl-def-DisplayCaptureSurfaceType.monitor">monitor</code></dfn>
-                    </td>
-                    <td>
-                      a <a>monitor</a> <a>display surface</a>, physical display, or collection of
-                      physical displays
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <dfn><code id="idl-def-DisplayCaptureSurfaceType.window">window</code></dfn>
-                    </td>
-                    <td>
-                      a <a>window</a> <a>display surface</a>, or single application window
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <dfn><code id=
-                      "idl-def-DisplayCaptureSurfaceType.application">application</code></dfn>
-                    </td>
-                    <td>
-                      an <a>application</a> <a>display surface</a>, or entire collection of windows
-                      for an application
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <dfn><code id=
-                      "idl-def-DisplayCaptureSurfaceType.browser">browser</code></dfn>
-                    </td>
-                    <td>
-                      a <a>browser</a> <a>display surface</a>, or single browser window
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+          <table data-link-for="DisplayCaptureSurfaceType" data-dfn-for="DisplayCaptureSurfaceType"
+          class="simple">
+            <tbody>
+              <tr>
+                <th colspan="2">
+                  Enumeration description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <dfn><code id="idl-def-DisplayCaptureSurfaceType.monitor">monitor</code></dfn>
+                </td>
+                <td>
+                  a <a>monitor</a> <a>display surface</a>, physical display, or collection of
+                  physical displays
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn><code id="idl-def-DisplayCaptureSurfaceType.window">window</code></dfn>
+                </td>
+                <td>
+                  a <a>window</a> <a>display surface</a>, or single application window
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn><code id=
+                  "idl-def-DisplayCaptureSurfaceType.application">application</code></dfn>
+                </td>
+                <td>
+                  an <a>application</a> <a>display surface</a>, or entire collection of windows for
+                  an application
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn><code id="idl-def-DisplayCaptureSurfaceType.browser">browser</code></dfn>
+                </td>
+                <td>
+                  a <a>browser</a> <a>display surface</a>, or single browser window
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </section>
       </section>
       <section>
-        <h2>
+        <h2 id="deviceId">
           Device Identifiers
         </h2>
         <p>
@@ -378,12 +413,16 @@
           system.
         </p>
         <p>
-          Display capture sources MUST NOT be selected with the <code>deviceId</code> constraint,
-          since this would allow applications to influence selection. A display capture source is
-          represented in the <code>MediaStreamTrack</code> API as having a <code>deviceId</code>
-          parameter that is randomized each time a <code>MediaStreamTrack</code> is connected. The
-          only other constraint on this value is that it cannot duplicate any existing values for
-          <code>deviceId</code>.
+          Display capture sources therefore cannot be selected with the <code>deviceId</code>
+          constraint, since this would allow applications to influence selection; setting
+          <code>deviceId</code> constraint can only cause the resulting
+          <code><a>MediaStreamTrack</a></code> to become overconstrained.
+        </p>
+        <p>
+          A display capture source is represented in the <code><a>MediaStreamTrack</a></code> API
+          as having <code>deviceId</code> and <code>groupId</code> attributes that are randomized
+          each time a <code><a>MediaStreamTrack</a></code> is connected. These values cannot
+          duplicate any existing values.
         </p>
       </section>
     </section>
@@ -418,9 +457,9 @@
       </p>
       <p>
         Display capture that includes browser windows, particularly those that are under any form
-        of control by the application, risks violation of these basic security protections. Though
-        this risk is not entirely contained to browser windows, since control channels between
-        browser applications and other applications, depending on the operating system. The key
+        of control by the application, risks violation of these basic security protections. This
+        risk is not entirely contained to browser windows, since control channels between browser
+        applications and other applications, depending on the operating system. The key
         consideration is whether the captured <a>display surface</a> could be somehow induced to
         present information that would otherwise be secret from the application that is receiving
         the resulting media.
