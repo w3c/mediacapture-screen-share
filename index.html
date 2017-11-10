@@ -73,9 +73,9 @@
       </h2>
       <p>
         The following example demonstrates a request for display capture using the
-        <code>navigator.mediaDevices.getDisplayMedia</code> method defined in this document.
+        <code>navigator.getDisplayMedia</code> method defined in this document.
       </p>
-      <pre class="example highlight">navigator.mediaDevices.getDisplayMedia({ video: true })
+      <pre class="example highlight">navigator.getDisplayMedia({ video: true })
   .then(stream =&gt; {
     // we have a stream, attach it to a feedback video element
     videoElement.srcObject = stream;
