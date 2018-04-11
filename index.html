@@ -353,6 +353,36 @@
               </tr>
             </tbody>
           </table>
+          <div class="note">
+            <p>Following lists few non-normative recommendations for supporting full screen
+              rendering of an application/window.
+            </p>
+            <p>
+              For applications that support full screen rendering, like powerpoint for example, 
+              the decision of the display surface that gets rendered in full screen is 
+              specific to <a>user agent</a> implementation. For consistency reasons, 
+              an <a>user agent</a> must ensure that the display surface rendered in full screen 
+              can be unambigously mapped to the application/window where the action was triggered 
+              in the first place. 
+            </p>
+            <p>
+              The choice of <code><a>DisplayCaptureSurfaceType</a></code> and 
+              <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code> may 
+              influence actions for performing full screen rendering. For example, when an 
+              application/window is triggered to go full screen and application has 
+              "monitor" DisplayCaptureSurfaceType selected, the choice of "monitor" 
+              display surface to capture the displayed media is solely left to the 
+              <a>user agent</a>, especially when there are mutliple options available. 
+            </p>
+
+            <p>
+             An <a>user agent</a> must be prepared to handle certain transient behavior where 
+             the action to render an application/window in full screen may be reverted, say by
+             user canceling the action immediately. In these scenarios, the <a>user agent</a>
+             should ensure the captured display suface is restored to the application/window 
+             for which such action was triggered.
+            </p> 
+          </div>
         </section>
       </section>
       <section>
@@ -469,7 +499,7 @@
         </p>
         <p>
           Two forms of consent interaction are described: <a>active user consent</a> and a range of
-          <a>elevated permissions</a>. These are non-normative recommandations only.
+          <a>elevated permissions</a>. These are non-normative recommendations only.
         </p>
         <section>
           <h2>
