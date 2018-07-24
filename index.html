@@ -245,8 +245,8 @@
           New Constraints for Captured Display Surfaces
         </h2>
         <p>
-          Two constraints are defined that allow an application to observe properties of the
-          selected <a>display surface</a>. Since the source of media cannot be changed after a
+          Following new constraints are defined that allow an application to observe the properties 
+          of the selected <a>display surface</a>. Since the source of media cannot be changed after a
           <code>MediaStreamTrack</code> has been returned and constraints do not affect the
           selection of <a>display surfaces</a>, these constraints cannot be changed by an
           application.
@@ -261,6 +261,11 @@
           allows an application to observe whether the surface that is captured is a <a>logical
           display surface</a>, rather than the <a>visible display surface</a>.
         </p>
+        <p>
+          The <code><a data-link-for="MediaTrackConstraintSet">cursor</a></code> constraint
+          allows an application to specify if the cursor should be included in the captured 
+          display.
+        </p>
         <section>
           <h2>
             Extensions to <a class="idlType">MediaTrackConstraintSet</a>
@@ -268,6 +273,7 @@
           <pre class="idl">partial dictionary MediaTrackConstraintSet {
              ConstrainDOMString displaySurface;
              ConstrainBoolean   logicalSurface;
+             ConstrainDOMString   cursor;
 };</pre>
           <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
@@ -292,6 +298,16 @@
                 surface</a>.
               </p>
             </dd>
+            <dt>
+               <dfn><code>cursor</code></dfn> of type <span class=
+               "idlMemberType"><a>ConstrainDOMString</a></span>
+            </dt>
+            <dd>
+              <p>
+                Assumes values from the <code><a>CursorCaptureConstraint</a></code> enumeration that 
+                determines if and when the cursor is included in the captured display surface.
+              </p>
+            </dd> 
           </dl>
         </section>
         <section>
@@ -349,6 +365,58 @@
                 </td>
                 <td>
                   a <a>browser</a> <a>display surface</a>, or single browser window
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <h2>
+            <code>CursorCaptureConstraint</code>
+          </h2>
+          <p>
+            The <code><a>CursorCaptureConstraint</a></code> enumerates the conditions 
+            under which the cursor is captured.
+          </p>
+          <pre class="idl">enum CursorCaptureConstraint {
+    "never",
+    "always",
+    "motion"
+};</pre>
+          <table data-link-for="CursorCaptureConstraint" data-dfn-for="CursorCaptureConstraint"
+          class="simple">
+            <tbody>
+              <tr>
+                <th colspan="2">
+                  Enumeration description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <dfn><code id="idl-def-CursorCaptureConstraint.never">never</code></dfn>
+                </td>
+                <td>
+                  a <a>never</a> cursor capture constraint omits the cursor from the captured display surface.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn><code id="idl-def-CursorCaptureConstraint.always">always</code></dfn>
+                </td>
+                <td>
+                  a <a>always</a> cursor capture constraint includes the cursor in the captured display surface.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn><code id=
+                  "idl-def-CursorCaptureConstraint.motion">motion</code></dfn>
+                </td>
+                <td>
+                  a <a>motion</a> cursor capture constraint includes the cursor in the captured display 
+                  surface when the cursor/pointer is moved. The captured cursor is removed when there 
+                  is no further movement of the pointer/cursor for certain period of time, as determined 
+                  by the <a>user agent</a>.
                 </td>
               </tr>
             </tbody>
