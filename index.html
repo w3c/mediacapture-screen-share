@@ -245,8 +245,8 @@
           New Constraints for Captured Display Surfaces
         </h2>
         <p>
-          Following new constraints are defined that allow an application to observe properties of the
-          selected <a>display surface</a>. Since the source of media cannot be changed after a
+          Following new constraints are defined that allow an application to observe the properties 
+          of the selected <a>display surface</a>. Since the source of media cannot be changed after a
           <code>MediaStreamTrack</code> has been returned and constraints do not affect the
           selection of <a>display surfaces</a>, these constraints cannot be changed by an
           application.
@@ -414,7 +414,9 @@
                 </td>
                 <td>
                   a <a>motion</a> cursor capture constraint includes the cursor in the captured display 
-                  surface when the cursor/pointer is moved.
+                  surface when the cursor/pointer is moved. The captured cursor is removed when there 
+                  is no further movement of the pointer/cursor for certain period of time, as determined 
+                  by the <a>user agent</a>.
                 </td>
               </tr>
             </tbody>
