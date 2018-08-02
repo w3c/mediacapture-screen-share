@@ -90,8 +90,6 @@
       </h2>
       <p>
         This document uses the definition of <code><dfn><a href=
-        "https://w3c.github.io/mediacapture-main/#navigatorusermedia">NavigatorUserMedia</a></dfn></code>,
-        <code><dfn><a href=
         "https://w3c.github.io/mediacapture-main/#mediastreamtrack">MediaStreamTrack</a></dfn></code>,
         and <code><dfn><a href=
         "https://w3c.github.io/mediacapture-main/#interface-definition">ConstrainablePattern</a></dfn></code>
@@ -152,7 +150,7 @@
       -->
       <p>
         Capture of displayed media is enabled through the addition of a new
-        <code><a>getDisplayMedia</a></code> method on the <code><a>NavigatorUserMedia</a></code>
+        <code><a>getDisplayMedia</a></code> method on the <code><a>Navigator</a></code>
         interface, that is similar to <code><dfn><a href=
         "https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></dfn></code>
         [[!GETUSERMEDIA]].
@@ -184,12 +182,12 @@
       </div>
       <section>
         <h2>
-          <code>NavigatorUserMedia</code> Additions
+          <code>Navigator</code> Additions
         </h2>
-        <pre class="idl">partial interface NavigatorUserMedia {
+        <pre class="idl">partial interface Navigator {
     Promise&lt;MediaStream&gt; getDisplayMedia (optional MediaStreamConstraints constraints);
 };</pre>
-        <dl data-link-for="NavigatorUserMedia" data-dfn-for="NavigatorUserMedia" class="methods">
+        <dl data-link-for="Navigator" data-dfn-for="Navigator" class="methods">
           <dt>
             <code><dfn data-dfn-for="getDisplayMedia">getDisplayMedia</dfn></code>
           </dt>
