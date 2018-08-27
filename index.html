@@ -137,6 +137,10 @@
         in whole or part, so the <a>visible display surface</a> is a strict subset of the
         <a>logical display surface</a>.
       </p>
+      <p>The terms <dfn>permission</dfn>, <dfn>retrieve the permission state</dfn>,
+      <dfn id="prompt-the-user-to-choose">prompt the user to choose</dfn>, and
+      <dfn id="create-permission">create a permission storage entry</dfn> are
+      defined in [[!permissions]].</p>
     </section>
     <section>
       <h2>
@@ -194,49 +198,227 @@
             <code><dfn data-dfn-for="getDisplayMedia">getDisplayMedia</dfn></code>
           </dt>
           <dd>
+            <p>Prompts the user for permission to live-capture their display.</p>
             <p>
-              This method operates identically to <code><a>getUserMedia</a></code>, except that it
-              acquires media from display devices, and the <code>constraints</code> argument does
-              not accept <code><a href=
-              "https://w3c.github.io/mediacapture-main/#idl-def-mediatrackconstraints">MediaTrackConstraints</a></code>
-              values. This prevents an application from influencing the selection of sources, see
-              <a href="#constraints"></a> for details.
+              This method is similar to <code><a>getUserMedia</a></code>, except that it
+              acquires media from one display device chosen by the end-user each time.
+              The user agent MUST let the end-user choose which display surface to share
+              out of all available choices every time, and MUST NOT use
+              <code>constraints</code> to limit that choice. Instead,
+              <code>constraints</code> MUST be applied to the media chosen by the user,
+              only after they have made their selection. This prevents an application
+              from influencing the selection of sources, see <a href="#constraints"></a>
+              for details.
             </p>
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
               <code><a>getDisplayMedia</a></code> also differs from
-              <code><a>getUserMedia</a></code> in that permissions cannot be persisted.
+              <code><a>getUserMedia</a></code> in that "granted" permissions cannot be persisted.
             </p>
-            <p>
-              If the <code>constraints</code> argument is omitted, a default value containing a
-              single <code>video</code> attribute set to <code>true</code> is assumed.
-            </p>
+            <p>When the <code><dfn>getDisplayMedia()</dfn></code>
+            method is called, the User Agent MUST run the following
+            steps:</p>
+            <ol>
+              <li>
+                <p>Let <var>constraints</var> be the method's first
+                argument.</p>
+              </li>
+              <li>
+                <p>For each member
+                <a href="https://heycam.github.io/webidl/#dfn-present">present</a>
+                in <var>constraints</var> whose value, <var>value</var>, is a
+                dictionary, run the following steps:</p>
+                <ol>
+                  <li>
+                    <p>If <var>value</var> contains a member named <code>advanced</code>,
+                    return a promise <a>rejected</a> with a newly
+                    <a data-link-for="exception" data-lt="create">created</a>
+                    <code>TypeError</code>.</p>
+                  </li>
+                  <li>
+                    <p>If <var>value</var> contains a member which in turn
+                    is a dictionary containing a member named either
+                    <code>min</code> or <code>exact</code>, return a promise
+                    <a>rejected</a> with a newly
+                    <a data-link-for="exception" data-lt="create">created</a>
+                    <code>TypeError</code>.</p>
+                  </li>
+                </ol>
+              </li>
+              <li>
+                <p>Let <var>requestedMediaTypes</var> be the set of media
+                types in <var>constraints</var> with either a dictionary
+                value or a value of <code>true</code>.</p>
+              </li>
+              <li>
+                <p>If <var>requestedMediaTypes</var> is the empty set, set
+                <var>requestedMediaTypes</var> to a set containing
+                <code>"video"</code>.</p>
+              </li>
+              <li>
+                <p>If the <a>current settings object</a>'s <a>responsible
+                  document</a> is NOT <a data-cite=
+                    "!HTML52/browsers.html#fully-active">fully active</a>, return
+                  a promise <a>rejected</a> with a
+                  <code><a>DOMException</a></code> object whose
+                  <code><a>name</a></code> attribute has the value
+                  <code>InvalidStateError</code>.</p>
+              </li>
+              <li>
+                <p>If the <a>current settings object</a>'s <a>responsible
+                  document</a> is NOT <a>allowed to use</a> the feature
+                indicated by Feature Policy [TBD],
+                return a promise <a>rejected</a> with a
+                <code><a>DOMException</a></code> object whose
+                <code><a>name</a></code> attribute has the value
+                <code>SecurityError</code>.</p>
+              </li>
+              <li>
+                <p>Let <var>originIdentifier</var> be the <a>current settings
+                  object</a>'s <a data-cite=
+                    "!HTML52/webappapis.html#responsible-browsing-context">responsible
+                    browsing context</a>'s [[!HTML52]] <a data-cite=
+                      "!HTML52/browsers.html#top-level-browsing-context">top-level
+                      browsing context</a>'s <a data-cite=
+                        "!HTML52/browsers.html#active-document">active document</a>'s
+                      origin.</p>
+              </li>
+              <li>
+                <p>If the <a>current settings object</a>'s origin is
+                different from <var>originIdentifier</var>, set
+                <var>originIdentifier</var> to the result of combining
+                <var>originIdentifier</var> and the <a>current settings
+                  object</a>'s origin.</p>
+              </li>
+              <li>
+                <p>Let <var>p</var> be a new promise.</p>
+              </li>
+              <li>
+                <p>Run the following steps in parallel:</p>
+                <ol>
+                  <li>
+                    <p>For each media type <var>T</var> in
+                    <var>requestedMediaTypes</var>,</p>
+                    <ol>
+                      <li>
+                        <p>If no sources of type <var>T</var> are available,
+                        <a>reject</a> <var>p</var> with a new
+                        <code><a>DOMException</a></code> object whose
+                        <code><a>name</a></code> attribute has the value
+                        <code>NotFoundError</code>.</p>
+                      </li>
+                      <li>
+                        <p><a>Retrieve the permission state</a> for obtaining
+                        sources of type <var>T</var> in the current browsing
+                        context. If the permission state is "denied", jump to
+                        the step labeled <em>PermissionFailure</em> below.</p>
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
+                    <p>Optionally, e.g., based on a previously-established
+                    user preference, for security reasons, or due to platform
+                    limitations, jump to the step labeled <em>Permission
+                      Failure</em> below.</p>
+                  </li>
+                  <li>
+                    <p>For the origin identified by
+                    <var>originIdentifier</var>, <a>prompt the user to choose</a>
+                    a display device, with a PermissionDescriptor with its name
+                    member set to the permission name associated with
+                    <var>kind</var> for obtaining display devices (e.g. "screen"
+                    for video), resulting in a set of provided media.</p>
+                    <p>The provided media MUST include precisely one track of
+                    each media type in <var>requestedMediaTypes</var>.
+                    The devices chosen MUST be the ones determined by the user.
+                    Once selected, the source of a
+                    <code><a>MediaStreamTrack</a></code> MUST NOT change.</p>
+                    <p>User Agents are encouraged to warn users against sharing
+                    <a>browser</a> display devices, or otherwise try to
+                    steer users away from sharing them.</p>
+                    <p>If the result of the request is "granted", then for
+                    each device that is sourcing the provided media, using
+                    the device's deviceId, <var>deviceId</var>, set
+                    [[\devicesLiveMap]]<var>[deviceId]</var> to
+                    <code>true</code>, if it isn’t already <code>true</code>,
+                    and set the
+                    [[\devicesAccessibleMap]]<var>[deviceId]</var> to
+                    <code>true</code>, if it isn’t already
+                    <code>true</code>.</p>
+                    <p>The User Agent MUST NOT
+                    <a href="#create-permission">create a permission storage entry</a>
+                    with a value of "granted".
+                    </p>
+                    <p>If the result is "denied", jump to the step labeled
+                    <em>Permission Failure</em> below. If the user never
+                    responds, this algorithm stalls on this step.</p>
+                    <p>If the user grants permission but a hardware error
+                    such as an OS/program/webpage lock prevents access,
+                    <a>reject</a> <var>p</var> with a new
+                    <code><a>DOMException</a></code> object whose
+                    <code><a>name</a></code> attribute has the value
+                    <code>NotReadableError</code> and abort these steps.</p>
+                    <p>If the result is "granted" but device access fails for
+                    any reason other than those listed above, <a>reject</a>
+                    <var>p</var> with a new <code><a>DOMException</a></code>
+                    object whose <code><a>name</a></code> attribute has the
+                    value <code>AbortError</code> and abort these steps.</p>
+                  </li>
+                  <li>
+                    <p>Let <var>stream</var> be the
+                    <code><a>MediaStream</a></code> object for which the user
+                    granted permission.</p>
+                  </li>
+                  <li>
+                    <p>Run the <a href=
+                    "https://w3c.github.io/mediacapture-main/#dfn-applyconstraints-algorithm">
+                    <dfn>ApplyConstraints algorithm</dfn></a> on all
+                    tracks in <var>stream</var> with the appropriate
+                    constraints. Should this fail, let <var>failedConstraint</var>
+                    be the result of the algorithm that failed, and let
+                    <var>message</var> be either <code>undefined</code> or an
+                    informative human-readable message, and then <a>reject</a>
+                    <var>p</var> with a new <code>OverconstrainedError</code>
+                    created by calling
+                    <code>OverconstrainedError(<var>failedConstraint</var>,
+                    <var>message</var>)</code>.</p>
+                  </li>
+                  <li>
+                    <p><a>Resolve</a> <var>p</var> with <var>stream</var> and
+                    abort these steps.</p>
+                  </li>
+                  <li>
+                    <p><em>Permission Failure</em>: <a>Reject</a>
+                    <var>p</var> with a new <code><a>DOMException</a></code>
+                    object whose <code><a>name</a></code> attribute has the
+                    value <code>NotAllowedError</code>.</p>
+                  </li>
+                </ol>
+              </li>
+              <li>
+                <p>Return <var>p</var>.</p>
+              </li>
+            </ol>
           </dd>
+          <div class="note">
+            <p>
+            Min and exact constraints are disallowed by getDisplayMedia().
+            The max constraint type lets a web application provide a maximum envelope
+            for constrainable properties like width and height, should the
+            end-user resize a <a>window</a> or <a>browser</a> surface while it
+            is being captured.
+            </p>
+          </div>
         </dl>
       </section>
       <section>
         <h2 id="constraints">
           Constraining Display Surface Selection
         </h2>
-        <p>
-          The <code><a>getDisplayMedia</a></code> function does not permit the use of constraints
-          for selection of a source as described in the <a href=
-          "https://w3c.github.io/mediacapture-main/#dom-mediadevices-getusermedia"><dfn>getUserMedia()
-          algorithm</dfn></a>. Prior to invoking the <a>getUserMedia() algorithm</a>, if either of
-          the <a href=
-          "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-video">video</a> and
-          <code><a href=
-          "https://w3c.github.io/mediacapture-main/#dom-mediastreamconstraints-audio">audio</a></code>
-          attributes are set to a <code><a href=
-          "https://w3c.github.io/mediacapture-main/#idl-def-mediatrackconstraints">MediaTrackConstraints</a></code>
-          value (as opposed to being absent or set to a Boolean value), reject the promise with a
-          <a href="https://heycam.github.io/webidl/#invalidaccesserror">InvalidAccessError</a> and
-          abort.
-        </p>
         <p class="fingerprint">
           Not accepting constraints for source selection means that
           <code><a>getDisplayMedia</a></code> only provides fingerprinting surface that exposes
-          whether audio, video or audio and video sources are present. <img alt=
+          whether audio, video or audio and video display sources are present. <img alt=
           "(This is a fingerprinting vector.)" src="images/fingerprint.png" width="15" height="21">
         </p>
       </section>
@@ -447,6 +629,48 @@
           duplicate any existing values.
         </p>
       </section>
+    </section>
+    <section>
+      <h1>Privacy Indicator Requirements</h1>
+      <p>This specification extends the <a href=
+        "https://w3c.github.io/mediacapture-main/#privacy-indicator-requirements">
+        Privacy Indicator Requirements</a> of
+      <code><a>getUserMedia</a></code> to include <code><a>getDisplayMedia</a></code>.</p>
+      <p>References in this specification to [[\devicesLiveMap]],
+      [[\devicesAccessibleMap]], and [[\kindsAccessibleMap]] refer to the
+      definitions already created to support Privacy Indicator Requirements for
+      <code><a>getUserMedia</a></code>.</p>
+      <p>For each <var>kind</var> of device that
+      <code><a>getDisplayMedia</a></code> exposes, set <var>kind</var>
+      to the permission name associated with <var>kind</var> for obtaining
+      display devices (e.g. "screen" for video), and do the following:
+      <ul>
+        <li>Define <var>any&lt;kind&gt;Accessible</var> (e.g.
+          <var>anyScreenAccessible</var>) as the
+          logical OR of the [[\kindsAccessibleMap]]<var>[kind]</var> value and all
+          the [[\devicesAccessibleMap]]<var>[deviceId]</var> values for devices of
+          that kind, and initialize all values to <code>false</code>.
+        </li>
+        <li>Define any<var>&lt;kind&gt;Live</var> (e.g. <var>anyScreenLive</var>)
+          to be the logical OR of all the
+          [[\devicesLiveMap]]<var>[deviceId]</var> values for devices of that
+          kind.
+        </li>
+      </ul>
+      <p>Then, given the new definitions above, the requirements on the User
+      Agent are those specified in <a href=
+        "https://w3c.github.io/mediacapture-main/#privacy-indicator-requirements">
+        Privacy Indicator Requirements</a> of
+      <code><a>getUserMedia</a></code>.</p>
+      <div class="note">
+        <p>
+        Since this specification forbids user agents from persisting "granted"
+        permissions, only the "Live" indicators are significant.
+        </p>
+      </div>
+      <p>The User Agent MUST NOT implement the <code><a href=
+        "#event-mediadevices-devicechange">devicechange</a></code> event for
+      display devices.</p>
     </section>
     <section>
       <h2>
