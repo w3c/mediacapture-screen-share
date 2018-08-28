@@ -324,22 +324,23 @@
                   <li>
                     <p>For the origin identified by
                     <var>originIdentifier</var>, <a>prompt the user to choose</a>
-                    a display device, with a PermissionDescriptor with its name
-                    member set to the permission name associated with
-                    <var>kind</var> for obtaining display devices (e.g. "screen"
-                    for video), resulting in a set of provided media.</p>
-                    <p>The provided media MUST include precisely one track of
+                    a display device, with a PermissionDescriptor named
+                    <code>"display"</code>, resulting in a set of
+                    provided media.</p>
+                    <p>The provided media MUST include precisely one trackß of
                     each media type in <var>requestedMediaTypes</var>.
                     The devices chosen MUST be the ones determined by the user.
                     Once selected, the source of a
                     <code><a>MediaStreamTrack</a></code> MUST NOT change.</p>
                     <p>User Agents are encouraged to warn users against sharing
-                    <a>browser</a> display devices, or otherwise try to
-                    steer users away from sharing them.</p>
+                    <a>browser</a> display devices as well as <a>monitor</a>
+                    display devices where browser windows are visible, or
+                    otherwise try to discourage their selection on the basis
+                    that these represent a significantly higher risk when shared.</p>
                     <p>If the result of the request is "granted", then for
                     each device that is sourcing the provided media, using
-                    the device's deviceId, <var>deviceId</var>, set
-                    [[\devicesLiveMap]]<var>[deviceId]</var> to
+                    a stable and private id for the device, <var>deviceId</var>,
+                    set [[\devicesLiveMap]]<var>[deviceId]</var> to
                     <code>true</code>, if it isn’t already <code>true</code>,
                     and set the
                     [[\devicesAccessibleMap]]<var>[deviceId]</var> to
@@ -628,6 +629,13 @@
           each time a <code><a>MediaStreamTrack</a></code> is connected. These values cannot
           duplicate any existing values.
         </p>
+        <div class="note">
+          <p>
+          This exposed device identifier is not to be confused with the stable
+          and private id of the same name used in algorithms to implement privacy
+          indicators.
+          </p>
+        </div>
       </section>
     </section>
     <section>
@@ -641,18 +649,24 @@
       definitions already created to support Privacy Indicator Requirements for
       <code><a>getUserMedia</a></code>.</p>
       <p>For each <var>kind</var> of device that
-      <code><a>getDisplayMedia</a></code> exposes, set <var>kind</var>
-      to the permission name associated with <var>kind</var> for obtaining
-      display devices (e.g. "screen" for video), and do the following:
+      <code><a>getDisplayMedia</a></code> exposes, using a stable and private id
+      for the device, <var>deviceId</var>, set <var>kind</var>
+      to <code>"Display"</code> + <var>kind</var>, and do the following:
       <ul>
         <li>Define <var>any&lt;kind&gt;Accessible</var> (e.g.
-          <var>anyScreenAccessible</var>) as the
+          <var>anyDisplayVideoAccessible</var>) as the
           logical OR of the [[\kindsAccessibleMap]]<var>[kind]</var> value and all
           the [[\devicesAccessibleMap]]<var>[deviceId]</var> values for devices of
           that kind, and initialize all values to <code>false</code>.
         </li>
-        <li>Define any<var>&lt;kind&gt;Live</var> (e.g. <var>anyScreenLive</var>)
-          to be the logical OR of all the
+        <li>Define <var>any&lt;kind&gt;Accessible</var> (e.g.
+          <var>anyDisplayVideoAccessible</var>) as the
+          logical OR of the [[\kindsAccessibleMap]]<var>[kind]</var> value and all
+          the [[\devicesAccessibleMap]]<var>[deviceId]</var> values for devices of
+          that kind, and initialize all values to <code>false</code>.
+        </li>
+        <li>Define any<var>&lt;kind&gt;Live</var> (e.g.
+          <var>anyDisplayVideoLive</var>) to be the logical OR of all the
           [[\devicesLiveMap]]<var>[deviceId]</var> values for devices of that
           kind.
         </li>
@@ -664,13 +678,22 @@
       <code><a>getUserMedia</a></code>.</p>
       <div class="note">
         <p>
+        Even though there's a single permission descriptor for getDisplayMedia,
+        the above definitions distinguish by kind to enable user agents
+        to implement privacy indicators that show the end-user the specific kinds
+        of display sources that are being shared at any point.
+        </p>
+      </div>
+      <div class="note">
+        <p>
         Since this specification forbids user agents from persisting "granted"
         permissions, only the "Live" indicators are significant.
         </p>
       </div>
-      <p>The User Agent MUST NOT implement the <code><a href=
-        "#event-mediadevices-devicechange">devicechange</a></code> event for
-      display devices.</p>
+      <p>The User Agent MUST NOT fire the <code><a href=
+      "#event-mediadevices-devicechange">devicechange</a></code> event based on
+      changes in the set of available sources from
+      <code><a>getDisplayMedia</a></code>.</p>
     </section>
     <section>
       <h2>
