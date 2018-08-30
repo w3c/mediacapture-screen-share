@@ -75,14 +75,12 @@
         The following example demonstrates a request for display capture using the
         <code>navigator.getDisplayMedia</code> method defined in this document.
       </p>
-      <pre class="example highlight">navigator.getDisplayMedia({ video: true })
-  .then(stream =&gt; {
-    // we have a stream, attach it to a feedback video element
-    videoElement.srcObject = stream;
-  }, error =&gt; {
-    console.log("Unable to acquire screen capture", error);
-  });
-</pre>
+      <pre class="example highlight">try {
+  let mediaStream = await navigator.getDisplayMedia({video:true});
+  videoElement.srcObject = mediaStream;
+} catch (e) {
+  console.log('Unable to acquire screen capture: ' + e);
+}</pre>
     </section>
     <section>
       <h2>
