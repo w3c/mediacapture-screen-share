@@ -421,13 +421,14 @@
       </section>
       <section>
         <h2 id="display-constraints">
-          New Constraints for Captured Display Surfaces
+          New Constrainable Properties for Captured Display Surfaces
         </h2>
         <p>
-          Following new constraints are defined that allow an application to observe the properties 
+          Following new <a href="https://www.w3.org/TR/mediacapture-streams/#defining-a-new-constrainable-property">
+          Constrainable Properties</a> are defined that allow an application to observe the properties
           of the selected <a>display surface</a>. Since the source of media cannot be changed after a
           <code>MediaStreamTrack</code> has been returned and constraints do not affect the
-          selection of <a>display surfaces</a>, these constraints cannot be changed by an
+          selection of <a>display surfaces</a>, these constrainable properties cannot be changed by an
           application.
         </p>
         <p>
@@ -442,13 +443,62 @@
         </p>
         <p>
           The <code><a data-link-for="MediaTrackConstraintSet">cursor</a></code> constraint
-          allows an application to specify if the cursor should be included in the captured 
+          allows an application to specify if the cursor should be included in the captured
           display.
         </p>
         <section>
           <h2>
+            Extensions to <a class="idlType">MediaTrackSupportedConstraints</a>
+          </h2>
+          <p>
+            <a href="https://www.w3.org/TR/mediacapture-streams/#idl-def-MediaTrackSupportedConstraints">
+            MediaTrackSupportedConstraints</a> is extended here with the list of constraints that a User
+            Agent recognizes.
+          </p>
+          <pre class="idl">partial dictionary MediaTrackSupportedConstraints {
+             boolean displaySurface = true;
+             boolean logicalSurface = true;
+             boolean cursor = true;
+};</pre>
+          <dl data-link-for="MediaTrackSupportedConstraints" data-dfn-for="MediaTrackSupportedConstraints"
+          class="dictionary-members">
+            <dt>
+              <dfn><code>displaySurface</code></dfn> of type <span class=
+              "idlMemberType"><a>boolean</a></span>, defaulting to <code>true</code>
+            </dt>
+            <dd>
+              <p>
+                Whether <code><a>displaySurface</a></code> constraint is recognized.
+              </p>
+            </dd>
+            <dt>
+              <dfn><code>logicalSurface</code></dfn> of type <span class=
+              "idlMemberType"><a>boolean</a></span>, defaulting to <code>true</code>
+            </dt>
+            <dd>
+              <p>
+                Whether <code><a>logicalSurface</a></code> constraint is recognized.
+              </p>
+            </dd>
+            <dt>
+              <dfn><code>cursor</code></dfn> of type <span class=
+              "idlMemberType"><a>boolean</a></span>, defaulting to <code>true</code>
+            </dt>
+            <dd>
+              <p>
+                Whether <code><a>cursor</a></code> constraint is recognized.
+              </p>
+            </dd>
+          </dl>
+        </section>
+        <section>
+          <h2>
             Extensions to <a class="idlType">MediaTrackConstraintSet</a>
           </h2>
+          <p>
+            <a href="https://www.w3.org/TR/mediacapture-streams/#idl-def-MediaTrackConstraintSet">
+            MediaTrackConstraintSet</a> is used for reading the current status of constraints.
+          </p>
           <pre class="idl">partial dictionary MediaTrackConstraintSet {
              ConstrainDOMString displaySurface;
              ConstrainBoolean   logicalSurface;
@@ -483,10 +533,60 @@
             </dt>
             <dd>
               <p>
-                Assumes values from the <code><a>CursorCaptureConstraint</a></code> enumeration that 
+                Assumes values from the <code><a>CursorCaptureConstraint</a></code> enumeration that
                 determines if and when the cursor is included in the captured display surface.
               </p>
-            </dd> 
+            </dd>
+          </dl>
+        </section>
+        <section>
+          <h2>
+            Extensions to <a class="idlType">MediaTrackSettings</a>
+          </h2>
+          <p>
+            When the <a href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface">getSettings()</a>
+            method is invoked on a video stream track, the user agent must return the extended
+            <a href="https://www.w3.org/TR/mediacapture-streams/#media-track-settings">MediaTrackSettings</a>
+            dictionary, representing the current status of the underlying user agent.
+          </p>
+          <pre class="idl">partial dictionary MediaTrackSettings {
+             DOMString displaySurface;
+             boolean   logicalSurface;
+             DOMString   cursor;
+};</pre>
+          <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
+          "dictionary-members">
+            <dt>
+              <dfn><code>displaySurface</code></dfn> of type <span class=
+              "idlMemberType"><a>DOMString</a></span>
+            </dt>
+            <dd>
+              <p>
+                The type of <a>display surface</a> that is being captured. This assumes values from
+                the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.
+              </p>
+            </dd>
+            <dt>
+              <dfn><code>logicalSurface</code></dfn> of type <span class=
+              "idlMemberType"><a>boolean</a></span>
+            </dt>
+            <dd>
+              <p>
+                A value of <code>true</code> indicates capture of a <a>logical display surface</a>;
+                a value of <code>false</code> indicates a capture capture of a <a>visible display
+                surface</a>.
+              </p>
+            </dd>
+            <dt>
+               <dfn><code>cursor</code></dfn> of type <span class=
+               "idlMemberType"><a>DOMString</a></span>
+            </dt>
+            <dd>
+              <p>
+                Assumes values from the <code><a>CursorCaptureConstraint</a></code> enumeration that
+                determines if and when the cursor is included in the captured display surface.
+              </p>
+            </dd>
           </dl>
         </section>
         <section>
@@ -554,7 +654,7 @@
             <code>CursorCaptureConstraint</code>
           </h2>
           <p>
-            The <code><a>CursorCaptureConstraint</a></code> enumerates the conditions 
+            The <code><a>CursorCaptureConstraint</a></code> enumerates the conditions
             under which the cursor is captured.
           </p>
           <pre class="idl">enum CursorCaptureConstraint {
@@ -592,9 +692,9 @@
                   "idl-def-CursorCaptureConstraint.motion">motion</code></dfn>
                 </td>
                 <td>
-                  a <a>motion</a> cursor capture constraint includes the cursor in the captured display 
-                  surface when the cursor/pointer is moved. The captured cursor is removed when there 
-                  is no further movement of the pointer/cursor for certain period of time, as determined 
+                  a <a>motion</a> cursor capture constraint includes the cursor in the captured display
+                  surface when the cursor/pointer is moved. The captured cursor is removed when there
+                  is no further movement of the pointer/cursor for certain period of time, as determined
                   by the <a>user agent</a>.
                 </td>
               </tr>
