@@ -38,8 +38,10 @@
       </h2>
       <p>
         This document describes an extension to the Media Capture API [[GETUSERMEDIA]] that enables
-        the acquisition of a user's display, or part thereof, in the form of a video stream. This
-        enables a number of applications, including screen sharing using WebRTC [[WEBRTC]].
+        the acquisition of a user's display, or part thereof, in the form of a video stream. In some
+        cases system, application or window audio is also applicable which is presented in the form
+        of an audio stream. This enables a number of applications, including screen sharing using
+        WebRTC [[WEBRTC]].
       </p>
       <p>
         This feature has signficant security implications. Applications that use this API to access
@@ -49,9 +51,9 @@
         sandbox.
       </p>
       <p>
-        This document concerns itself primarily with the capture of video, but the general
-        mechanisms defined here could be extended to other types of media, of which audio
-        [[GETUSERMEDIA]] and depth [[MEDIACAPTURE-DEPTH]] are currently defined.
+        This document concerns itself primarily with the capture of video and audio [[GETUSERMEDIA]],
+        but the general mechanisms defined here could be extended to other types of media, of which
+        depth [[MEDIACAPTURE-DEPTH]] are currently defined.
       </p>
     </section>
     <section id="conformance">
@@ -196,15 +198,27 @@
           <dd>
             <p>Prompts the user for permission to live-capture their display.</p>
             <p>
-              This method is similar to <code><a>getUserMedia</a></code>, except that it
-              acquires media from one display device chosen by the end-user each time.
-              The user agent MUST let the end-user choose which display surface to share
-              out of all available choices every time, and MUST NOT use
-              <code>constraints</code> to limit that choice. Instead,
-              <code>constraints</code> MUST be applied to the media chosen by the user,
-              only after they have made their selection. This prevents an application
-              from influencing the selection of sources, see <a href="#constraints"></a>
-              for details.
+              This method is similar to <code><a>getUserMedia</a></code>, except that in
+              the case of video it acquires media from one display device chosen by the
+              end-user each time. The user agent MUST let the end-user choose which display
+              surface to share out of all available choices every time, and MUST NOT use
+              <code>constraints</code> to limit that choice. Instead, <code>constraints</code>
+              MUST be applied to the media chosen by the user, only after they have made their
+              selection. This prevents an application from influencing the selection of video
+              sources, see <a href="#constraints"></a> for details.
+            </p>
+            <p>
+              In the case of audio, the user agent MAY similarly present the end-user with
+              audio sources to share. Which choices are available to choose from is up to the
+              user agent, and the audio source(s) are not necessarily the same as the video
+              source(s). An audio source may be a particular <a>application</a>, <a>window</a>,
+              <a>browser</a>, the entire system audio or any combination thereof. Unlike
+              <code><a>getUserMedia</a></code> with regards to audio+video, the user agent is
+              allowed not to return audio even if the audio constraint is present. If the user
+              agent knows no audio will be shared for the lifetime of the stream it MUST not
+              include an audio track in the resulting stream. The user agent MAY accept a
+              request for audio and video by only returning video, but MUST reject an
+              audio-only request if no audio track is available.
             </p>
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
