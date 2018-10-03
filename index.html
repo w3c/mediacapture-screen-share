@@ -409,6 +409,38 @@
         </dl>
       </section>
       <section>
+        <h2 id="hidden-display-surfaces">
+          Closed and Minimized Display Surfaces
+        </h2>
+        <p>
+          A <a>display surface</a> that is being shared may temporarily or permanently become
+          inaccessible to the application because of actions taken by the operating system or user
+          agent. What makes a <a>display surface</a> considered inaccesible is outside the scope
+          of this specification, but examples MAY include a <a>monitor</a> disconnecting or an
+          <a>application</a>, <a>window</a> or <a>browser</a> closing or becoming minimized.
+        </p>
+        <p>
+          When <a>display surface</a> enters an inaccessible state that is not necessarily
+          permanent, the user agent MUST queue a task that <a>sets the muted state</a> of the
+          corresponding media track to <code>true</code>.
+        </p>
+        <p>
+          When <a>display surface</a> exits an inaccessible state and becomes accessible, the
+          user agent MUST queue a task that <a>sets the muted state</a> of the corresponding
+          media track to <code>false</code>.
+        </p>
+        <p>
+          When a <a>display surface</a> enters an inaccessible state that is permanent (such as
+          the source application terminating), the user agent MUST queue a task that <a>ends</a>
+          the corresponding media track.
+        </p>
+        <p>
+          A stream that was just returned by <code><a>getDisplayMedia</a></code> MAY contain
+          tracks that are muted by default. Audio and video tracks belonging to the same stream
+          MAY be muted/unmuted independently of one another.
+        </p>
+      </section>
+      <section>
         <h2 id="constraints">
           Constraining Display Surface Selection
         </h2>
