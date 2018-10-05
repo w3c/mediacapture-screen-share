@@ -137,7 +137,8 @@
       <dfn id="prompt-the-user-to-choose">prompt the user to choose</dfn>, and
       <dfn id="create-permission">create a permission storage entry</dfn> are
       defined in [[!permissions]].</p>
-      <p>The <dfn>MediaTrackSupportedConstraints</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.4,
+      <p>The <dfn>devicechange</dfn> event is defined in [[GETUSERMEDIA]] Section 9.2, 
+      the <dfn>MediaTrackSupportedConstraints</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.4,
       the <dfn>MediaTrackConstraintSet</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.6, and
       the <dfn>MediaTrackSettings</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.7.</p>
     </section>
@@ -789,10 +790,8 @@
         permissions, only the "Live" indicators are significant.
         </p>
       </div>
-      <p>The User Agent MUST NOT fire the <code><a href=
-      "#event-mediadevices-devicechange">devicechange</a></code> event based on
-      changes in the set of available sources from
-      <code><a>getDisplayMedia</a></code>.</p>
+      <p>The User Agent MUST NOT fire the <code><a>devicechange</a></code> event based on
+      changes in the set of available sources from <code><a>getDisplayMedia</a></code>.</p>
     </section>
     <section>
       <h2>
