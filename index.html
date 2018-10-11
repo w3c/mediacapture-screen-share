@@ -559,7 +559,7 @@
             <dd>
               <p>
                 A value of <code>true</code> indicates capture of a <a>logical display surface</a>;
-                a value of <code>false</code> indicates a capture capture of a <a>visible display
+                a value of <code>false</code> indicates a capture of a <a>visible display
                 surface</a>.
               </p>
             </dd>
@@ -769,6 +769,32 @@
           </p>
         </div>
       </section>
+      <section>
+        <h2 id="fullscreen">
+          Fullscreen Rendering considerations
+        </h2>
+          <p><i>This section is non-normative.</i></p>
+          <p>
+            For applications that support full screen rendering such as powerpoint applications,
+            the decision of the display surface that gets captured while in fullscreen mode is 
+            specific to the user agent implementation. A user agent MAY choose to switch from 
+            capture of a window to the fullscreen when the associated application goes 
+            fullscreen. For consistency reasons, an user agent must ensure that the display surface 
+            captured in fullscreen mode be unambiguously mapped to the application/window where 
+            the action was triggered in the first place. This might be achieved by ensuring that 
+            this transition is only made when the captured window has focus before the transition.
+          </p>
+          <p>
+            The choice of <code><a>DisplayCaptureSurfaceType</a></code> and 
+            <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code> setting 
+            may further influence what gets captured. For example, when an application/window 
+            is triggered to go fullscreen with the
+            <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code> value 
+            of false and the DisplayCaptureSurfaceType of "monitor", the choice of the "monitor" 
+            <a>visible display surface</a> selected for capture is solely left to the user agent, 
+            especially when there are multiple options available.
+          </p> 
+      </section>
     </section>
     <section>
       <h1>Privacy Indicator Requirements</h1>
@@ -863,6 +889,14 @@
         present information that would otherwise be secret from the application that is receiving
         the resulting media.
       </p>
+      <p>
+        When rendering applications fullscreen, an user agent must be 
+        prepared to handle certain transient behaviors where the action to capture an 
+        application/window in fullscreen may be reverted, say due to user canceling the 
+        action immediately. In these scenarios, the user agent MUST ensure that the 
+        captured display surface is restored to the application/window  
+        originating the action.
+      </p>
       <section>
         <h2>
           Capturing Logical or Visible Display Surfaces
@@ -914,7 +948,7 @@
         </p>
         <p>
           Two forms of consent interaction are described: <a>active user consent</a> and a range of
-          <a>elevated permissions</a>. These are non-normative recommandations only.
+          <a>elevated permissions</a>. These are non-normative recommendations only.
         </p>
         <section>
           <h2>
