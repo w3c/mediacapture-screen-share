@@ -217,8 +217,9 @@
               allowed not to return audio even if the audio constraint is present. If the user
               agent knows no audio will be shared for the lifetime of the stream it MUST NOT
               include an audio track in the resulting stream. The user agent MAY accept a
-              request for audio and video by only returning video. The user agent MUST reject
-              audio-only requests.
+              request for audio and video by only returning a video track in the resulting
+              stream, or it MAY accept the request by returning both an audio track and a video
+              track in the resulting stream. The user agent MUST reject audio-only requests.
             </p>
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
