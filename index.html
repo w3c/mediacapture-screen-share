@@ -545,8 +545,29 @@
         <a>display surface</a> change, for example in response to the end-user
         resizing a captured window, and these changes render the capabilities
         and/or settings of one or more constrainable properties outdated, the
-        user agent MUST queue a task to update all affected constrainable
-        properties at the same time.</p>
+        user agent MUST queue a task to run the following step:</p>
+        <ol>
+          <li>
+            <p>Update all affected constrainable properties at the same time.</p>
+            <p>If this causes an "overconstrained" situation, then user agent
+            MUST ignore the culprit constraints for as long as they
+            overconstrain. The user agent MUST NOT mute the track, and
+            the user agent MUST NOT fire the
+            <a href="https://www.w3.org/TR/mediacapture-streams#event-mediastreamtrack-overconstrained">overconstrained</a>
+            event.</p>
+          </li>
+        </ol>
+        <div class="note">
+          <p>While min and exact constraints produce TypeError on
+          getDisplayMedia(), this specification does not alter the
+          track.applyConstraints() method. Therefore, they may instead produce
+          OverconstrainedError or succeed depending on values, and therefore
+          potentially be present to cause this "overconstrained" situation.
+          The max constraint may also cause this, e.g. with aspectRatio. This
+          spec considers these to be edge cases that aren't useful.</p>
+          <p>Similarly, the user agent and users are encouraged to ignore
+          advanced constraints.</p>
+        </div>
         <section>
           <h2>
             Downscaling and Frame Decimation
@@ -572,21 +593,12 @@
           <p>The user agent MUST NOT crop the captured output.</p>
           <p>The user agent MUST NOT upscale the captured output, or create
           additional frames.</p>
-          <p>The user agent MUST NOT fire the
-          <a href="https://www.w3.org/TR/mediacapture-streams#event-mediastreamtrack-overconstrained">overconstrained</a> event or mute the track in any "overconstrained" situation.</p>
           <div class="note">
             <p>The max constraint type lets a web application provide a maximum
             envelope for constrainable properties like width and height. This is
             helpful to limit extreme aspect ratios, should the end-user resize a
-            <a>window</a> or <a>browser</a> surface while it is being captured.
-            </p>
-            <p>While min and exact constraints produce TypeError on
-            getDisplayMedia(), this specification does not alter the
-            track.applyConstraints() method. Therefore, they may instead produce
-            OverconstrainedError or succeed depending on values. Since there is
-            no effect of being "overconstrained", they serve no purpose.</p>
-            <p>Similarly, the user agent and users are encouraged to ignore
-            advanced constraints.</p>
+            <a>window</a> or <a>browser</a> surface to such an extreme while
+            it is being captured.</p>
           </div>
         </section>
         <section>
