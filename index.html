@@ -38,9 +38,9 @@
       </h2>
       <p>
         This document describes an extension to the Media Capture API [[GETUSERMEDIA]] that enables
-        the acquisition of a user's display, or part thereof, in the form of a video stream. In some
-        cases system, application or window audio is also applicable which is presented in the form
-        of an audio stream. This enables a number of applications, including screen sharing using
+        the acquisition of a user's display, or part thereof, in the form of a video track. In some
+        cases system, application or window audio is also captured which is presented in the form
+        of an audio track. This enables a number of applications, including screen sharing using
         WebRTC [[WEBRTC]].
       </p>
       <p>
@@ -53,7 +53,7 @@
       <p>
         This document concerns itself primarily with the capture of video and audio [[GETUSERMEDIA]],
         but the general mechanisms defined here could be extended to other types of media, of which
-        depth [[MEDIACAPTURE-DEPTH]] are currently defined.
+        depth [[MEDIACAPTURE-DEPTH]] is currently defined.
       </p>
     </section>
     <section id="conformance">
@@ -217,8 +217,8 @@
               allowed not to return audio even if the audio constraint is present. If the user
               agent knows no audio will be shared for the lifetime of the stream it MUST NOT
               include an audio track in the resulting stream. The user agent MAY accept a
-              request for audio and video by only returning video, but MUST reject an
-              audio-only request if no audio track is available.
+              request for audio and video by only returning video. The user agent MUST reject
+              audio-only requests.
             </p>
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
