@@ -476,10 +476,10 @@
               <td><code><a>ConstrainDouble</a></code></td>
               <td>The exact aspect ratio (width in pixels divided by height in
               pixels, represented as a double rounded to the tenth decimal
-              place) or aspect ratio range. As a setting, represents the aspect
-              ratio of the <a>display surface</a>. As a capability, min and max
-              both MUST be the current setting value, rendering this property
-              immutable from the application viewpoint.</td>
+              place) or aspect ratio range. As a setting, represents
+              <code>width / height</code>. As a capability, min
+              and max both MUST be the current setting value, rendering this
+              property immutable from the application viewpoint.</td>
             </tr>
             <tr id="def-constraint-resizeMode">
               <td><dfn>resizeMode</dfn></td>
@@ -574,8 +574,8 @@
           <a href="https://www.w3.org/TR/mediacapture-streams#dfn-selectsettings">SelectSettings</a>
           algorithm, the user agent SHOULD consider all possible combinations of
           downscaled dimensions that preserve the aspect ratio of the original
-          <a>display surface</a>, and frame rates available through frame
-          decimation, as available
+          <a>display surface</a> (to the nearest pixel), and frame rates
+          available through frame decimation, as available
           <a href="https://www.w3.org/TR/mediacapture-streams#dfn-selectsettings">settings dictionaries</a>.
           </p>
           <p>The downscaling and decimation effects of constraints is then
