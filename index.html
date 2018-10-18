@@ -159,33 +159,9 @@
         <code><a>getDisplayMedia</a></code> method on the <code><a>Navigator</a></code>
         interface, that is similar to <code><dfn><a href=
         "https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></dfn></code>
-        [[!GETUSERMEDIA]].
+        [[!GETUSERMEDIA]], except that it acquires media from one display device
+        chosen by the end-user each time.
       </p>
-      <div class="note">
-        <p>
-          Though all constraints are supported for display device capture, not all constraints will
-          have an effect. Usually, this is because a display device cannot alter its behavior in a
-          way that the constraint implies, just as a video camera cannot alter <a href=
-          "https://w3c.github.io/mediacapture-main/#def-constraint-volume">volume</a>.
-        </p>
-        <p>
-          For instance, it is unlikely that setting the following constraints will have any useful
-          effect (other than an <a href=
-          "https://w3c.github.io/mediacapture-main/#event-mediastreamtrack-overconstrained">overconstrained</a>
-          error): <a href=
-          "https://w3c.github.io/mediacapture-main/#def-constraint-aspectratio">aspectRatio</a>,
-          <a href=
-          "https://w3c.github.io/mediacapture-main/#def-constraint-facingmode">facingMode</a>, and
-          <a href=
-          "https://w3c.github.io/mediacapture-main/#def-constraint-echocancellation">echoCancellation</a>.
-        </p>
-        <p>
-          See <a href="#deviceId"></a> for information on the <a href=
-          "https://w3c.github.io/mediacapture-main/#def-constraint-deviceid">deviceId</a> and
-          <a href="https://w3c.github.io/mediacapture-main/#def-constraint-groupId">groupId</a>
-          constraints.
-        </p>
-      </div>
       <section>
         <h2>
           <dfn>Navigator</dfn> Additions
@@ -200,8 +176,6 @@
           <dd>
             <p>Prompts the user for permission to live-capture their display.</p>
             <p>
-              This method is similar to <code><a>getUserMedia</a></code>, except that it
-              acquires media from one display device chosen by the end-user each time.
               The user agent MUST let the end-user choose which display surface to share
               out of all available choices every time, and MUST NOT use
               <code>constraints</code> to limit that choice. Instead,
@@ -446,7 +420,7 @@
       </section>
       <section>
         <h2 id="constraints">
-          Constraining Display Surface Selection
+          Unconstrained Display Surface Selection
         </h2>
         <p class="fingerprint">
           Not accepting constraints for source selection means that
@@ -456,32 +430,137 @@
         </p>
       </section>
       <section>
-        <h2 id="display-constraints">
-          New Constrainable Properties for Captured Display Surfaces
+        <h2 id="constrainable-properties">
+          Constrainable Properties for Captured Display Surfaces
         </h2>
-        <p>
-          Following new <a href="https://www.w3.org/TR/mediacapture-streams/#defining-a-new-constrainable-property">
-          Constrainable Properties</a> are defined that allow an application to observe the properties
-          of the selected <a>display surface</a>. Since the source of media cannot be changed after a
-          <code>MediaStreamTrack</code> has been returned and constraints do not affect the
-          selection of <a>display surfaces</a>, these constrainable properties cannot be changed by an
-          application.
-        </p>
-        <p>
-          The <code><a data-link-for="MediaTrackConstraintSet">displaySurface</a></code> constraint
-          allows an application to observe the type of <a>display surface</a> that is being
-          captured.
-        </p>
-        <p>
-          The <code><a data-link-for="MediaTrackConstraintSet">logicalSurface</a></code> constraint
-          allows an application to observe whether the surface that is captured is a <a>logical
-          display surface</a>, rather than the <a>visible display surface</a>.
-        </p>
-        <p>
-          The <code><a data-link-for="MediaTrackConstraintSet">cursor</a></code> constraint
-          allows an application to specify if the cursor should be included in the captured
-          display.
-        </p>
+        <p>Constraints serve a different purpose for display device capture. They
+        do not aid discovery, instead they are applied only after user-selection.
+        Some of these constraints enable user agent processing like downscaling
+        and frame decimation, as well as display-specific features. Others enable
+        observation of inherent properties of a user-selected
+        <a>display surface</a>, as capabilities and settings.</p>
+        <p>The following new and existing <code><a>MediaStreamTrack</a></code>
+        <a href="https://www.w3.org/TR/mediacapture-streams/#constrainable-properties">
+        Constrainable Properties</a> are defined to apply to the user-selected
+        video <a>display surface</a>, with the following behavior:</p>
+        <table class="simple">
+          <thead>
+            <tr>
+              <th>Property Name</th>
+              <th>Type</th>
+              <th>Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="def-constraint-width">
+              <td><dfn>width</dfn></td>
+              <td><code><a>ConstrainULong</a></code></td>
+              <td>The width or width range, in pixels. As a capability, max MUST
+              reflect the <a>display surface</a>'s width, and min MUST reflect
+              the width of the smallest aspect-preserving representation
+              available through downscaling by the user agent.</td>
+            </tr>
+            <tr id="def-constraint-height">
+              <td><dfn>height</dfn></td>
+              <td><code><a>ConstrainULong</a></code></td>
+              <td>The height or height range, in pixels. As a capability, max
+              MUST reflect the <a>display surface</a>'s height, and min MUST
+              reflect the height of the smallest aspect-preserving
+              representation available through downscaling by the user agent.
+              </td>
+            </tr>
+            <tr id="def-constraint-frameRate">
+              <td><dfn>frameRate</dfn></td>
+              <td><code><a>ConstrainDouble</a></code></td>
+              <td>The frame rate (frames per second) or frame rate range. As a
+              capability, max MUST reflect the <a>display surface</a>'s frame
+              rate, and min MUST reflect the lowest frame rate available through
+              frame decimation by the user agent.</td>
+            </tr>
+            <tr id="def-constraint-aspect">
+              <td><dfn>aspectRatio</dfn></td>
+              <td><code><a>ConstrainDouble</a></code></td>
+              <td>The exact aspect ratio (width in pixels divided by height in
+              pixels, represented as a double rounded to the tenth decimal
+              place) or aspect ratio range. As a setting, represents the aspect
+              ratio of the <a>display surface</a>. As a capability, min and max
+              both MUST be the setting value, rendering this property immutable
+              from the application viewpoint. However, these values may change
+              if the end-user is able to resize the <a>display surface</a>. The
+              user agent MUST NOT crop the captured output.</td>
+            </tr>
+            <tr id="def-constraint-resizeMode">
+              <td><dfn>resizeMode</dfn></td>
+              <td><code><a>ConstrainDOMString</a></code></td>
+              <td>
+                This string (or each string, when a list) should be one of the
+                members of <code><a>VideoResizeModeEnum</a></code>. As a setting,
+                <code>none</code> means the <code><a>MediaStreamTrack</a></code>
+                contains all bits needed to render the display in full detail,
+                which if <code>window.devicePixelRatio > 1</code>, means
+                <code>width</code> and <code>height</code> will be larger
+                than the display's appearance from an end-user viewpoint would
+                suggest, whereas <code>crop-and-scale</code> means the
+                <code><a>MediaStreamTrack</a></code> contains an
+                aspect-preserved representation of the <a>display surface</a>
+                that has been downscaled by the user agent, but not cropped. As
+                a capability, the values <code>none</code> and
+                <code>crop-and-scale</code> both MUST be present. In other
+                words, the user agent MUST support downscaling. The user agent
+                SHOULD downscale by
+                <a href="https://drafts.csswg.org/cssom-view/#dom-window-devicepixelratio">
+                  <code>window.devicePixelRatio</code></a>, unless otherwise
+                directed by applied constraints. The user agent MUST NOT crop
+                the captured output.
+              </td>
+            </tr>
+            <tr id="def-constraint-displaySurface">
+              <td><dfn>displaySurface</dfn></td>
+              <td><code><a>ConstrainDOMString</a></code></td>
+              <td>
+                This string (or each string, when a list) should be one of the
+                members of <code><a>DisplayCaptureSurfaceType</a></code>. As a
+                setting, indicates the type of <a>display surface</a> that
+                is being captured. As a capability, the setting value MUST be
+                the lone value present, rendering this property immutable from
+                the application viewpoint.
+              </td>
+            </tr>
+            <tr id="def-constraint-logicalSurface">
+              <td><dfn>logicalSurface</dfn></td>
+              <td><code><a>ConstrainBoolean</a></code></td>
+              <td>
+                As a setting, a value of <code>true</code> indicates capture of
+                a <a>logical display surface</a>, whereas a value of
+                <code>false</code> indicates a capture capture of a
+                <a>visible display surface</a>. As a capability, this same
+                setting value MUST be the lone value present, rendering this
+                property immutable from the application viewpoint.
+                <p>
+                </p>
+              </td>
+            </tr>
+            <tr id="def-constraint-cursor">
+              <td><dfn>cursor</dfn></td>
+              <td><code><a>ConstrainDOMString</a></code></td>
+              <td>
+                This string (or each string, when a list) should be one of the
+                members of <code><a>CursorCaptureConstraint</a></code>. As a
+                setting, indicates if and when the cursor is included in the
+                captured <a>display surface</a>.  As a capability, the user
+                agent MUST include only the set of values from
+                <code><a>CursorCaptureConstraint</a></code> it is capable of
+                supporting for this <a>display surface</a>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>When inherent properties of the underlying source of a user-selected
+        <a>display surface</a> change, for example in response to the end-user
+        resizing a captured window, and these changes render the capabilities
+        and/or settings of one or more constrainable properties outdated, the
+        user agent MUST queue a task to update all affected constrainable
+        properties at the same time.</p>
         <section>
           <h2>
             Extensions to <a class="idlType">MediaTrackSupportedConstraints</a>
@@ -751,21 +830,12 @@
         </p>
         <p>
           Display capture sources therefore cannot be selected with the <code>deviceId</code>
-          constraint, since this would allow applications to influence selection; setting
-          <code>deviceId</code> constraint can only cause the resulting
-          <code><a>MediaStreamTrack</a></code> to become overconstrained.
-        </p>
-        <p>
-          A display capture source is represented in the <code><a>MediaStreamTrack</a></code> API
-          as having <code>deviceId</code> and <code>groupId</code> attributes that are randomized
-          each time a <code><a>MediaStreamTrack</a></code> is connected. These values cannot
-          duplicate any existing values.
+          constraint, since their deviceIds are not exposed.
         </p>
         <div class="note">
           <p>
-          This exposed deviceId identifier is not to be confused with the stable
-          and private id of the same name used in algorithms to implement privacy
-          indicators.
+          This is not to be confused with the stable and private id of the same
+          name used in algorithms to implement privacy indicators.
           </p>
         </div>
       </section>
