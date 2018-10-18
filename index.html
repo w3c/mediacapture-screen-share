@@ -424,9 +424,12 @@
         <h2 id="constrainable-properties">
           Constrainable Properties for Captured Display Surfaces
         </h2>
-        <p>Constraints serve a different purpose for display device capture. They
-        do not aid discovery, instead they are applied only after user-selection.
-        Some of these constraints enable user agent processing like downscaling
+        <p>Constraints serve a different purpose in
+        <code><a>getDisplayMedia</a></code> than they do in
+        <code><a href="https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></code>.
+        They do not aid discovery, instead they are applied only after user-selection.
+        </p>
+        <p>Some of these constraints enable user agent processing like downscaling
         and frame decimation, as well as display-specific features. Others enable
         observation of inherent properties of a user-selected
         <a>display surface</a>, as capabilities and settings.</p>
@@ -475,9 +478,8 @@
               pixels, represented as a double rounded to the tenth decimal
               place) or aspect ratio range. As a setting, represents the aspect
               ratio of the <a>display surface</a>. As a capability, min and max
-              both MUST be the setting value, rendering this property immutable
-              from the application viewpoint. However, these values may change
-              if the end-user is able to resize the <a>display surface</a>.</td>
+              both MUST be the current setting value, rendering this property
+              immutable from the application viewpoint.</td>
             </tr>
             <tr id="def-constraint-resizeMode">
               <td><dfn>resizeMode</dfn></td>
@@ -495,8 +497,7 @@
                 aspect-preserved representation of the <a>display surface</a>
                 that has been downscaled by the user agent, but not cropped. As
                 a capability, the values <code>none</code> and
-                <code>crop-and-scale</code> both MUST be present. In other
-                words, the user agent MUST support downscaling.
+                <code>crop-and-scale</code> both MUST be present.
               </td>
             </tr>
             <tr id="def-constraint-displaySurface">
@@ -519,7 +520,7 @@
                 a <a>logical display surface</a>, whereas a value of
                 <code>false</code> indicates a capture capture of a
                 <a>visible display surface</a>. As a capability, this same
-                setting value MUST be the lone value present, rendering this
+                value MUST be the lone value present, rendering this
                 property immutable from the application viewpoint.
                 <p>
                 </p>
@@ -548,7 +549,7 @@
         properties at the same time.</p>
         <section>
           <h2>
-            Downscaling and frame decimation
+            Downscaling and Frame Decimation
           </h2>
           <p>For the purposes of the
           <a href="https://www.w3.org/TR/mediacapture-streams#dfn-selectsettings">SelectSettings</a>
@@ -569,6 +570,8 @@
           directed by applied constraints.
           </p>
           <p>The user agent MUST NOT crop the captured output.</p>
+          <p>The user agent MUST NOT upscale the captured output, or create
+          additional frames.</p>
           <p>The user agent MUST NOT fire the
           <a href="https://www.w3.org/TR/mediacapture-streams#event-mediastreamtrack-overconstrained">overconstrained</a> event or mute the track in any "overconstrained" situation.</p>
           <div class="note">
@@ -855,7 +858,7 @@
         </p>
         <p>
           Display capture sources therefore cannot be selected with the <code>deviceId</code>
-          constraint, since their deviceIds are not exposed.
+          constraint, since their <code>deviceId</code>s are not exposed.
         </p>
         <div class="note">
           <p>
