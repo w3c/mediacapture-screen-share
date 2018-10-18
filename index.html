@@ -565,8 +565,6 @@
           potentially be present to cause this "overconstrained" situation.
           The max constraint may also cause this, e.g. with aspectRatio. This
           spec considers these to be edge cases that aren't useful.</p>
-          <p>Similarly, the user agent and users are encouraged to ignore
-          advanced constraints.</p>
         </div>
         <section>
           <h2>
@@ -580,6 +578,10 @@
           decimation, as available
           <a href="https://www.w3.org/TR/mediacapture-streams#dfn-selectsettings">settings dictionaries</a>.
           </p>
+          <p>The downscaling and decimation effects of constraints is then
+          effectively governed by the
+          <a href="https://w3c.github.io/mediacapture-main/getusermedia.html#dfn-fitness-distance">
+          fitness distance algorithm</a>.</p>
           <p>The intent is for the user agent to produce output that is close to
           the ideal <code>width</code>, ideal <code>height</code>, and/or
           ideal <code>frameRate</code> when these are specified, while at all
