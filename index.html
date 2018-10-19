@@ -390,18 +390,21 @@
         </p>
         <p>
           When <a>display surface</a> enters an inaccessible state that is not necessarily
-          permanent, the user agent MUST queue a task that <a>sets the muted state</a> of the
-          corresponding media track to <code>true</code>.
+          permanent, the user agent MUST queue a task that
+          <a href="https://www.w3.org/TR/mediacapture-streams#set-track-muted">sets the muted state</a>
+          of the corresponding media track to <code>true</code>.
         </p>
         <p>
           When <a>display surface</a> exits an inaccessible state and becomes accessible, the
-          user agent MUST queue a task that <a>sets the muted state</a> of the corresponding
-          media track to <code>false</code>.
+          user agent MUST queue a task that
+          <a href="https://www.w3.org/TR/mediacapture-streams#set-track-muted">sets the muted state</a>
+          of the corresponding media track to <code>false</code>.
         </p>
         <p>
           When a <a>display surface</a> enters an inaccessible state that is permanent (such as
-          the source application terminating), the user agent MUST queue a task that <a>ends</a>
-          the corresponding media track.
+          the source application terminating), the user agent MUST queue a task that
+          <a href="https://www.w3.org/TR/mediacapture-streams#track-ended">ends</a> the
+          corresponding media track.
         </p>
         <p>
           A stream that was just returned by <code><a>getDisplayMedia</a></code> MAY contain
@@ -448,7 +451,7 @@
           <tbody>
             <tr id="def-constraint-width">
               <td><dfn>width</dfn></td>
-              <td><code><a>ConstrainULong</a></code></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainulong">ConstrainULong</a></code></td>
               <td>The width or width range, in pixels. As a capability, max MUST
               reflect the <a>display surface</a>'s width, and min MUST reflect
               the width of the smallest aspect-preserving representation
@@ -456,7 +459,7 @@
             </tr>
             <tr id="def-constraint-height">
               <td><dfn>height</dfn></td>
-              <td><code><a>ConstrainULong</a></code></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainulong">ConstrainULong</a></code></td>
               <td>The height or height range, in pixels. As a capability, max
               MUST reflect the <a>display surface</a>'s height, and min MUST
               reflect the height of the smallest aspect-preserving
@@ -465,7 +468,7 @@
             </tr>
             <tr id="def-constraint-frameRate">
               <td><dfn>frameRate</dfn></td>
-              <td><code><a>ConstrainDouble</a></code></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindouble">ConstrainDouble</a></code></td>
               <td>The frame rate (frames per second) or frame rate range. As a
               capability, max MUST reflect the <a>display surface</a>'s frame
               rate, and min MUST reflect the lowest frame rate available through
@@ -473,7 +476,7 @@
             </tr>
             <tr id="def-constraint-aspect">
               <td><dfn>aspectRatio</dfn></td>
-              <td><code><a>ConstrainDouble</a></code></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindouble">ConstrainDouble</a></code></td>
               <td>The exact aspect ratio (width in pixels divided by height in
               pixels, represented as a double rounded to the tenth decimal
               place) or aspect ratio range. As a setting, represents
@@ -483,11 +486,12 @@
             </tr>
             <tr id="def-constraint-resizeMode">
               <td><dfn>resizeMode</dfn></td>
-              <td><code><a>ConstrainDOMString</a></code></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindomstring">ConstrainDOMString</a></code></td>
               <td>
                 This string (or each string, when a list) should be one of the
-                members of <code><a>VideoResizeModeEnum</a></code>. As a setting,
-                <code>none</code> means the <code><a>MediaStreamTrack</a></code>
+                members of
+                <code><a href="https://www.w3.org/TR/mediacapture-streams#dom-videoresizemodeenum">VideoResizeModeEnum</a></code>.
+                As a setting, <code>none</code> means the <code><a>MediaStreamTrack</a></code>
                 contains all bits needed to render the display in full detail,
                 which if <code>window.devicePixelRatio > 1</code>, means
                 <code>width</code> and <code>height</code> will be larger
@@ -502,7 +506,7 @@
             </tr>
             <tr id="def-constraint-displaySurface">
               <td><dfn>displaySurface</dfn></td>
-              <td><code><a>ConstrainDOMString</a></code></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindomstring">ConstrainDOMString</a></code></td>
               <td>
                 This string (or each string, when a list) should be one of the
                 members of <code><a>DisplayCaptureSurfaceType</a></code>. As a
@@ -514,7 +518,7 @@
             </tr>
             <tr id="def-constraint-logicalSurface">
               <td><dfn>logicalSurface</dfn></td>
-              <td><code><a>ConstrainBoolean</a></code></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainboolean">ConstrainBoolean</a></code></td>
               <td>
                 As a setting, a value of <code>true</code> indicates capture of
                 a <a>logical display surface</a>, whereas a value of
@@ -523,12 +527,12 @@
                 value MUST be the lone value present, rendering this
                 property immutable from the application viewpoint.
                 <p>
-                </p>
+                </p>s
               </td>
             </tr>
             <tr id="def-constraint-cursor">
               <td><dfn>cursor</dfn></td>
-              <td><code><a>ConstrainDOMString</a></code></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindomstring">ConstrainDOMString</a></code></td>
               <td>
                 This string (or each string, when a list) should be one of the
                 members of <code><a>CursorCaptureConstraint</a></code>. As a
