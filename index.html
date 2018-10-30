@@ -73,10 +73,10 @@
       </h2>
       <p>
         The following example demonstrates a request for display capture using the
-        <code>navigator.getDisplayMedia</code> method defined in this document.
+        <code>navigator.mediaDevices.getDisplayMedia</code> method defined in this document.
       </p>
       <pre class="example highlight">try {
-  let mediaStream = await navigator.getDisplayMedia({video:true});
+  let mediaStream = await navigator.mediaDevices.getDisplayMedia({video:true});
   videoElement.srcObject = mediaStream;
 } catch (e) {
   console.log('Unable to acquire screen capture: ' + e);
@@ -156,9 +156,9 @@
       -->
       <p>
         Capture of displayed media is enabled through the addition of a new
-        <code><a>getDisplayMedia</a></code> method on the <code><a>Navigator</a></code>
+        <code><a>getDisplayMedia</a></code> method on the <code><a>MediaDevices</a></code>
         interface, that is similar to <code><dfn><a href=
-        "https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></dfn></code>
+        "https://w3c.github.io/mediacapture-main/#mediadevices-interface-extensions">getUserMedia</a></dfn></code>
         [[!GETUSERMEDIA]].
       </p>
       <div class="note">
@@ -188,12 +188,12 @@
       </div>
       <section>
         <h2>
-          <dfn>Navigator</dfn> Additions
+          <dfn>MediaDevices</dfn> Additions
         </h2>
-        <pre class="idl">partial interface Navigator {
+        <pre class="idl">partial interface MediaDevices {
     Promise&lt;MediaStream&gt; getDisplayMedia (optional MediaStreamConstraints constraints);
 };</pre>
-        <dl data-link-for="Navigator" data-dfn-for="Navigator" class="methods">
+        <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
             <code><dfn data-dfn-for="getDisplayMedia">getDisplayMedia</dfn></code>
           </dt>
