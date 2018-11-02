@@ -101,7 +101,7 @@
       <ul>
         <li>A <dfn>monitor</dfn> <a>display surface</a> represents a physical display. Some systems
         have multiple <a>monitor</a>s, which can be identified separately. Multiple <a>monitor</a>s
-        might also be aggregated into as a single logical <a>monitor</a>. An aggregated <a>display
+        might also be aggregated into a single logical <a>monitor</a>. An aggregated <a>display
         surface</a> is captured as a single <code><a>MediaStreamTrack</a></code>.
         </li>
         <li>A <dfn data-lt="windows">window</dfn> <a>display surface</a> is a single contiguous
@@ -132,6 +132,10 @@
         Some operating systems permit windows from different applications to occlude other windows,
         in whole or part, so the <a>visible display surface</a> is a strict subset of the
         <a>logical display surface</a>.
+      </p>
+      <p>
+        The <dfn>source pixel ratio</dfn> of a <a>display surface</a> is 1/96th of 1 inch divided
+        by its vertical pixel size.
       </p>
       <p>The terms <dfn>permission</dfn>, <dfn>retrieve the permission state</dfn>,
       <dfn id="prompt-the-user-to-choose">prompt the user to choose</dfn>, and
@@ -493,7 +497,7 @@
                 <code><a href="https://www.w3.org/TR/mediacapture-streams#dom-videoresizemodeenum">VideoResizeModeEnum</a></code>.
                 As a setting, <code>none</code> means the <code><a>MediaStreamTrack</a></code>
                 contains all bits needed to render the display in full detail,
-                which if <code>window.devicePixelRatio > 1</code>, means
+                which if the </code><a>source pixel ratio</a> > 1</code>, means
                 <code>width</code> and <code>height</code> will be larger
                 than the display's appearance from an end-user viewpoint would
                 suggest, whereas <code>crop-and-scale</code> means the
@@ -589,14 +593,13 @@
           ideal <code>frameRate</code> when these are specified, while at all
           times preserving the aspect ratio of the original <a>display surface</a>.
           </p>
-          <p>The user agent SHOULD downscale by
-          <a href="https://drafts.csswg.org/cssom-view/#dom-window-devicepixelratio">
-          <code>window.devicePixelRatio</code></a> by default, unless otherwise
-          directed by applied constraints.
+          <p>The user agent SHOULD downscale by the <a>source pixel ratio</a> by
+          default, unless otherwise directed by applied constraints.
           </p>
           <p>The user agent MUST NOT crop the captured output.</p>
           <p>The user agent MUST NOT upscale the captured output, or create
-          additional frames.</p>
+          additional frames, except as needed to preserve high resolutions and
+          frame rates in an aggregated <a>display surface</a>.</p>
           <div class="note">
             <p>The max constraint type lets a web application provide a maximum
             envelope for constrainable properties like width and height. This is
