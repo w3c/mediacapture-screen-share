@@ -243,32 +243,6 @@
                   <code>InvalidStateError</code>.</p>
               </li>
               <li>
-                <p>If the <a>current settings object</a>'s <a>responsible
-                  document</a> is NOT <a>allowed to use</a> the feature
-                indicated by Feature Policy [TBD],
-                return a promise <a>rejected</a> with a
-                <code><a>DOMException</a></code> object whose
-                <code><a>name</a></code> attribute has the value
-                <code>SecurityError</code>.</p>
-              </li>
-              <li>
-                <p>Let <var>originIdentifier</var> be the <a>current settings
-                  object</a>'s <a data-cite=
-                    "!HTML52/webappapis.html#responsible-browsing-context">responsible
-                    browsing context</a>'s [[!HTML52]] <a data-cite=
-                      "!HTML52/browsers.html#top-level-browsing-context">top-level
-                      browsing context</a>'s <a data-cite=
-                        "!HTML52/browsers.html#active-document">active document</a>'s
-                      origin.</p>
-              </li>
-              <li>
-                <p>If the <a>current settings object</a>'s origin is
-                different from <var>originIdentifier</var>, set
-                <var>originIdentifier</var> to the result of combining
-                <var>originIdentifier</var> and the <a>current settings
-                  object</a>'s origin.</p>
-              </li>
-              <li>
                 <p>Let <var>p</var> be a new promise.</p>
               </li>
               <li>
@@ -300,10 +274,9 @@
                       Failure</em> below.</p>
                   </li>
                   <li>
-                    <p>For the origin identified by
-                    <var>originIdentifier</var>, <a>prompt the user to choose</a>
+                    <p><a>Prompt the user to choose</a>
                     a display device, with a PermissionDescriptor named
-                    <code>"display"</code>, resulting in a set of
+                    <code>"display-capture"</code>, resulting in a set of
                     provided media.</p>
                     <p>The provided media MUST include precisely one track of
                     each media type in <var>requestedMediaTypes</var>.
@@ -886,6 +859,34 @@
           </p>
         </div>
       </section>
+    </section>
+    <section>
+      <h1 id=feature-policy-integration>Feature Policy Integration</h1>
+      <p>This specification defines a <a data-link-type="dfn"
+        href="https://wicg.github.io/feature-policy/#policy-controlled-feature"
+        >policy-controlled feature</a>
+      identified by the string
+      <code>"<dfn data-lt="display-capture-feature">display-capture</dfn>"</code>.
+      Its <a data-link-type="dfn"
+        href="https://wicg.github.io/feature-policy/#default-allowlist"
+        >default allowlist</a> is <code>"self"</code>.
+      <div class="note">
+        <p>A <a data-link-type="dfn"
+          href="https://dom.spec.whatwg.org/#concept-document"
+          >document</a>'s
+        <a data-link-type="dfn"
+          href="https://html.spec.whatwg.org/multipage/dom.html#concept-document-feature-policy"
+          >feature policy</a>
+        determines whether any content in that document is allowed to use
+        <code>getDisplayMedia</code>. If disabled in any document, no content in
+        the document will be
+        <a data-link-type="dfn"
+          href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use"
+          >allowed to use</a>
+        <code>getDisplayMedia</code>. This is enforced by the
+        <a>prompt the user to choose</a> algorithm.
+        </p>
+      </div>
     </section>
     <section>
       <h1>Privacy Indicator Requirements</h1>
