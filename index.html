@@ -38,8 +38,10 @@
       </h2>
       <p>
         This document describes an extension to the Media Capture API [[GETUSERMEDIA]] that enables
-        the acquisition of a user's display, or part thereof, in the form of a video stream. This
-        enables a number of applications, including screen sharing using WebRTC [[WEBRTC]].
+        the acquisition of a user's display, or part thereof, in the form of a video track. In some
+        cases system, application or window audio is also captured which is presented in the form
+        of an audio track. This enables a number of applications, including screen sharing using
+        WebRTC [[WEBRTC]].
       </p>
       <p>
         This feature has signficant security implications. Applications that use this API to access
@@ -49,9 +51,9 @@
         sandbox.
       </p>
       <p>
-        This document concerns itself primarily with the capture of video, but the general
-        mechanisms defined here could be extended to other types of media, of which audio
-        [[GETUSERMEDIA]] and depth [[MEDIACAPTURE-DEPTH]] are currently defined.
+        This document concerns itself primarily with the capture of video and audio [[GETUSERMEDIA]],
+        but the general mechanisms defined here could be extended to other types of media, of which
+        depth [[MEDIACAPTURE-DEPTH]] is currently defined.
       </p>
     </section>
     <section id="conformance">
@@ -192,6 +194,20 @@
               only after they have made their selection. This prevents an application
               from influencing the selection of sources, see <a href="#constraints"></a>
               for details.
+            </p>
+            <p>
+              In the case of audio, the user agent MAY present the end-user with audio sources
+              to share. Which choices are available to choose from is up to the user agent, and
+              the audio source(s) are not necessarily the same as the video source(s). An audio
+              source may be a particular <a>application</a>, <a>window</a>, <a>browser</a>, the
+              entire system audio or any combination thereof. Unlike
+              <code><a>getUserMedia</a></code> with regards to audio+video, the user agent is
+              allowed not to return audio even if the audio constraint is present. If the user
+              agent knows no audio will be shared for the lifetime of the stream it MUST NOT
+              include an audio track in the resulting stream. The user agent MAY accept a
+              request for audio and video by only returning a video track in the resulting
+              stream, or it MAY accept the request by returning both an audio track and a video
+              track in the resulting stream. The user agent MUST reject audio-only requests.
             </p>
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
@@ -1024,6 +1040,22 @@
           that is partially transparent is that content from the background might be shared. A
           <a>user agent</a> MUST NOT capture content from the background of a captured <a>display
           surface</a>.
+        </p>
+        <h2>
+          Capturing Audio
+        </h2>
+        <p>
+          <code><a>getDisplayMedia</a></code> allows capturing audio alongside video, this poses
+          privacy and security concern as this may expose additional information about system
+          applications, and the set of shared audio sources are not necessarily the same as the set
+          of shared video sources. For example, a <a>user agent</a> MAY be capturing the video of a
+          <a>window</a> and capture the audio of the entire system, including applications
+          unrelated to that window. The <a>user agent</a> MUST NOT share audio without <a>active
+          user consent</a>. It is important that the user is aware of what content will be shared,
+          including any possible audio. It is strongly recommended that the user is allowed to give
+          consent to video but not audio, resulting in a video-only stream. This ensures that the
+          request for audio is always optional and does not restrict the user's choices compared to
+          a video-only request.
         </p>
       </section>
       <section>
