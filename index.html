@@ -171,7 +171,7 @@
           <dfn>MediaDevices</dfn> Additions
         </h2>
         <pre class="idl">partial interface MediaDevices {
-    Promise&lt;MediaStream&gt; getDisplayMedia (optional MediaStreamConstraints constraints);
+    Promise&lt;MediaStream&gt; getDisplayMedia (optional DisplayMediaStreamConstraints constraints);
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
@@ -202,6 +202,12 @@
                 argument.</p>
               </li>
               <li>
+                <p>If <code>constraints.video</code> is <code>false</code>,
+                  return a promise <a>rejected</a> with a newly
+                  <a data-link-for="exception" data-lt="create">created</a>
+                  <code>TypeError</code>.</p>
+              </li>
+              <li>
                 <p>For each member
                 <a href="https://heycam.github.io/webidl/#dfn-present">present</a>
                 in <var>constraints</var> whose value, <var>value</var>, is a
@@ -227,11 +233,6 @@
                 <p>Let <var>requestedMediaTypes</var> be the set of media
                 types in <var>constraints</var> with either a dictionary
                 value or a value of <code>true</code>.</p>
-              </li>
-              <li>
-                <p>If <var>requestedMediaTypes</var> is the empty set, set
-                <var>requestedMediaTypes</var> to a set containing
-                <code>"video"</code>.</p>
               </li>
               <li>
                 <p>If the <a>current settings object</a>'s <a>responsible
@@ -579,6 +580,49 @@
             helpful to limit extreme aspect ratios, should the end-user resize a
             <a>window</a> or <a>browser</a> surface to such an extreme while
             it is being captured.</p>
+          </div>
+        </section>
+        <section>
+          <h2>DisplayMediaStreamConstraints</h2>
+          <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
+          instruct the User Agent what sort of <a>MediaStreamTrack</a>s may be
+          included in the <a>MediaStream</a> returned by
+          <code>getDisplayMedia</code>.</p>
+          <div>
+            <pre class="idl">dictionary DisplayMediaStreamConstraints {
+    (boolean or MediaTrackConstraints) video = true;
+    (boolean or MediaTrackConstraints) audio = false;
+};</pre>
+            <section>
+              <h2>Dictionary <a class="idlType">DisplayMediaStreamConstraints</a>
+                Members</h2>
+              <dl data-link-for="DisplayMediaStreamConstraints" data-dfn-for=
+                "DisplayMediaStreamConstraints" class="dictionary-members">
+                <dt><dfn><code>video</code></dfn> of type <span class=
+                  "idlMemberType"><a>(boolean or MediaTrackConstraints)</a></span>,
+                defaulting to <code>true</code></dt>
+                <dd>
+                  <p>If <code>true</code>, it requests that the returned
+                  <a>MediaStream</a> contain a video track. If a <a>Constraints</a>
+                  structure is provided, it further specifies desired processing
+                  options to be applied to the video Track rendition of the
+                  display surface chosen by the user. If <code>false</code>, the
+                  request MUST be rejected with a <code>TypeError</code>.</p>
+                </dd>
+                <dt><dfn><code>audio</code></dfn> of type <span class=
+                  "idlMemberType"><a>(boolean or MediaTrackConstraints)</a></span>,
+                defaulting to <code>false</code></dt>
+                <dd>
+                  <p>If <code>true</code>, it signals an interest that the
+                  returned <a>MediaStream</a> contain an audio track, if
+                  supported and audio is available for display surface chosen by
+                  the user. If a <a>Constraints</a> structure is provided, it
+                  further specifies desired processing options to be applied to
+                  the audio Track. If <code>false</code>, the <a>MediaStream</a>
+                  MUST NOT contain an audio Track.</p>
+                </dd>
+              </dl>
+            </section>
           </div>
         </section>
         <section>
