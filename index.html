@@ -542,6 +542,49 @@
             </tr>
           </tbody>
         </table>
+        <p>The following new and existing <code><a>MediaStreamTrack</a></code>
+        <a href="https://www.w3.org/TR/mediacapture-streams/#constrainable-properties">
+        Constrainable Properties</a> are defined to apply to the user-selected
+        audio sources, with the following behavior:</p>
+        <table class="simple">
+          <thead>
+            <tr>
+              <th>Property Name</th>
+              <th>Type</th>
+              <th>Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="def-constraint-width">
+              <td><dfn>originAudio</dfn></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainboolean">ConstrainBoolean</a></code></td>
+              <td>
+                <p>As a setting, a value of <code>true</code> indicates that
+                audio produced by this origin is included in the captured audio,
+                a value of <code>false</code> indicates that audio from the
+                origin is not included in the captured audio.</p>
+                <p>As a constraint, this property can be constrained to the
+                value <code>false</code>, producing a source incapable of
+                including origin audio (the capability of such a source is the
+                lone value <code>false</code>). However, attempts to constrain
+                this property to the value <code>true</code> MUST result in
+                <code>OverconstrainedError</code>. That is, the application can
+                force the exclusion of the origin audio but it cannot force the
+                inclusion any particular audio source. If this property is
+                unconstrained, the resulting source MAY be capable of either the
+                value <code>true</code> or <code>false</code>.</p>
+                <div class="note">
+                  <p>Due to inherrent difficulties in isolating different audio
+                  sources on a system, the recommented solution to fulfilling
+                  <code>originAudio:false</code> is to exclude user choices. For
+                  example, a user agent that supports tab capture could fulfill
+                  this constraint by presenting the user with choices including
+                  all tabs except for the origin tab.</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>  
         <p>When inherent properties of the underlying source of a user-selected
         <a>display surface</a> change, for example in response to the end-user
         resizing a captured window, and these changes render the capabilities
@@ -659,6 +702,7 @@
              boolean displaySurface = true;
              boolean logicalSurface = true;
              boolean cursor = true;
+             boolean excludeApplicationAudio = true;
 };</pre>
           <dl data-link-for="MediaTrackSupportedConstraints" data-dfn-for="MediaTrackSupportedConstraints"
           class="dictionary-members">
@@ -689,6 +733,15 @@
                 Whether <code><a>cursor</a></code> constraint is recognized.
               </p>
             </dd>
+            <dt>
+              <dfn><code>originAudio</code></dfn> of type <span class=
+              "idlMemberType"><a>boolean</a></span>, defaulting to <code>true</code>
+            </dt>
+            <dd>
+              <p>
+                Whether <code><a>originAudio</a></code> constraint is recognized.
+              </p>
+            </dd>
           </dl>
         </section>
         <section>
@@ -703,6 +756,7 @@
              ConstrainDOMString displaySurface;
              ConstrainBoolean   logicalSurface;
              ConstrainDOMString   cursor;
+             ConstrainBoolean   originAudio;
 };</pre>
           <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
@@ -735,6 +789,16 @@
               <p>
                 Assumes values from the <code><a>CursorCaptureConstraint</a></code> enumeration that
                 determines if and when the cursor is included in the captured display surface.
+              </p>
+            </dd>
+            <dt>
+              <dfn><code>originAudio</code></dfn> of type <span class=
+              "idlMemberType"><a>ConstrainBoolean</a></span>
+            </dt>
+            <dd>
+              <p>
+                This constraint is only applicable to audio tracks. See
+                <code><a>originAudio</a></code>.
               </p>
             </dd>
           </dl>
