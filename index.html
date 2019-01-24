@@ -270,8 +270,8 @@
                   document</a> is NOT <a data-cite=
                     "!HTML52/browsers.html#fully-active">fully active</a>, return
                   a promise <a>rejected</a> with a
-                  <code><a>DOMException</a></code> object whose
-                  <code><a>name</a></code> attribute has the value
+                  <code>DOMException</code> object whose
+                  <code>name</code> attribute has the value
                   <code>InvalidStateError</code>.</p>
               </li>
               <li>
@@ -287,8 +287,8 @@
                       <li>
                         <p>If no sources of type <var>T</var> are available,
                         <a>reject</a> <var>p</var> with a new
-                        <code><a>DOMException</a></code> object whose
-                        <code><a>name</a></code> attribute has the value
+                        <code>DOMException</code> object whose
+                        <code>name</code> attribute has the value
                         <code>NotFoundError</code>.</p>
                       </li>
                       <li>
@@ -339,13 +339,13 @@
                     <p>If the user grants permission but a hardware error
                     such as an OS/program/webpage lock prevents access,
                     <a>reject</a> <var>p</var> with a new
-                    <code><a>DOMException</a></code> object whose
-                    <code><a>name</a></code> attribute has the value
+                    <code>DOMException</code> object whose
+                    <code>name</code> attribute has the value
                     <code>NotReadableError</code> and abort these steps.</p>
                     <p>If the result is "granted" but device access fails for
                     any reason other than those listed above, <a>reject</a>
-                    <var>p</var> with a new <code><a>DOMException</a></code>
-                    object whose <code><a>name</a></code> attribute has the
+                    <var>p</var> with a new <code>DOMException</code>
+                    object whose <code>name</code> attribute has the
                     value <code>AbortError</code> and abort these steps.</p>
                   </li>
                   <li>
@@ -373,8 +373,8 @@
                   </li>
                   <li>
                     <p><em>Permission Failure</em>: <a>Reject</a>
-                    <var>p</var> with a new <code><a>DOMException</a></code>
-                    object whose <code><a>name</a></code> attribute has the
+                    <var>p</var> with a new <code>DOMException</code>
+                    object whose <code>name</code> attribute has the
                     value <code>NotAllowedError</code>.</p>
                   </li>
                 </ol>
