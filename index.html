@@ -556,31 +556,24 @@
           </thead>
           <tbody>
             <tr id="def-constraint-width">
-              <td><dfn>originAudio</dfn></td>
+              <td><dfn>ownAudioCancellation</dfn></td>
               <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainboolean">ConstrainBoolean</a></code></td>
               <td>
-                <p>As a setting, a value of <code>true</code> indicates that
-                audio produced by this origin is included in the captured audio,
-                a value of <code>false</code> indicates that audio from the
-                origin is not included in the captured audio.</p>
+                <p>As a setting, this value indicates whether or not the user
+                agent is applying <a>own audio cancellation</a> to the
+                source.</p>
                 <p>As a constraint, this property can be constrained to the
-                value <code>false</code>, producing a source incapable of
-                including origin audio (the capability of such a source is the
-                lone value <code>false</code>). However, attempts to constrain
-                this property to the value <code>true</code> MUST result in
-                <code>OverconstrainedError</code>. That is, the application can
-                force the exclusion of the origin audio but it cannot force the
-                inclusion any particular audio source. If this property is
-                unconstrained, the resulting source MAY be capable of either the
-                value <code>true</code> or <code>false</code>.</p>
-                <div class="note">
-                  <p>Due to inherrent difficulties in isolating different audio
-                  sources on a system, the recommented solution to fulfilling
-                  <code>originAudio:false</code> is to exclude user choices. For
-                  example, a user agent that supports tab capture could fulfill
-                  this constraint by presenting the user with choices including
-                  all tabs except for the origin tab.</p>
-                </div>
+                value <code>true</code>, resulting in a source that has
+                <a>own audio cancellation</a> applied.</p>
+                <p>When <dfn>own audio cancellation</dfn> is applied, the user
+                agent MUST attempt to remove any audio from the audio being
+                captured that was produced by the application that performed
+                <code>getDisplayMedia</code>. If the user agent is not able to
+                remove the audio through processing it SHOULD remove the audio
+                by excluding the application's audio from being captured. If
+                this results in no audio being captured, the user agent MUST
+                keep the track muted until it is able to capture audio
+                again.</p>
               </td>
             </tr>
           </tbody>
@@ -702,7 +695,7 @@
              boolean displaySurface = true;
              boolean logicalSurface = true;
              boolean cursor = true;
-             boolean originAudio = true;
+             boolean ownAudioCancellation = true;
 };</pre>
           <dl data-link-for="MediaTrackSupportedConstraints" data-dfn-for="MediaTrackSupportedConstraints"
           class="dictionary-members">
@@ -734,12 +727,13 @@
               </p>
             </dd>
             <dt>
-              <dfn><code>originAudio</code></dfn> of type <span class=
+              <dfn><code>ownAudioCancellation</code></dfn> of type <span class=
               "idlMemberType"><a>boolean</a></span>, defaulting to <code>true</code>
             </dt>
             <dd>
               <p>
-                Whether <code><a>originAudio</a></code> constraint is recognized.
+                Whether <code><a>ownAudioCancellation</a></code> constraint is
+                recognized.
               </p>
             </dd>
           </dl>
@@ -756,7 +750,7 @@
              ConstrainDOMString displaySurface;
              ConstrainBoolean   logicalSurface;
              ConstrainDOMString   cursor;
-             ConstrainBoolean   originAudio;
+             ConstrainBoolean   ownAudioCancellation;
 };</pre>
           <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
@@ -792,13 +786,13 @@
               </p>
             </dd>
             <dt>
-              <dfn><code>originAudio</code></dfn> of type <span class=
+              <dfn><code>ownAudioCancellation</code></dfn> of type <span class=
               "idlMemberType"><a>ConstrainBoolean</a></span>
             </dt>
             <dd>
               <p>
                 This constraint is only applicable to audio tracks. See
-                <code><a>originAudio</a></code>.
+                <code><a>ownAudioCancellation</a></code>.
               </p>
             </dd>
           </dl>
