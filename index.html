@@ -556,16 +556,16 @@
           </thead>
           <tbody>
             <tr id="def-constraint-width">
-              <td><dfn>ownAudioCancellation</dfn></td>
+              <td><dfn>restrictOwnAudio</dfn></td>
               <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainboolean">ConstrainBoolean</a></code></td>
               <td>
                 <p>As a setting, this value indicates whether or not the user
-                agent is applying <a>own audio cancellation</a> to the
+                agent is applying <a>own audio restriction</a> to the
                 source.</p>
-                <p>As a constraint, this property can be constrained to the
-                value <code>true</code>, resulting in a source that has
-                <a>own audio cancellation</a> applied.</p>
-                <p>When <dfn>own audio cancellation</dfn> is applied, the user
+                <p>As a constraint, this property can be constrained resulting
+                in a source with <a>own audio restriction</a> enabled or
+                disabled.</p>
+                <p>When <dfn>own audio restriction</dfn> is applied, the user
                 agent MUST attempt to remove any audio from the audio being
                 captured that was produced by the application that performed
                 <code>getDisplayMedia</code>. If the user agent is not able to
@@ -695,7 +695,7 @@
              boolean displaySurface = true;
              boolean logicalSurface = true;
              boolean cursor = true;
-             boolean ownAudioCancellation = true;
+             boolean restrictOwnAudio = true;
 };</pre>
           <dl data-link-for="MediaTrackSupportedConstraints" data-dfn-for="MediaTrackSupportedConstraints"
           class="dictionary-members">
@@ -727,12 +727,12 @@
               </p>
             </dd>
             <dt>
-              <dfn><code>ownAudioCancellation</code></dfn> of type <span class=
+              <dfn><code>restrictOwnAudio</code></dfn> of type <span class=
               "idlMemberType"><a>boolean</a></span>, defaulting to <code>true</code>
             </dt>
             <dd>
               <p>
-                Whether <code><a>ownAudioCancellation</a></code> constraint is
+                Whether <code><a>restrictOwnAudio</a></code> constraint is
                 recognized.
               </p>
             </dd>
@@ -750,7 +750,7 @@
              ConstrainDOMString displaySurface;
              ConstrainBoolean   logicalSurface;
              ConstrainDOMString   cursor;
-             ConstrainBoolean   ownAudioCancellation;
+             ConstrainBoolean   restrictOwnAudio;
 };</pre>
           <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
@@ -786,13 +786,13 @@
               </p>
             </dd>
             <dt>
-              <dfn><code>ownAudioCancellation</code></dfn> of type <span class=
+              <dfn><code>restrictOwnAudio</code></dfn> of type <span class=
               "idlMemberType"><a>ConstrainBoolean</a></span>
             </dt>
             <dd>
               <p>
                 This constraint is only applicable to audio tracks. See
-                <code><a>ownAudioCancellation</a></code>.
+                <code><a>restrictOwnAudio</a></code>.
               </p>
             </dd>
           </dl>
