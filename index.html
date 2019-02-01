@@ -551,6 +551,42 @@
             </tr>
           </tbody>
         </table>
+        <p>The following new and existing <code><a>MediaStreamTrack</a></code>
+        <a href="https://www.w3.org/TR/mediacapture-streams/#constrainable-properties">
+        Constrainable Properties</a> are defined to apply to the user-selected
+        audio sources, with the following behavior:</p>
+        <table class="simple">
+          <thead>
+            <tr>
+              <th>Property Name</th>
+              <th>Type</th>
+              <th>Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="def-constraint-width">
+              <td><dfn>restrictOwnAudio</dfn></td>
+              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainboolean">ConstrainBoolean</a></code></td>
+              <td>
+                <p>As a setting, this value indicates whether or not the user
+                agent is applying <a>own audio restriction</a> to the
+                source.</p>
+                <p>As a constraint, this property can be constrained resulting
+                in a source with <a>own audio restriction</a> enabled or
+                disabled.</p>
+                <p>When <dfn>own audio restriction</dfn> is applied, the user
+                agent MUST attempt to remove any audio from the audio being
+                captured that was produced by the application that performed
+                <code>getDisplayMedia</code>. If the user agent is not able to
+                remove the audio through processing it SHOULD remove the audio
+                by excluding the application's audio from being captured. If
+                this results in no audio being captured, the user agent MUST
+                keep the track muted until it is able to capture audio
+                again.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>  
         <p>When inherent properties of the underlying source of a user-selected
         <a>display surface</a> change, for example in response to the end-user
         resizing a captured window, and these changes render the capabilities
@@ -668,6 +704,7 @@
              boolean displaySurface = true;
              boolean logicalSurface = true;
              boolean cursor = true;
+             boolean restrictOwnAudio = true;
 };</pre>
           <dl data-link-for="MediaTrackSupportedConstraints" data-dfn-for="MediaTrackSupportedConstraints"
           class="dictionary-members">
@@ -698,6 +735,16 @@
                 Whether <code><a>cursor</a></code> constraint is recognized.
               </p>
             </dd>
+            <dt>
+              <dfn><code>restrictOwnAudio</code></dfn> of type <span class=
+              "idlMemberType"><a>boolean</a></span>, defaulting to <code>true</code>
+            </dt>
+            <dd>
+              <p>
+                Whether <code><a>restrictOwnAudio</a></code> constraint is
+                recognized.
+              </p>
+            </dd>
           </dl>
         </section>
         <section>
@@ -712,6 +759,7 @@
              ConstrainDOMString displaySurface;
              ConstrainBoolean   logicalSurface;
              ConstrainDOMString   cursor;
+             ConstrainBoolean   restrictOwnAudio;
 };</pre>
           <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
@@ -744,6 +792,16 @@
               <p>
                 Assumes values from the <code><a>CursorCaptureConstraint</a></code> enumeration that
                 determines if and when the cursor is included in the captured display surface.
+              </p>
+            </dd>
+            <dt>
+              <dfn><code>restrictOwnAudio</code></dfn> of type <span class=
+              "idlMemberType"><a>ConstrainBoolean</a></span>
+            </dt>
+            <dd>
+              <p>
+                This constraint is only applicable to audio tracks. See
+                <code><a>restrictOwnAudio</a></code>.
               </p>
             </dd>
           </dl>
