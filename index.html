@@ -229,6 +229,13 @@
             steps:</p>
             <ol>
               <li>
+                <p>If the method call is not <a
+                href="https://html.spec.whatwg.org/multipage/interaction.html#triggered-by-user-activation">triggered
+                by user activation</a>, return a promise <a>rejected</a>
+                with a <code>DOMException</code> object whose <code>name</code>
+                attribute has the value <code>InvalidStateError</code>.</p>
+              </li>
+              <li>
                 <p>Let <var>constraints</var> be the method's first
                 argument.</p>
               </li>
