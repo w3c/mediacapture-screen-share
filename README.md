@@ -25,9 +25,3 @@ tidy --quiet y -utf8 --vertical-space y --tidy-mark n -indent -wrap 80
 
 
 To Generate a Version
-
-See Work Flow
--------------
-
-[![Stories in Ready](https://badge.waffle.io/fluffy/w3c-screen-share.png?label=ready&title=Ready)](http://waffle.io/fluffy/w3c-screen-share)
-
