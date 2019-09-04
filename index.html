@@ -1158,6 +1158,14 @@
           <a>user agent</a> MUST NOT capture content from the background of a captured <a>display
           surface</a>.
         </p>
+        <p>
+          There is a risk that the user prompt be exposed to the web page for a short amount of time
+          by the newly created <code><a>MediaStreamTrack</a></code>, for instance if the user
+          selects the screen on which the user prompt is displayed.
+          In the case the user prompt displays previews of the various surfaces available for selection,
+          the <a>user agent</a> MUST NOT capture, for the newly created <code><a>MediaStreamTrack</a></code>,
+          the previews that the user did not intend to share explicitly.
+        </p>
         <h2>
           Capturing Audio
         </h2>
