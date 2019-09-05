@@ -247,20 +247,21 @@
               <li>
                 <p>For each member
                 <a href="https://heycam.github.io/webidl/#dfn-present">present</a>
-                in <var>constraints</var> whose value, <var>value</var>, is a
-                dictionary, run the following steps:</p>
+                in <var>constraints</var> whose value, <var>CS</var>, is
+                a dictionary, run the following steps:</p>
                 <ol>
                   <li>
-                    <p>If <var>value</var> contains a member named <code>advanced</code>,
+                    <p>If <var>CS</var> contains a member named <code>advanced</code>,
                     return a promise <a>rejected</a> with a newly
                     <a data-link-for="exception" data-lt="create">created</a>
                     <code>TypeError</code>.</p>
                   </li>
                   <li>
-                    <p>If <var>value</var> contains a member which in turn
-                    is a dictionary containing a member named either
-                    <code>min</code> or <code>exact</code>, return a promise
-                    <a>rejected</a> with a newly
+                    <p>If <var>CS</var> contains a member whose name specifies a
+                    constrainable property applicable to <a>display surface</a>s,
+                    and whose value in turn is a dictionary containing a member
+                    named either <code>min</code> or <code>exact</code>, return
+                    a promise <a>rejected</a> with a newly
                     <a data-link-for="exception" data-lt="create">created</a>
                     <code>TypeError</code>.</p>
                   </li>
