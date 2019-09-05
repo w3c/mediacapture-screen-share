@@ -265,6 +265,22 @@
                     <a data-link-for="exception" data-lt="create">created</a>
                     <code>TypeError</code>.</p>
                   </li>
+                  <li>
+                    <p>If <var>CS</var> contains a member whose name,
+                    <var>failedConstraint</var> specifies a
+                    constrainable property, <var>constraint</var>, applicable to
+                    <a>display surface</a>s, and whose value in turn is a
+                    dictionary containing a member named <code>max</code>, and
+                    that member's value in turn is less than the constrainable
+                    property's <a>floor value</a>, then let
+                    <var>failedConstraint</var> be the name of the
+                    <var>constraint</var>, let <var>message</var> be either
+                    <code>undefined</code> or an informative human-readable
+                    message, and return a promise <a>rejected</a> with a new
+                    <code>OverconstrainedError</code> created by calling
+                    <code>OverconstrainedError(<var>failedConstraint</var>,
+                    <var>message</var>)</code>.
+                  </li>
                 </ol>
               </li>
               <li>
@@ -653,6 +669,19 @@
             helpful to limit extreme aspect ratios, should the end-user resize a
             <a>window</a> or <a>browser</a> surface to such an extreme while
             it is being captured.</p>
+          </div>
+          <p>For each constrainable property of positive numeric type in this
+          specification, the user agent MUST establish a <dfn>floor value</dfn>,
+          representing the smallest allowable value supported by the user agent
+          regardless of source. This value MUST be constant and MUST be greater
+          than <code>0</code>. The user agent is encouraged to support all
+          values above the <a>floor value</a> regardless of source.</p>
+          <div class="note">
+            <p>The purpose of the <a>floor value</a> is to help user agents
+            avoid failing <a>getDisplayMedia()</a> with
+            <code>OverconstrainedError</code> after the user has already been
+            prompted, and avoid leaking information about the user's system.
+            </p>
           </div>
         </section>
         <section>
