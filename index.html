@@ -186,8 +186,9 @@
         <h2>
           <dfn>MediaDevices</dfn> Additions
         </h2>
-        <pre class="idl">partial interface MediaDevices {
-    Promise&lt;MediaStream&gt; getDisplayMedia (optional DisplayMediaStreamConstraints constraints = {});
+        <pre class="idl"
+>partial interface MediaDevices {
+  Promise&lt;MediaStream&gt; getDisplayMedia(optional DisplayMediaStreamConstraints constraints = {});
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
@@ -662,9 +663,10 @@
           included in the <a>MediaStream</a> returned by
           <code><a>getDisplayMedia</a></code>.</p>
           <div>
-            <pre class="idl">dictionary DisplayMediaStreamConstraints {
-    (boolean or MediaTrackConstraints) video = true;
-    (boolean or MediaTrackConstraints) audio = false;
+            <pre class="idl"
+>dictionary DisplayMediaStreamConstraints {
+  (boolean or MediaTrackConstraints) video = true;
+  (boolean or MediaTrackConstraints) audio = false;
 };</pre>
             <section>
               <h2>Dictionary <a class="idlType">DisplayMediaStreamConstraints</a>
@@ -707,11 +709,12 @@
             MediaTrackSupportedConstraints</a> is extended here with the list of constraints that a User
             Agent recognizes.
           </p>
-          <pre class="idl">partial dictionary MediaTrackSupportedConstraints {
-             boolean displaySurface = true;
-             boolean logicalSurface = true;
-             boolean cursor = true;
-             boolean restrictOwnAudio = true;
+          <pre class="idl"
+>partial dictionary MediaTrackSupportedConstraints {
+  boolean displaySurface = true;
+  boolean logicalSurface = true;
+  boolean cursor = true;
+  boolean restrictOwnAudio = true;
 };</pre>
           <dl data-link-for="MediaTrackSupportedConstraints" data-dfn-for="MediaTrackSupportedConstraints"
           class="dictionary-members">
@@ -762,11 +765,12 @@
             <a href="https://www.w3.org/TR/mediacapture-streams/#idl-def-MediaTrackConstraintSet">
             MediaTrackConstraintSet</a> is used for reading the current status of constraints.
           </p>
-          <pre class="idl">partial dictionary MediaTrackConstraintSet {
-             ConstrainDOMString displaySurface;
-             ConstrainBoolean   logicalSurface;
-             ConstrainDOMString   cursor;
-             ConstrainBoolean   restrictOwnAudio;
+          <pre class="idl"
+>partial dictionary MediaTrackConstraintSet {
+  ConstrainDOMString displaySurface;
+  ConstrainBoolean logicalSurface;
+  ConstrainDOMString cursor;
+  ConstrainBoolean restrictOwnAudio;
 };</pre>
           <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
@@ -823,10 +827,11 @@
             <a href="https://www.w3.org/TR/mediacapture-streams/#media-track-settings">MediaTrackSettings</a>
             dictionary, representing the current status of the underlying user agent.
           </p>
-          <pre class="idl">partial dictionary MediaTrackSettings {
-             DOMString displaySurface;
-             boolean   logicalSurface;
-             DOMString   cursor;
+          <pre class="idl"
+>partial dictionary MediaTrackSettings {
+  DOMString displaySurface;
+  boolean logicalSurface;
+  DOMString cursor;
 };</pre>
           <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
           "dictionary-members">
@@ -871,11 +876,12 @@
             The <code><a>DisplayCaptureSurfaceType</a></code> enumeration describes the different
             types of display surface.
           </p>
-          <pre class="idl">enum DisplayCaptureSurfaceType {
-    "monitor",
-    "window",
-    "application",
-    "browser"
+          <pre class="idl"
+>enum DisplayCaptureSurfaceType {
+  "monitor",
+  "window",
+  "application",
+  "browser"
 };</pre>
           <table data-link-for="DisplayCaptureSurfaceType" data-dfn-for="DisplayCaptureSurfaceType"
           class="simple">
@@ -931,10 +937,11 @@
             The <code><a>CursorCaptureConstraint</a></code> enumerates the conditions
             under which the cursor is captured.
           </p>
-          <pre class="idl">enum CursorCaptureConstraint {
-    "never",
-    "always",
-    "motion"
+          <pre class="idl"
+>enum CursorCaptureConstraint {
+  "never",
+  "always",
+  "motion"
 };</pre>
           <table data-link-for="CursorCaptureConstraint" data-dfn-for="CursorCaptureConstraint"
           class="simple">
