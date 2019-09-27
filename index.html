@@ -6,22 +6,14 @@
       Screen Capture
     </title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <script class="remove" src="respec-w3c-common.js" type="text/javascript">
-    //<![CDATA[
-    <!-- keep this comment: what a frightening kludge -->
-    //]]>
-    </script>
-    <script class="remove" src="screenshare.js" type="text/javascript">
-    //<![CDATA[
-    <!-- keep this comment -->
-    //]]>
-    </script>
+    <script class="remove" src="respec-w3c.js" type="text/javascript"></script>
+    <script class="remove" src="screenshare.js" type="text/javascript"></script>
   </head>
   <body>
     <section id="abstract">
       <p>
         This document defines how a user's display, or parts thereof, can be used as the source of
-        a media stream using <code><a>getDisplayMedia</a></code>, an extension to the Media Capture API
+        a media stream using {{MediaDevices/getDisplayMedia}}, an extension to the Media Capture API
         [[GETUSERMEDIA]].
       </p>
     </section>
@@ -176,7 +168,7 @@
       -->
       <p>
         Capture of displayed media is enabled through the addition of a new
-        <code><a>getDisplayMedia</a></code> method on the <code><a>MediaDevices</a></code>
+        {{MediaDevices/getDisplayMedia}} method on the <code><a>MediaDevices</a></code>
         interface, that is similar to <code><dfn><a href=
         "https://w3c.github.io/mediacapture-main/#mediadevices-interface-extensions">getUserMedia</a></dfn></code>
         [[!GETUSERMEDIA]], except that it acquires media from one display device
@@ -192,7 +184,7 @@
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
-            <code><dfn data-dfn-for="getDisplayMedia">getDisplayMedia</dfn></code>
+            <code><dfn>getDisplayMedia</dfn></code>
           </dt>
           <dd>
             <p>Prompts the user for permission to live-capture their display.</p>
@@ -221,10 +213,10 @@
             </p>
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
-              <code><a>getDisplayMedia</a></code> also differs from
+              {{MediaDevices/getDisplayMedia}} also differs from
               <code><a>getUserMedia</a></code> in that "granted" permissions cannot be persisted.
             </p>
-            <p>When the <code><dfn>getDisplayMedia()</dfn></code>
+            <p>When the {{MediaDevices/getDisplayMedia()}}
             method is called, the User Agent MUST run the following
             steps:</p>
             <ol>
@@ -440,7 +432,7 @@
           corresponding media track.
         </p>
         <p>
-          A stream that was just returned by <code><a>getDisplayMedia</a></code> MAY contain
+          A stream that was just returned by {{MediaDevices/getDisplayMedia}} MAY contain
           tracks that are muted by default. Audio and video tracks belonging to the same stream
           MAY be muted/unmuted independently of one another.
         </p>
@@ -451,7 +443,7 @@
         </h2>
         <p class="fingerprint">
           Not accepting constraints for source selection means that
-          <code><a>getDisplayMedia</a></code> only provides fingerprinting surface that exposes
+          {{MediaDevices/getDisplayMedia}} only provides fingerprinting surface that exposes
           whether audio, video or audio and video display sources are present. <img alt=
           "(This is a fingerprinting vector.)" src="images/fingerprint.png" width="15" height="21">
         </p>
@@ -461,10 +453,10 @@
           Constrainable Properties for Captured Display Surfaces
         </h2>
         <p>Constraints serve a different purpose in
-        <code><a>getDisplayMedia</a></code> than they do in
+        {{MediaDevices/getDisplayMedia}} than they do in
         <code><a href="https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></code>.
         They do not aid discovery, instead they are applied only after user-selection.</p>
-        <p>This section define which constraints apply to <code><a>getDisplayMedia</a></code> tracks;
+        <p>This section define which constraints apply to {{MediaDevices/getDisplayMedia}} tracks;
         constraints defined for
         <code><a href="https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></code>
         do not apply unless listed here.</p>
@@ -604,7 +596,7 @@
                 <p>When <dfn>own audio restriction</dfn> is applied, the user
                 agent MUST attempt to remove any audio from the audio being
                 captured that was produced by the document that performed
-                <code>getDisplayMedia</code>. If the user agent is not able to
+                {{MediaDevices/getDisplayMedia}}. If the user agent is not able to
                 remove the audio through processing it SHOULD remove the audio
                 by excluding the document's audio from being captured. If
                 this results in no audio being captured, the user agent MUST
@@ -682,7 +674,7 @@
           values above the <a>floor value</a> regardless of source.</p>
           <div class="note">
             <p>The purpose of the <a>floor value</a> is to help user agents
-            avoid failing <a>getDisplayMedia()</a> with
+            avoid failing {{MediaDevices/getDisplayMedia()}} with
             <code>OverconstrainedError</code> after the user has already been
             prompted, and avoid leaking information about the user's system.
             </p>
@@ -693,9 +685,9 @@
           <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
           instruct the User Agent what sort of <a>MediaStreamTrack</a>s may be
           included in the <a>MediaStream</a> returned by
-          <code><a>getDisplayMedia</a></code>.</p>
+          {{MediaDevices/getDisplayMedia}}.</p>
           <div>
-            <pre class="idl"
+            <pre class="idl" data-cite="mediacapture-streams"
 >dictionary DisplayMediaStreamConstraints {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
@@ -797,7 +789,7 @@
             <a href="https://www.w3.org/TR/mediacapture-streams/#idl-def-MediaTrackConstraintSet">
             MediaTrackConstraintSet</a> is used for reading the current status of constraints.
           </p>
-          <pre class="idl"
+          <pre class="idl" data-cite="mediacapture-streams"
 >partial dictionary MediaTrackConstraintSet {
   ConstrainDOMString displaySurface;
   ConstrainBoolean logicalSurface;
@@ -1056,12 +1048,12 @@
           href="https://html.spec.whatwg.org/multipage/dom.html#concept-document-feature-policy"
           >feature policy</a>
         determines whether any content in that document is allowed to use
-        <code>getDisplayMedia</code>. If disabled in any document, no content in
+        {{MediaDevices/getDisplayMedia}}. If disabled in any document, no content in
         the document will be
         <a data-link-type="dfn"
           href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use"
           >allowed to use</a>
-        <code><a>getDisplayMedia</a></code>. This is enforced by the
+        {{MediaDevices/getDisplayMedia}}. This is enforced by the
         <a>prompt the user to choose</a> algorithm.
         </p>
       </div>
@@ -1071,13 +1063,13 @@
       <p>This specification extends the <a href=
         "https://w3c.github.io/mediacapture-main/#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
-      <code><a>getUserMedia</a></code> to include <code><a>getDisplayMedia</a></code>.</p>
+      <code><a>getUserMedia</a></code> to include {{MediaDevices/getDisplayMedia}}.</p>
       <p>References in this specification to [[\devicesLiveMap]],
       [[\devicesAccessibleMap]], and [[\kindsAccessibleMap]] refer to the
       definitions already created to support Privacy Indicator Requirements for
       <code><a>getUserMedia</a></code>.</p>
       <p>For each <var>kind</var> of device that
-      <code><a>getDisplayMedia</a></code> exposes, using a stable and private id
+      {{MediaDevices/getDisplayMedia}} exposes, using a stable and private id
       for the device, <var>deviceId</var>, set <var>kind</var>
       to <code>"Display"</code> + <var>kind</var>, and do the following:
       <ul>
@@ -1106,7 +1098,7 @@
       <code><a>getUserMedia</a></code>.</p>
       <div class="note">
         <p>
-        Even though there's a single permission descriptor for <code><a>getDisplayMedia</a></code>,
+        Even though there's a single permission descriptor for {{MediaDevices/getDisplayMedia}},
         the above definitions distinguish by kind to enable user agents
         to implement privacy indicators that show the end-user the specific kinds
         of display sources that are being shared at any point.
@@ -1119,7 +1111,7 @@
         </p>
       </div>
       <p>The User Agent MUST NOT fire the <code><a>devicechange</a></code> event based on
-      changes in the set of available sources from <code><a>getDisplayMedia</a></code>.</p>
+      changes in the set of available sources from {{MediaDevices/getDisplayMedia}}.</p>
     </section>
     <section>
       <h2>
@@ -1210,7 +1202,7 @@
           Capturing Audio
         </h2>
         <p>
-          <code><a>getDisplayMedia</a></code> allows capturing audio alongside video, this poses
+          {{MediaDevices/getDisplayMedia}} allows capturing audio alongside video, this poses
           privacy and security concern as this may expose additional information about system
           applications, and the set of shared audio sources are not necessarily the same as the set
           of shared video sources. For example, a <a>user agent</a> MAY be capturing the video of a
@@ -1248,7 +1240,7 @@
           </p>
           <p>
             To prevent applications from limiting the available choices presented to a user with
-            the goal of promoting a particular choice, the <code><a>getDisplayMedia</a></code> API
+            the goal of promoting a particular choice, the {{MediaDevices/getDisplayMedia}} API
             does not permit the use of constraints to narrow the set of options presented.
           </p>
         </section>
