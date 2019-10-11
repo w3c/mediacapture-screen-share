@@ -69,6 +69,8 @@ var respecConfig = {
   // Team Contact.
   wgPatentURI: ["https://www.w3.org/2004/01/pp-impl/47318/status"],
 
+  github: "https://github.com/w3c/mediacapture-screen-share/",
+
   otherLinks: [
     {
       key: "Participate",
@@ -76,14 +78,6 @@ var respecConfig = {
         {
           value: "Mailing list",
           href: "https://lists.w3.org/Archives/Public/public-webrtc/"
-        },
-        {
-          value: "Browse open issues",
-          href: "https://github.com/w3c/mediacapture-screen-share/issues"
-        },
-        {
-          value: "File a bug",
-          href: "https://github.com/w3c/mediacapture-screen-share/issues/new"
         }
       ]
     }
