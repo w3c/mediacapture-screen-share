@@ -27,7 +27,7 @@ Some adjacent goals that are not in scope of this specification:
 
 Alternatives to screen-sharing:
 * Online document sharing using web technology.
-* Browser plug-in (like Chrome's now-abandoned screen-sharing extension)
+* Browser plug-in (like Chrome's now-abandoned Screen Capture extension)
 
 Both alternatives have adoption problems and limitations. In contrast, this spec is widely supported, and screen-sharing appears well-understood as a concept.
 
