@@ -12,7 +12,9 @@ Have you ever been a presenter in an online video conference call? You probably 
  * Not the camera and microphone part—that’s MediaCapture’s [getUserMedia](https://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-mediadevices-partial-1)
  * **Just** the part that captures your computer's display. It’s called: [getDisplayMedia](https://w3c.github.io/mediacapture-screen-share/#mediadevices-additions)
 
-You can capture the screen for other reasons as well, but this is the driving use-case.
+Besides presentation, another use case is tech support or helping a friend or relative with something on their computer or device.
+
+Web sites may capture the screen for other reasons as well, but this is the driving use-case.
 
 The approach is heavily modeled on our [camera API](https://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-mediadevices-partial-1), hence the name similarity. There’s a reason for that: both require user permission, and return a MediaStream object with a pair of highly privacy sensitive video and audio tracks—It’s just your screen instead of your face. The resulting MediaStream is a drop-in anywhere a MediaStream is accepted in the platform. Having obtained such a MediaStream, a website can trivially:
 
