@@ -6,20 +6,19 @@ It’s an API to get a live video stream of your computer screen or a single win
 
 It’s sometimes referred to as screen-sharing, even though only the capturing part is being defined (sharing is just the primary use case).
 
-Have you ever been a presenter in an online video conference call? You probably shared your screen or the window of a presentation-program to do that. Have you ever presented in an online video conference call without this feature? That would likely require printouts and lots of hand-waving! It’s a pretty key feature. This is that feature.
+Have you ever been a presenter in an online video conference call? You probably shared your screen or the window of a presentation-program to do that. Have you ever presented in an online video conference call without this feature? You were likely either gesticulating over printouts in front of your camera, or you had to carefully navigate the audience to follow along in their own copy of previously shared online documents, or both. This can lead to confusion as everyone can get a subtly different view. It’s a pretty key feature. This is that feature.
 
-
- * Not the networking part—that’s WebRTC’s RTCPeerConnection
- * Not the camera and microphone part—that’s MediaCapture’s getUserMedia
- * **Just** the part that captures your computer's display. It’s called: getDisplayMedia
+ * Not the networking part—that’s WebRTC’s [RTCPeerConnection](https://w3c.github.io/webrtc-pc/#interface-definition)
+ * Not the camera and microphone part—that’s MediaCapture’s [getUserMedia](https://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-mediadevices-partial-1)
+ * **Just** the part that captures your computer's display. It’s called: [getDisplayMedia](https://w3c.github.io/mediacapture-screen-share/#mediadevices-additions)
 
 You can capture the screen for other reasons as well, but this is the driving use-case.
 
-The approach is heavily modeled on our camera API, hence the name similarity. There’s a reason for that: both require user permission, and return a MediaStream object with a pair of highly privacy sensitive video and audio tracks—It’s just your screen instead of your face. The resulting MediaStream is a drop-in anywhere a MediaStream is accepted in the platform. Having obtained such a MediaStream, a website can trivially:
+The approach is heavily modeled on our [camera API](https://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-mediadevices-partial-1), hence the name similarity. There’s a reason for that: both require user permission, and return a MediaStream object with a pair of highly privacy sensitive video and audio tracks—It’s just your screen instead of your face. The resulting MediaStream is a drop-in anywhere a MediaStream is accepted in the platform. Having obtained such a MediaStream, a website can trivially:
 
  * play the live stream of your screen locally in a video element,
  * send it over a peer connection to another client,
- * send it to a MediaRecorder, perhaps for subsequent upload to a server,
+ * send it to a [MediaRecorder](https://w3c.github.io/mediacapture-record/MediaRecorder.html#mediarecorder-api), perhaps for subsequent upload to a server,
  * or all of the above (at once even).
 
 This flexibility is thanks to the MediaCapture-main spec which already did the heavy lifting of:
@@ -58,16 +57,16 @@ for (const track of stream.getTracks()) track.stop(); // stop capture & relinqui
 
 Some important differences and unique properties of screen capture:
 
- * The request is gated by user activation
- * The end-user is always prompted each time with a picker to select what to share
- * It is not possible to persist permission grants (only blocks)
- * Application-supplied constraints are applied after selection, and do not narrow the end-user’s choices (unlike with camera)
- * All choices are videos. Any accompanying audio is optional and requires consent and support
- * Screen capture sources are never exposed in enumerateDevices()
+ * The request is gated by user activation.
+ * The end-user is always prompted each time with a picker to select what to share.
+ * It is not possible to persist permission grants (only blocks).
+ * Application-supplied constraints are applied after selection, and do not narrow the end-user’s choices (unlike with camera).
+ * All choices are videos. Any accompanying audio is optional and requires consent and support.
+ * Screen capture sources are never exposed in enumerateDevices().
 
 ## Security and privacy implications
 
-Allowing a web page to capture and effectively record an end-user’s screen carries significant privacy and security risks. The three main ones are, in increasing order of severity:
+Allowing a web page to capture and effectively record your screen carries significant privacy and security risks. The three main ones are, in increasing order of severity:
 
 **Audio exposure and correlation.** When audio is captured alongside video (which requires specific end-user consent), it may expose additional information about system applications. It may contain system-wide audio in certain cases, which may include audible information from other domains.
 
