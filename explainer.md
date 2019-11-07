@@ -12,7 +12,7 @@ Have you ever been a presenter in an online video conference call? You probably 
  * Not the camera and microphone part—that’s MediaCapture’s [getUserMedia](https://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-mediadevices-partial-1)
  * **Just** the part that captures your computer's display. It’s called: [getDisplayMedia](https://w3c.github.io/mediacapture-screen-share/#mediadevices-additions)
 
-Besides presentation, another use case is tech support or helping a friend or relative with something on their computer or device.
+Besides presentation, another use case is web tech support or helping a friend or relative with something on their computer or device.
 
 Web sites may capture the screen for other reasons as well, but this is the driving use-case.
 
