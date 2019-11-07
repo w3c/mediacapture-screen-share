@@ -22,7 +22,7 @@ The approach is heavily modeled on our [camera API](https://w3c.github.io/mediac
  * or all of the above (at once even).
 
 This flexibility is thanks to the MediaCapture-main spec which already did the heavy lifting of:
- * defining MediaStream and MediaStreamTrack
+ * defining [MediaStream](https://w3c.github.io/mediacapture-main/getusermedia.html#mediastream) and [MediaStreamTrack](https://w3c.github.io/mediacapture-main/getusermedia.html#dom-mediastreamtrack)
  * defining the constraints an application can apply to downscale and decimate frame-rates
  * defining a privacy-sensitive permission model
 
