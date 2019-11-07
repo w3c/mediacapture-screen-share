@@ -6,15 +6,32 @@ It’s an API to get a live video stream of your computer screen or a single win
 
 It’s sometimes referred to as screen-sharing, even though only the capturing part is being defined (sharing is just the primary use case).
 
-Have you ever been a presenter in an online video conference call? You probably shared your screen or the window of a presentation-program to do that. Have you ever presented in an online video conference call without this feature? You were likely either gesticulating over printouts in front of your camera, or you had to carefully navigate the audience to follow along in their own copy of previously shared online documents, or both. This can lead to confusion as everyone can get a subtly different view. It’s a pretty key feature. This is that feature.
+Have you ever been a presenter in an online video conference call? You probably shared your screen or the window of a presentation-program to do that. Have you ever presented in an online video conference call without this feature? You likely either had to gesticulate over printouts in front of your camera, or you had to carefully direct your audience to follow along in their own copy of previously-shared online documents, or both. This can lead to confusion as everyone can get a subtly different view. It’s a pretty key feature. This is that feature.
 
  * Not the networking part—that’s WebRTC’s [RTCPeerConnection](https://w3c.github.io/webrtc-pc/#interface-definition)
  * Not the camera and microphone part—that’s MediaCapture’s [getUserMedia](https://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-mediadevices-partial-1)
  * **Just** the part that captures your computer's display. It’s called: [getDisplayMedia](https://w3c.github.io/mediacapture-screen-share/#mediadevices-additions)
 
-Besides presentation, another use case is web tech support or helping a friend or relative with something on their computer or device.
+Besides formal presentations, being able to spontaneously share what we're looking at on our computers in real-time can complement many online conversations. It's the conversational answer to "What are you looking at?"
 
-Web sites may capture the screen for other reasons as well, but this is the driving use-case.
+Web sites may capture the screen for other reasons as well, but screen-sharing is the driving use-case.
+
+## Non-goals
+
+Some adjacent goals that are not in scope of this specification:
+* Online document sharing
+* Remote assistance temporarily "taking over" control of a system
+* Co-browsing
+
+## Alternatives
+
+Alternatives to screen-sharing:
+* Online document sharing using web technology.
+* Browser plug-in (like Chrome's now-abandoned screen-sharing extension)
+
+Both alternatives have adoption problems and limitations. In contrast, this spec is widely supported, and screen-sharing appears well-understood as a concept.
+
+## Approach
 
 The approach is heavily modeled on our [camera API](https://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-mediadevices-partial-1), hence the name similarity. There’s a reason for that: both require user permission, and return a MediaStream object with a pair of highly privacy sensitive video and audio tracks—It’s just your screen instead of your face. The resulting MediaStream is a drop-in anywhere a MediaStream is accepted in the platform. Having obtained such a MediaStream, a website can trivially:
 
