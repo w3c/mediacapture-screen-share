@@ -9,7 +9,7 @@
     <script class="remove" src="respec-w3c.js" type="text/javascript"></script>
     <script class="remove" src="screenshare.js" type="text/javascript"></script>
   </head>
-  <body>
+  <body data-cite="mediacapture-streams webidl html">
     <section id="abstract">
       <p>
         This document defines how a user's display, or parts thereof, can be used as the source of
@@ -80,16 +80,14 @@
         Terminology
       </h2>
       <p>
-        This document uses the definition of <dfn>MediaStream</dfn>, <code><dfn><a href=
-        "https://w3c.github.io/mediacapture-main/#mediastreamtrack">MediaStreamTrack</a></dfn></code>,
-        <dfn>MediaStreamConstraints</dfn> and <code><dfn><a href=
-        "https://w3c.github.io/mediacapture-main/#interface-definition">ConstrainablePattern</a></dfn></code>
+        This document uses the definition of {{MediaStream}}, {{MediaStreamTrack}},
+        {{MediaStreamConstraints}} and {{ConstrainablePattern}}
         from [[!GETUSERMEDIA]].
       </p>
       <p>
-        When referring to exceptions, the terms <dfn data-cite="!WEBIDL-1#dfn-throw">throw</dfn> and
-        <dfn data-dfn-for="exception" data-cite="!WEBIDL-1#dfn-create-exception">create</dfn> are
-        defined in [[!WEBIDL-1]].
+        When referring to exceptions, the terms [=exception/throw=] and
+        <dfn data-cite="!WEBIDL#dfn-create-exception">create</dfn> are
+        defined in [[!WEBIDL]].
       </p>
       <p>
         The term "throw" is used as specified in [[!INFRA]]: it terminates the current processing steps.
@@ -110,7 +108,7 @@
         <li>A <dfn>monitor</dfn> <a>display surface</a> represents a physical display. Some systems
         have multiple <a>monitor</a>s, which can be identified separately. Multiple <a>monitor</a>s
         might also be aggregated into a single logical <a>monitor</a>. An aggregated <a>display
-        surface</a> is captured as a single <code><a>MediaStreamTrack</a></code>.
+        surface</a> is captured as a single {{MediaStreamTrack}}.
         </li>
         <li>A <dfn data-lt="windows">window</dfn> <a>display surface</a> is a single contiguous
         surface that is used by a single application.
@@ -118,7 +116,7 @@
         <li>A single application might have several <a>windows</a> available to it, and those can
         be aggregated into a single <dfn>application</dfn> surface, representing all the windows
         available to that application and therefore presented as a single
-        <code><a>MediaStreamTrack</a></code>.
+        {{MediaStreamTrack}}.
         </li>
         <li>A <dfn>browser</dfn> <a>display surface</a> is the rendered form of a
         <a data-cite="!HTML/#browsing-context">browsing context</a>.
@@ -170,9 +168,8 @@
       <p>
         Capture of displayed media is enabled through the addition of a new
         {{MediaDevices/getDisplayMedia}} method on the <code><a>MediaDevices</a></code>
-        interface, that is similar to <code><dfn><a href=
-        "https://w3c.github.io/mediacapture-main/#mediadevices-interface-extensions">getUserMedia</a></dfn></code>
-        [[!GETUSERMEDIA]], except that it acquires media from one display device
+        interface, that is similar to {{mediadevices/mediadevices.getusermedia()}}
+        , except that it acquires media from one display device
         chosen by the end-user each time.
       </p>
       <section>
@@ -204,7 +201,7 @@
               the audio source(s) are not necessarily the same as the video source(s). An audio
               source may be a particular <a>application</a>, <a>window</a>, <a>browser</a>, the
               entire system audio or any combination thereof. Unlike
-              <code><a>getUserMedia</a></code> with regards to audio+video, the user agent is
+              {{mediadevices/mediadevices.getusermedia()}} with regards to audio+video, the user agent is
               allowed not to return audio even if the audio constraint is present. If the user
               agent knows no audio will be shared for the lifetime of the stream it MUST NOT
               include an audio track in the resulting stream. The user agent MAY accept a
@@ -215,16 +212,14 @@
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
               {{MediaDevices/getDisplayMedia}} also differs from
-              <code><a>getUserMedia</a></code> in that "granted" permissions cannot be persisted.
+              {{mediadevices/mediadevices.getusermedia()}} in that "granted" permissions cannot be persisted.
             </p>
             <p>When the {{MediaDevices/getDisplayMedia()}}
             method is called, the User Agent MUST run the following
             steps:</p>
             <ol>
               <li>
-                <p>If the method call is not <a
-                href="https://html.spec.whatwg.org/multipage/interaction.html#triggered-by-user-activation">triggered
-                by user activation</a>, return a promise <a>rejected</a>
+                <p>If the method call is not <a>triggered by user activation</a>, return a promise <a>rejected</a>
                 with a <code>DOMException</code> object whose <code>name</code>
                 attribute has the value <code>InvalidStateError</code>.</p>
               </li>
@@ -240,7 +235,7 @@
               </li>
               <li>
                 <p>For each member
-                <a href="https://heycam.github.io/webidl/#dfn-present">present</a>
+                [=dictionary member/present=]
                 in <var>constraints</var> whose value, <var>CS</var>, is
                 a dictionary, run the following steps:</p>
                 <ol>
@@ -283,10 +278,7 @@
                 value or a value of <code>true</code>.</p>
               </li>
               <li>
-                <p>If the <a data-cite=
-                    "!HTML/webappapis.html#concept-current-everything">current settings object</a>'s <a data-cite="!HTML/#responsible-document">responsible
-                  document</a> is NOT <a data-cite=
-                    "!HTML52/browsers.html#fully-active">fully active</a>, return
+                <p>If the <a>current settings object</a>'s [=environment settings object/responsible document=] is NOT [=Document/fully active=], return
                   a promise <a>rejected</a> with a
                   <code>DOMException</code> object whose
                   <code>name</code> attribute has the value
@@ -331,7 +323,7 @@
                     each media type in <var>requestedMediaTypes</var>.
                     The devices chosen MUST be the ones determined by the user.
                     Once selected, the source of a
-                    <code><a>MediaStreamTrack</a></code> MUST NOT change.</p>
+                    {{MediaStreamTrack}} MUST NOT change.</p>
                     <p>User Agents are encouraged to warn users against sharing
                     <a>browser</a> display devices as well as <a>monitor</a>
                     display devices where browser windows are visible, or
@@ -347,7 +339,7 @@
                     <code>true</code>, if it isn’t already
                     <code>true</code>.</p>
                     <p>The User Agent MUST NOT
-                    <a href="#create-permission">create a permission storage entry</a>
+                    <a>create a permission storage entry</a>
                     with a value of "granted".
                     </p>
                     <p>If the result is "denied", jump to the step labeled
@@ -367,12 +359,11 @@
                   </li>
                   <li>
                     <p>Let <var>stream</var> be the
-                    <code><a>MediaStream</a></code> object for which the user
+                    {{MediaStream}} object for which the user
                     granted permission.</p>
                   </li>
                   <li>
-                    <p>Run the <a href=
-                    "https://w3c.github.io/mediacapture-main/#dfn-applyconstraints-algorithm">
+                    <p>Run the <a data-cite="GETUSERMEDIA#dfn-applyconstraints-algorithm">
                     <dfn>ApplyConstraints algorithm</dfn></a> on all
                     tracks in <var>stream</var> with the appropriate
                     constraints. Should this fail, let <var>failedConstraint</var>
@@ -417,19 +408,19 @@
         <p>
           When <a>display surface</a> enters an inaccessible state that is not necessarily
           permanent, the user agent MUST queue a task that
-          <a href="https://www.w3.org/TR/mediacapture-streams#set-track-muted">sets the muted state</a>
+          <a data-cite="GETUSERMEDIA#set-track-muted">sets the muted state</a>
           of the corresponding media track to <code>true</code>.
         </p>
         <p>
           When <a>display surface</a> exits an inaccessible state and becomes accessible, the
           user agent MUST queue a task that
-          <a href="https://www.w3.org/TR/mediacapture-streams#set-track-muted">sets the muted state</a>
+          <a data-cite="GETUSERMEDIA#set-track-muted">sets the muted state</a>
           of the corresponding media track to <code>false</code>.
         </p>
         <p>
           When a <a>display surface</a> enters an inaccessible state that is permanent (such as
           the source application terminating), the user agent MUST queue a task that
-          <a href="https://www.w3.org/TR/mediacapture-streams#track-ended">ends</a> the
+          <a data-cite="GETUSERMEDIA##track-ended">ends</a> the
           corresponding media track.
         </p>
         <p>
@@ -455,18 +446,18 @@
         </h2>
         <p>Constraints serve a different purpose in
         {{MediaDevices/getDisplayMedia}} than they do in
-        <code><a href="https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></code>.
+        {{mediadevices/mediadevices.getusermedia()}}.
         They do not aid discovery, instead they are applied only after user-selection.</p>
         <p>This section define which constraints apply to {{MediaDevices/getDisplayMedia}} tracks;
         constraints defined for
-        <code><a href="https://w3c.github.io/mediacapture-main/#local-content">getUserMedia</a></code>
+        {{mediadevices/mediadevices.getusermedia()}}
         do not apply unless listed here.</p>
         <p>Some of these constraints enable user agent processing like downscaling
         and frame decimation, as well as display-specific features. Others enable
         observation of inherent properties of a user-selected
         <a>display surface</a>, as capabilities and settings.</p>
-        <p>The following new and existing <code><a>MediaStreamTrack</a></code>
-        <a href="https://www.w3.org/TR/mediacapture-streams/#constrainable-properties">
+        <p>The following new and existing {{MediaStreamTrack}}
+        <a data-cite="GETUSERMEDIA#constrainable-properties">
         Constrainable Properties</a> are defined to apply to the user-selected
         video <a>display surface</a>, with the following behavior:</p>
         <table class="simple">
@@ -480,7 +471,7 @@
           <tbody>
             <tr id="def-constraint-width">
               <td><dfn>width</dfn></td>
-              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainulong">ConstrainULong</a></code></td>
+              <td>{{ConstrainULong}}</td>
               <td>The width or width range, in pixels. As a capability, max MUST
               reflect the <a>display surface</a>'s width, and min MUST reflect
               the width of the smallest aspect-preserving representation
@@ -488,7 +479,7 @@
             </tr>
             <tr id="def-constraint-height">
               <td><dfn>height</dfn></td>
-              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constrainulong">ConstrainULong</a></code></td>
+              <td>{{ConstrainULong}}</td>
               <td>The height or height range, in pixels. As a capability, max
               MUST reflect the <a>display surface</a>'s height, and min MUST
               reflect the height of the smallest aspect-preserving
@@ -497,7 +488,7 @@
             </tr>
             <tr id="def-constraint-frameRate">
               <td><dfn>frameRate</dfn></td>
-              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindouble">ConstrainDouble</a></code></td>
+              <td>{{ConstrainDouble}}</td>
               <td>The frame rate (frames per second) or frame rate range. As a
               capability, max MUST reflect the <a>display surface</a>'s frame
               rate, and min MUST reflect the lowest frame rate available through
@@ -505,7 +496,7 @@
             </tr>
             <tr id="def-constraint-aspect">
               <td><dfn>aspectRatio</dfn></td>
-              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindouble">ConstrainDouble</a></code></td>
+              <td>{{ConstrainDouble}}</td>
               <td>The exact aspect ratio (width in pixels divided by height in
               pixels, represented as a double rounded to the tenth decimal
               place) or aspect ratio range. As a setting, represents
@@ -515,17 +506,17 @@
             </tr>
             <tr id="def-constraint-resizeMode">
               <td><dfn>resizeMode</dfn></td>
-              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindomstring">ConstrainDOMString</a></code></td>
+              <td>{{ConstrainDOMString}}</td>
               <td>
                 This string (or each string, when a list) should be one of the members of
-                <code><a href="https://www.w3.org/TR/mediacapture-streams#dom-videoresizemodeenum">VideoResizeModeEnum</a></code>.
-                As a setting, <code>none</code> means the <code><a>MediaStreamTrack</a></code>
+                {{VideoResizeModeEnum}}.
+                As a setting, <code>none</code> means the {{MediaStreamTrack}}
                 contains all bits needed to render the display in full detail,
                 which if the <code><a>source pixel ratio</a> > 1</code>, means
                 <code>width</code> and <code>height</code> will be larger
                 than the display's appearance from an end-user viewpoint would
                 suggest, whereas <code>crop-and-scale</code> means the
-                <code><a>MediaStreamTrack</a></code> contains an
+                {{MediaStreamTrack}} contains an
                 aspect-preserved representation of the <a>display surface</a>
                 that has been downscaled by the user agent, but not cropped. As
                 a capability, the values <code>none</code> and
@@ -534,7 +525,7 @@
             </tr>
             <tr id="def-constraint-displaySurface">
               <td><dfn>displaySurface</dfn></td>
-              <td><code><a href="https://www.w3.org/TR/mediacapture-streams#dom-constraindomstring">ConstrainDOMString</a></code></td>
+              <td>{{ConstrainDOMString}}</td>
               <td>
                 This string (or each string, when a list) should be one of the
                 members of <code><a>DisplayCaptureSurfaceType</a></code>. As a
@@ -546,7 +537,7 @@
             </tr>
             <tr id="def-constraint-logicalSurface">
               <td><dfn>logicalSurface</dfn></td>
-              <td><code><a data-cite="!GETUSERMEDIA/#dom-constrainboolean">ConstrainBoolean</a></code></td>
+              <td>{{ConstrainBoolean}}</td>
               <td>
                 As a setting, a value of <code>true</code> indicates capture of
                 a <a>logical display surface</a>, whereas a value of
@@ -558,7 +549,7 @@
             </tr>
             <tr id="def-constraint-cursor">
               <td><dfn>cursor</dfn></td>
-              <td><code><a data-cite="!GETUSERMEDIA/#dom-constraindomstring">ConstrainDOMString</a></code></td>
+              <td>{{ConstrainDOMString}}</td>
               <td>
                 This string (or each string, when a list) should be one of the
                 members of <code><a>CursorCaptureConstraint</a></code>. As a
@@ -571,8 +562,8 @@
             </tr>
           </tbody>
         </table>
-        <p>The following new and existing <code><a>MediaStreamTrack</a></code>
-        <a href="https://www.w3.org/TR/mediacapture-streams/#constrainable-properties">
+        <p>The following new and existing {{MediaStreamTrack}}
+        <a data-cite="GETUSERMEDIA#constrainable-properties">
         Constrainable Properties</a> are defined to apply to the user-selected
         audio sources, with the following behavior:</p>
         <table class="simple">
@@ -586,7 +577,7 @@
           <tbody>
             <tr id="def-constraint-restrictOwnAudio">
               <td><dfn>restrictOwnAudio</dfn></td>
-              <td><code><a data-cite="!GETUSERMEDIA/#dom-constrainboolean">ConstrainBoolean</a></code></td>
+              <td>{{ConstrainBoolean}}</td>
               <td>
                 <p>As a setting, this value indicates whether or not the user
                 agent is applying <a>own audio restriction</a> to the
@@ -637,16 +628,16 @@
             Downscaling and Frame Decimation
           </h2>
           <p>For the purposes of the
-          <a href="https://www.w3.org/TR/mediacapture-streams#dfn-selectsettings">SelectSettings</a>
+          <a data-cite="GETUSERMEDIA#dfn-selectsettings">SelectSettings</a>
           algorithm, the user agent SHOULD consider all possible combinations of
           downscaled dimensions that preserve the aspect ratio of the original
           <a>display surface</a> (to the nearest pixel), and frame rates
           available through frame decimation, as available
-          <a href="https://www.w3.org/TR/mediacapture-streams#dfn-selectsettings">settings dictionaries</a>.
+          <a data-cite="GETUSERMEDIA#dfn-selectsettings">settings dictionaries</a>.
           </p>
           <p>The downscaling and decimation effects of constraints is then
           effectively governed by the
-          <a href="https://w3c.github.io/mediacapture-main/getusermedia.html#dfn-fitness-distance">
+          <a data-cite="GETUSERMEDIA#dfn-fitness-distance">
           fitness distance algorithm</a>.</p>
           <p>The intent is for the user agent to produce output that is close to
           the ideal <code>width</code>, ideal <code>height</code>, and/or
@@ -684,12 +675,12 @@
         <section>
           <h2>DisplayMediaStreamConstraints</h2>
           <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
-          instruct the User Agent what sort of <a>MediaStreamTrack</a>s may be
-          included in the <a>MediaStream</a> returned by
+          instruct the User Agent what sort of {{MediaStreamTrack}}s may be
+          included in the {{MediaStream}} returned by
           {{MediaDevices/getDisplayMedia}}.</p>
           <div>
-            <pre class="idl" data-cite="mediacapture-streams"
->dictionary DisplayMediaStreamConstraints {
+            <pre class="idl">
+dictionary DisplayMediaStreamConstraints {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
 };</pre>
@@ -703,7 +694,7 @@
                 defaulting to <code>true</code></dt>
                 <dd>
                   <p>If <code>true</code>, it requests that the returned
-                  <a>MediaStream</a> contain a video track. If a <code>Constraints</code>
+                  {{MediaStream}} contain a video track. If a <code>Constraints</code>
                   structure is provided, it further specifies desired processing
                   options to be applied to the video track rendition of the
                   display surface chosen by the user. If <code>false</code>, the
@@ -714,11 +705,11 @@
                 defaulting to <code>false</code></dt>
                 <dd>
                   <p>If <code>true</code>, it signals an interest that the
-                  returned <a>MediaStream</a> contain an audio track, if
+                  returned {{MediaStream}} contain an audio track, if
                   supported and audio is available for display surface chosen by
                   the user. If a <code>Constraints</code> structure is provided, it
                   further specifies desired processing options to be applied to
-                  the audio track. If <code>false</code>, the <a>MediaStream</a>
+                  the audio track. If <code>false</code>, the {{MediaStream}}
                   MUST NOT contain an audio track.</p>
                 </dd>
               </dl>
@@ -727,7 +718,7 @@
         </section>
         <section>
           <h2>
-            Extensions to <a data-cite="GETUSERMEDIA#dom-mediatracksupportedconstraints">MediaTrackSupportedConstraints</a>
+            Extensions to {{<a data-cite="GETUSERMEDIA#dom-mediatracksupportedconstraints">MediaTrackSupportedConstraints</a>
           </h2>
           <p>
             <a data-cite="GETUSERMEDIA#dom-mediatracksupportedconstraints">MediaTrackSupportedConstraints</a>
@@ -799,8 +790,7 @@
           <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
             <dt>
-              <dfn><code>displaySurface</code></dfn> of type <span class=
-              "idlMemberType"><a data-cite="!GETUSERMEDIA/#dom-constraindomstring">ConstrainDOMString</a></span>
+              <dfn><code>displaySurface</code></dfn> of type {{ConstrainDOMString}}
             </dt>
             <dd>
               <p>
@@ -809,8 +799,7 @@
               </p>
             </dd>
             <dt>
-              <dfn><code>logicalSurface</code></dfn> of type <span class=
-              "idlMemberType"><a data-cite="!GETUSERMEDIA/#dom-constrainboolean">ConstrainBoolean</a></span>
+              <dfn><code>logicalSurface</code></dfn> of type {{ConstrainBoolean}}
             </dt>
             <dd>
               <p>
@@ -820,8 +809,7 @@
               </p>
             </dd>
             <dt>
-               <dfn><code>cursor</code></dfn> of type <span class=
-               "idlMemberType"><a data-cite="!GETUSERMEDIA/#dom-constraindomstring">ConstrainDOMString</a></span>
+               <dfn><code>cursor</code></dfn> of type {{ConstrainDOMString}}
             </dt>
             <dd>
               <p>
@@ -830,8 +818,7 @@
               </p>
             </dd>
             <dt>
-              <dfn><code>restrictOwnAudio</code></dfn> of type <span class=
-              "idlMemberType"><a data-cite="!GETUSERMEDIA/#dom-constrainboolean">ConstrainBoolean</a></span>
+              <dfn><code>restrictOwnAudio</code></dfn> of type {{ConstrainBoolean}}
             </dt>
             <dd>
               <p>
@@ -846,9 +833,9 @@
             Extensions to <a class="idlType">MediaTrackSettings</a>
           </h2>
           <p>
-            When the <a href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface">getSettings()</a>
+            When the {{mediastreamtrack/getsettings()}}
             method is invoked on a video stream track, the user agent must return the extended
-            <a href="https://www.w3.org/TR/mediacapture-streams/#media-track-settings">MediaTrackSettings</a>
+            {{MediaTrackSettings}}
             dictionary, representing the current status of the underlying user agent.
           </p>
           <pre class="idl"
@@ -1013,9 +1000,8 @@
         </h2>
         <p>
           Each potential source of capture is treated by this API as a discrete media source.
-          However, display capture sources MUST NOT be enumerated by <code><a href=
-          "https://w3c.github.io/mediacapture-main/#widl-MediaDevices-enumerateDevices-Promise-sequence-MediaDeviceInfo">
-          enumerateDevices</a></code>, since this would reveal too much information about the host
+          However, display capture sources MUST NOT be enumerated by {{mediadevices/enumeratedevices()}},
+          since this would reveal too much information about the host
           system.
         </p>
         <p>
@@ -1060,14 +1046,13 @@
     </section>
     <section>
       <h1>Privacy Indicator Requirements</h1>
-      <p>This specification extends the <a href=
-        "https://w3c.github.io/mediacapture-main/#privacy-indicator-requirements">
+      <p>This specification extends the <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
-      <code><a>getUserMedia</a></code> to include {{MediaDevices/getDisplayMedia}}.</p>
+      {{mediadevices/mediadevices.getusermedia()}} to include {{MediaDevices/getDisplayMedia}}.</p>
       <p>References in this specification to [[\devicesLiveMap]],
       [[\devicesAccessibleMap]], and [[\kindsAccessibleMap]] refer to the
       definitions already created to support Privacy Indicator Requirements for
-      <code><a>getUserMedia</a></code>.</p>
+      {{mediadevices/mediadevices.getusermedia()}}.</p>
       <p>For each <var>kind</var> of device that
       {{MediaDevices/getDisplayMedia}} exposes, using a stable and private id
       for the device, <var>deviceId</var>, set <var>kind</var>
@@ -1092,10 +1077,9 @@
         </li>
       </ul>
       <p>Then, given the new definitions above, the requirements on the User
-      Agent are those specified in <a href=
-        "https://w3c.github.io/mediacapture-main/#privacy-indicator-requirements">
+      Agent are those specified in <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
-      <code><a>getUserMedia</a></code>.</p>
+      {{mediadevices/mediadevices.getusermedia()}}.</p>
       <div class="note">
         <p>
         Even though there's a single permission descriptor for {{MediaDevices/getDisplayMedia}},
@@ -1192,10 +1176,10 @@
         </p>
         <p>
           There is a risk that the user prompt be exposed to the web page for a short amount of time
-          by the newly created <code><a>MediaStreamTrack</a></code>, for instance if the user
+          by the newly created {{MediaStreamTrack}}, for instance if the user
           selects the screen on which the user prompt is displayed.
           In the case the user prompt displays previews of the various surfaces available for selection,
-          the <a>user agent</a> MUST NOT capture, for the newly created <code><a>MediaStreamTrack</a></code>,
+          the <a>user agent</a> MUST NOT capture, for the newly created {{MediaStreamTrack}},
           the previews that the user did not intend to share explicitly.
         </p>
         <h2>
