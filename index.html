@@ -219,7 +219,8 @@
             steps:</p>
             <ol>
               <li>
-                <p>If the method call is not <a>triggered by user activation</a>, return a promise <a>rejected</a>
+                <p>If the [=relevant global object=] of [=this=] does not have
+          [=transient activation=], return a promise <a>rejected</a>
                 with a <code>DOMException</code> object whose <code>name</code>
                 attribute has the value <code>InvalidStateError</code>.</p>
               </li>
