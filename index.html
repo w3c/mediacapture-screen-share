@@ -168,7 +168,7 @@
       <p>
         Capture of displayed media is enabled through the addition of a new
         {{MediaDevices/getDisplayMedia}} method on the <code><a>MediaDevices</a></code>
-        interface, that is similar to {{mediadevices/mediadevices.getusermedia()}}
+        interface, that is similar to <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>
         , except that it acquires media from one display device
         chosen by the end-user each time.
       </p>
@@ -201,7 +201,7 @@
               the audio source(s) are not necessarily the same as the video source(s). An audio
               source may be a particular <a>application</a>, <a>window</a>, <a>browser</a>, the
               entire system audio or any combination thereof. Unlike
-              {{mediadevices/mediadevices.getusermedia()}} with regards to audio+video, the user agent is
+              <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a> with regards to audio+video, the user agent is
               allowed not to return audio even if the audio constraint is present. If the user
               agent knows no audio will be shared for the lifetime of the stream it MUST NOT
               include an audio track in the resulting stream. The user agent MAY accept a
@@ -212,7 +212,7 @@
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
               {{MediaDevices/getDisplayMedia}} also differs from
-              {{mediadevices/mediadevices.getusermedia()}} in that "granted" permissions cannot be persisted.
+              <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a> in that "granted" permissions cannot be persisted.
             </p>
             <p>When the {{MediaDevices/getDisplayMedia()}}
             method is called, the User Agent MUST run the following
@@ -447,11 +447,11 @@
         </h2>
         <p>Constraints serve a different purpose in
         {{MediaDevices/getDisplayMedia}} than they do in
-        {{mediadevices/mediadevices.getusermedia()}}.
+        <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>.
         They do not aid discovery, instead they are applied only after user-selection.</p>
         <p>This section define which constraints apply to {{MediaDevices/getDisplayMedia}} tracks;
         constraints defined for
-        {{mediadevices/mediadevices.getusermedia()}}
+        <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>
         do not apply unless listed here.</p>
         <p>Some of these constraints enable user agent processing like downscaling
         and frame decimation, as well as display-specific features. Others enable
@@ -1049,11 +1049,11 @@ dictionary DisplayMediaStreamConstraints {
       <h1>Privacy Indicator Requirements</h1>
       <p>This specification extends the <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
-      {{mediadevices/mediadevices.getusermedia()}} to include {{MediaDevices/getDisplayMedia}}.</p>
+      <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a> to include {{MediaDevices/getDisplayMedia}}.</p>
       <p>References in this specification to [[\devicesLiveMap]],
       [[\devicesAccessibleMap]], and [[\kindsAccessibleMap]] refer to the
       definitions already created to support Privacy Indicator Requirements for
-      {{mediadevices/mediadevices.getusermedia()}}.</p>
+      <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>.</p>
       <p>For each <var>kind</var> of device that
       {{MediaDevices/getDisplayMedia}} exposes, using a stable and private id
       for the device, <var>deviceId</var>, set <var>kind</var>
@@ -1080,7 +1080,7 @@ dictionary DisplayMediaStreamConstraints {
       <p>Then, given the new definitions above, the requirements on the User
       Agent are those specified in <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
-      {{mediadevices/mediadevices.getusermedia()}}.</p>
+      <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>.</p>
       <div class="note">
         <p>
         Even though there's a single permission descriptor for {{MediaDevices/getDisplayMedia}},
