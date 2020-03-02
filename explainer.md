@@ -92,3 +92,7 @@ Allowing a web page to capture and effectively record your screen carries signif
 **End-user oversharing of video.** The immediate and obvious risk is that users inadvertently share content that they did not wish to share, or might not have realized would be shared. This can happen from trivial-seeming actions like scrolling, document flipping, even tab headers, anything that’s visible if just for a split second.
 
 **Capturing a web surface defeats same-origin protections.** Capturing a browser window or the desktop when a browser window is visible on it, poses a unique privacy and security risk that is unobvious and significant. If a captured browser window is displaying a page that is under the control of a malicious application, even indirectly, it can allow the malicious application to induce presentation of information that would otherwise be secret from it. For details, see [Share browser windows and entire screen only with sites you trust](https://blog.mozilla.org/webrtc/share-browser-windows-entire-screen-sites-trust/).
+
+## Security and Privacy Questionnaire
+
+See [questionnaire.md](questionnaire.md).
