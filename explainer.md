@@ -52,13 +52,13 @@ This leaves this spec to focus on the parts unique to acquiring display media, a
 This is how to request a video MediaStream sourced by screen-capture:
 
 ```js
-const stream = await navigator.getDisplayMedia({video: true, audio: true});
+const stream = await navigator.mediaDevices.getDisplayMedia({video: true, audio: true});
 ```
 
 Compare to a request for camera and microphone:
 
 ```js
-const stream = await navigator.getUserMedia({video: true, audio: true});
+const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
 ```
 These streams can then be used interchangeably:
 
