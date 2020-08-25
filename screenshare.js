@@ -54,20 +54,10 @@ var respecConfig = {
   //],
 
   // name of the WG
-  wg: ["Web Real-Time Communications Working Group"],
-
-  // URI of the public WG page
-  wgURI: ["https://www.w3.org/2011/04/webrtc/"],
-
+  group: "webrtc",
+  xref: ["html", "infra", "permissions", "permissions-policy", "dom"],
   // name (without the @w3.org) of the public mailing to which comments are due
   wgPublicList: "public-webrtc",
-
-  // URI of the patent status for this WG, for Rec-track documents
-  // !!!! IMPORTANT !!!!
-  // This is important for Rec-track documents, do not copy a patent URI from a random
-  // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
-  // Team Contact.
-  wgPatentURI: ["https://www.w3.org/2004/01/pp-impl/47318/status"],
 
   github: "https://github.com/w3c/mediacapture-screen-share/",
 
