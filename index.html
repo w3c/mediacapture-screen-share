@@ -85,21 +85,6 @@
         from [[!GETUSERMEDIA]].
       </p>
       <p>
-        When referring to exceptions, the terms [=exception/throw=] and
-        <dfn data-cite="!WEBIDL#dfn-create-exception">create</dfn> are
-        defined in [[!WEBIDL]].
-      </p>
-      <p>
-        The term "throw" is used as specified in [[!INFRA]]: it terminates the current processing steps.
-      </p>
-      <p>
-        The terms <dfn data-lt="fulfill|fulfillment">fulfilled</dfn>, <dfn
-        data-lt="reject|rejection|rejecting">rejected</dfn>, <dfn data-lt=
-        "resolve|resolves">resolved</dfn>, <dfn>pending</dfn> and
-        <dfn>settled</dfn> used in the context of Promises are defined in
-        [[!ECMASCRIPT-6.0]].
-      </p>
-      <p>
         Screen capture encompasses the capture of several different types of screen-based surfaces.
         Collectively, these are referred to as <dfn data-lt="display surface">display
         surfaces</dfn>, of which this document defines the following types:
@@ -119,8 +104,8 @@
         {{MediaStreamTrack}}.
         </li>
         <li>A <dfn>browser</dfn> <a>display surface</a> is the rendered form of a
-        <a data-cite="!HTML/#browsing-context">browsing context</a>.
-        This is not strictly limited to HTML [[HTML5]] documents, though the discussion in this
+        [=browsing context=].
+        This is not strictly limited to HTML [[HTML]] documents, though the discussion in this
         document will address some specific concerns with the capture of HTML.
         </li>
       </ul>
@@ -131,8 +116,8 @@
         <li>A <dfn data-lt="logical display surfaces">logical display surface</dfn> is the surface
         that an operating system makes available to an application for the purposes of rendering.
         </li>
-        <li>a <dfn>visible display surface</dfn> is the portion of a <a>logical display surface</a>
-        that is rendered to a <a>monitor</a>.
+        <li>a <dfn>visible display surface</dfn> is the portion of a [=logical display surface=]
+        that is rendered to a [=monitor=].
         </li>
       </ul>
       <p>
@@ -144,10 +129,8 @@
         The <dfn>source pixel ratio</dfn> of a <a>display surface</a> is 1/96th of 1 inch divided
         by its vertical pixel size.
       </p>
-      <p>The terms <dfn>permission</dfn>, <dfn>retrieve the permission state</dfn>,
-      <dfn id="prompt-the-user-to-choose">prompt the user to choose</dfn>, and
-      <dfn id="create-permission">create a permission storage entry</dfn> are
-      defined in [[!permissions]].</p>
+      <p>The terms <dfn data-cite="permissions#reading-current-states">reading current permission state</dfn> and [=request permission to
+  use=]  are defined in [[!permissions]].</p>
       <p>The <dfn>devicechange</dfn> event is defined in [[GETUSERMEDIA]] Section 9.2, 
       the <dfn>MediaTrackSupportedConstraints</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.4,
       the <dfn>MediaTrackConstraintSet</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.6, and
@@ -167,7 +150,7 @@
       -->
       <p>
         Capture of displayed media is enabled through the addition of a new
-        {{MediaDevices/getDisplayMedia}} method on the <code><a>MediaDevices</a></code>
+        {{MediaDevices/getDisplayMedia}} method on the {{MediaDevices}}
         interface, that is similar to <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>
         , except that it acquires media from one display device
         chosen by the end-user each time.
@@ -182,15 +165,15 @@
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
-            <code><dfn>getDisplayMedia</dfn></code>
+            <dfn>getDisplayMedia</dfn>
           </dt>
           <dd>
             <p>Prompts the user for permission to live-capture their display.</p>
             <p>
               The user agent MUST let the end-user choose which display surface to share
               out of all available choices every time, and MUST NOT use
-              <code>constraints</code> to limit that choice. Instead,
-              <code>constraints</code> MUST be applied to the media chosen by the user,
+              <var>constraints</var> to limit that choice. Instead,
+              <var>constraints</var> MUST be applied to the media chosen by the user,
               only after they have made their selection. This prevents an application
               from influencing the selection of sources, see <a href="#constraints"></a>
               for details.
@@ -212,7 +195,7 @@
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
               {{MediaDevices/getDisplayMedia}} also differs from
-              <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a> in that "granted" permissions cannot be persisted.
+              <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a> in that {{PermissionState/"granted"}} permissions cannot be persisted.
             </p>
             <p>When the {{MediaDevices/getDisplayMedia()}}
             method is called, the User Agent MUST run the following
@@ -221,8 +204,8 @@
               <li>
                 <p>If the [=relevant global object=] of [=this=] does not have
           [=transient activation=], return a promise <a>rejected</a>
-                with a <code>DOMException</code> object whose <code>name</code>
-                attribute has the value <code>InvalidStateError</code>.</p>
+                with a {{DOMException}} object whose {{DOMException/name}}
+                attribute has the value {{InvalidStateError}}.</p>
               </li>
               <li>
                 <p>Let <var>constraints</var> be the method's first
@@ -230,43 +213,39 @@
               </li>
               <li>
                 <p>If <code>constraints.video</code> is <code>false</code>,
-                  return a promise <a>rejected</a> with a newly
-                  <a data-link-for="exception" data-lt="create">created</a>
-                  <code>TypeError</code>.</p>
+                  return a promise [=reject|rejected=] with a newly
+                  [=exception/created=] {{TypeError}}.</p>
               </li>
               <li>
-                <p>For each member
-                [=dictionary member/present=]
+                <p>For each [= map/exist | existing =] member
                 in <var>constraints</var> whose value, <var>CS</var>, is
                 a dictionary, run the following steps:</p>
                 <ol>
                   <li>
                     <p>If <var>CS</var> contains a member named <code>advanced</code>,
-                    return a promise <a>rejected</a> with a newly
-                    <a data-link-for="exception" data-lt="create">created</a>
-                    <code>TypeError</code>.</p>
+                    return a promise [=reject|rejected=] with a newly
+                    [=exception/created=] {{TypeError}}.</p>
                   </li>
                   <li>
                     <p>If <var>CS</var> contains a member whose name specifies a
-                    constrainable property applicable to <a>display surface</a>s,
+                    constrainable property applicable to [=display surface=]s,
                     and whose value in turn is a dictionary containing a member
                     named either <code>min</code> or <code>exact</code>, return
-                    a promise <a>rejected</a> with a newly
-                    <a data-link-for="exception" data-lt="create">created</a>
-                    <code>TypeError</code>.</p>
+                    a promise [=reject|rejected=] with a newly
+                    [=exception/created=] {{TypeError}}.</p>
                   </li>
                   <li>
                     <p>If <var>CS</var> contains a member whose name,
                     <var>failedConstraint</var> specifies a
                     constrainable property, <var>constraint</var>, applicable to
-                    <a>display surface</a>s, and whose value in turn is a
+                    [=display surface=]s, and whose value in turn is a
                     dictionary containing a member named <code>max</code>, and
                     that member's value in turn is less than the constrainable
-                    property's <a>floor value</a>, then let
+                    property's [=floor value=], then let
                     <var>failedConstraint</var> be the name of the
                     <var>constraint</var>, let <var>message</var> be either
                     <code>undefined</code> or an informative human-readable
-                    message, and return a promise <a>rejected</a> with a new
+                    message, and return a promise [=reject|rejected=] with a new
                     <code>OverconstrainedError</code> created by calling
                     <code>OverconstrainedError(<var>failedConstraint</var>,
                     <var>message</var>)</code>.
@@ -280,10 +259,10 @@
               </li>
               <li>
                 <p>If the <a>current settings object</a>'s [=environment settings object/responsible document=] is NOT [=Document/fully active=], return
-                  a promise <a>rejected</a> with a
-                  <code>DOMException</code> object whose
-                  <code>name</code> attribute has the value
-                  <code>InvalidStateError</code>.</p>
+                  a promise [=reject|rejected=] with a
+                  {{DOMException}} object whose
+                  {{DOMException/name}} attribute has the value
+                  {{InvalidStateError}}.</p>
               </li>
               <li>
                 <p>Let <var>p</var> be a new promise.</p>
@@ -298,14 +277,14 @@
                       <li>
                         <p>If no sources of type <var>T</var> are available,
                         <a>reject</a> <var>p</var> with a new
-                        <code>DOMException</code> object whose
-                        <code>name</code> attribute has the value
-                        <code>NotFoundError</code>.</p>
+                        {{DOMException}} object whose
+                        {{DOMException/name}} attribute has the value
+                        {{NotFoundError}}.</p>
                       </li>
                       <li>
-                        <p><a>Retrieve the permission state</a> for obtaining
+                        <p>[=reading current permission state|Read the current permission state=] for obtaining
                         sources of type <var>T</var> in the current browsing
-                        context. If the permission state is "denied", jump to
+                        context. If the permission state is {{PermissionState/"denied"}}, jump to
                         the step labeled <em>PermissionFailure</em> below.</p>
                       </li>
                     </ol>
@@ -316,9 +295,9 @@
                     limitations, jump to the step labeled <em>Permission Failure</em> below.</p>
                   </li>
                   <li>
-                    <p><a>Prompt the user to choose</a>
-                    a display device, with a PermissionDescriptor named
-                    <code>"display-capture"</code>, resulting in a set of
+                    <p>[=Prompt the user to choose=]
+                    a display device, with a {{PermissionDescriptor}} named
+                    {{PermissionName/"display-capture"}}, resulting in a set of
                     provided media.</p>
                     <p>The provided media MUST include precisely one track of
                     each media type in <var>requestedMediaTypes</var>.
@@ -330,7 +309,7 @@
                     display devices where browser windows are visible, or
                     otherwise try to discourage their selection on the basis
                     that these represent a significantly higher risk when shared.</p>
-                    <p>If the result of the request is "granted", then for
+                    <p>If the result of the request is {{PermissionState/"granted"}}, then for
                     each device that is sourcing the provided media, using
                     a stable and private id for the device, <var>deviceId</var>,
                     set [[\devicesLiveMap]]<var>[deviceId]</var> to
@@ -340,23 +319,22 @@
                     <code>true</code>, if it isn’t already
                     <code>true</code>.</p>
                     <p>The User Agent MUST NOT
-                    <a>create a permission storage entry</a>
-                    with a value of "granted".
+                    store a {{PermissionState/"granted"}} permission entry.
                     </p>
-                    <p>If the result is "denied", jump to the step labeled
+                    <p>If the result is {{PermissionState/"denied"}}, jump to the step labeled
                     <em>Permission Failure</em> below. If the user never
                     responds, this algorithm stalls on this step.</p>
                     <p>If the user grants permission but a hardware error
                     such as an OS/program/webpage lock prevents access,
                     <a>reject</a> <var>p</var> with a new
-                    <code>DOMException</code> object whose
-                    <code>name</code> attribute has the value
-                    <code>NotReadableError</code> and abort these steps.</p>
-                    <p>If the result is "granted" but device access fails for
+                    {{DOMException}} object whose
+                    {{DOMException/name}} attribute has the value
+                    {{NotReadableError}} and abort these steps.</p>
+                    <p>If the result is {{PermissionState/"granted"}} but device access fails for
                     any reason other than those listed above, <a>reject</a>
-                    <var>p</var> with a new <code>DOMException</code>
-                    object whose <code>name</code> attribute has the
-                    value <code>AbortError</code> and abort these steps.</p>
+                    <var>p</var> with a new {{DOMException}}
+                    object whose {{DOMException/name}} attribute has the
+                    value {{AbortError}} and abort these steps.</p>
                   </li>
                   <li>
                     <p>Let <var>stream</var> be the
@@ -381,10 +359,10 @@
                     abort these steps.</p>
                   </li>
                   <li>
-                    <p><em>Permission Failure</em>: <a>Reject</a>
-                    <var>p</var> with a new <code>DOMException</code>
-                    object whose <code>name</code> attribute has the
-                    value <code>NotAllowedError</code>.</p>
+                    <p><em>Permission Failure</em>: [=Reject=]
+                    <var>p</var> with a new {{DOMException}}
+                    object whose {{DOMException/name}} attribute has the
+                    value {{NotAllowedError}}.</p>
                   </li>
                 </ol>
               </li>
@@ -511,17 +489,17 @@
               <td>
                 This string (or each string, when a list) should be one of the members of
                 {{VideoResizeModeEnum}}.
-                As a setting, <code>none</code> means the {{MediaStreamTrack}}
+                As a setting, <code class=gum>none</code> means the {{MediaStreamTrack}}
                 contains all bits needed to render the display in full detail,
                 which if the <code><a>source pixel ratio</a> > 1</code>, means
                 <code>width</code> and <code>height</code> will be larger
                 than the display's appearance from an end-user viewpoint would
-                suggest, whereas <code>crop-and-scale</code> means the
+                suggest, whereas <code class=gum>crop-and-scale</code> means the
                 {{MediaStreamTrack}} contains an
                 aspect-preserved representation of the <a>display surface</a>
                 that has been downscaled by the user agent, but not cropped. As
-                a capability, the values <code>none</code> and
-                <code>crop-and-scale</code> both MUST be present.
+                a capability, the values <code class=gum>none</code> and
+                <code class=gum>crop-and-scale</code> both MUST be present.
               </td>
             </tr>
             <tr id="def-constraint-displaySurface">
@@ -529,8 +507,8 @@
               <td>{{ConstrainDOMString}}</td>
               <td>
                 This string (or each string, when a list) should be one of the
-                members of <code><a>DisplayCaptureSurfaceType</a></code>. As a
-                setting, indicates the type of <a>display surface</a> that
+                members of {{DisplayCaptureSurfaceType}}. As a
+                setting, indicates the type of [=display surface=] that
                 is being captured. As a capability, the setting value MUST be
                 the lone value present, rendering this property immutable from
                 the application viewpoint.
@@ -541,9 +519,9 @@
               <td>{{ConstrainBoolean}}</td>
               <td>
                 As a setting, a value of <code>true</code> indicates capture of
-                a <a>logical display surface</a>, whereas a value of
+                a [=logical display surface=], whereas a value of
                 <code>false</code> indicates a capture of a
-                <a>visible display surface</a>. As a capability, this same
+                [=visible display surface=]. As a capability, this same
                 value MUST be the lone value present, rendering this
                 property immutable from the application viewpoint.
               </td>
@@ -553,12 +531,12 @@
               <td>{{ConstrainDOMString}}</td>
               <td>
                 This string (or each string, when a list) should be one of the
-                members of <code><a>CursorCaptureConstraint</a></code>. As a
+                members of {{CursorCaptureConstraint}}. As a
                 setting, indicates if and when the cursor is included in the
-                captured <a>display surface</a>.  As a capability, the user
+                captured [=display surface=].  As a capability, the user
                 agent MUST include only the set of values from
-                <code><a>CursorCaptureConstraint</a></code> it is capable of
-                supporting for this <a>display surface</a>.
+                {{CursorCaptureConstraint}} it is capable of
+                supporting for this [=display surface=].
               </td>
             </tr>
           </tbody>
@@ -690,8 +668,7 @@ dictionary DisplayMediaStreamConstraints {
                 Members</h2>
               <dl data-link-for="DisplayMediaStreamConstraints" data-dfn-for=
                 "DisplayMediaStreamConstraints" class="dictionary-members">
-                <dt><dfn><code>video</code></dfn> of type <span class=
-                  "idlMemberType"><code>(boolean or MediaTrackConstraints)</code></span>,
+                <dt><dfn><code>video</code></dfn> of type <code>(boolean or {{MediaTrackConstraints}})</code>,
                 defaulting to <code>true</code></dt>
                 <dd>
                   <p>If <code>true</code>, it requests that the returned
@@ -699,10 +676,9 @@ dictionary DisplayMediaStreamConstraints {
                   structure is provided, it further specifies desired processing
                   options to be applied to the video track rendition of the
                   display surface chosen by the user. If <code>false</code>, the
-                  request MUST be rejected with a <code>TypeError</code>.</p>
+                  request MUST be [=rejected=] with a {{TypeError}}.</p>
                 </dd>
-                <dt><dfn><code>audio</code></dfn> of type <span class=
-                  "idlMemberType"><code>(boolean or MediaTrackConstraints)</code></span>,
+                <dt><dfn><code>audio</code></dfn> of type <code>(boolean or {{MediaTrackConstraints}})</code>,
                 defaulting to <code>false</code></dt>
                 <dd>
                   <p>If <code>true</code>, it signals an interest that the
@@ -719,7 +695,7 @@ dictionary DisplayMediaStreamConstraints {
         </section>
         <section>
           <h2>
-            Extensions to {{<a data-cite="GETUSERMEDIA#dom-mediatracksupportedconstraints">MediaTrackSupportedConstraints</a>
+            Extensions to <a data-cite="GETUSERMEDIA#dom-mediatracksupportedconstraints">MediaTrackSupportedConstraints</a>
           </h2>
           <p>
             <a data-cite="GETUSERMEDIA#dom-mediatracksupportedconstraints">MediaTrackSupportedConstraints</a>
@@ -733,42 +709,38 @@ dictionary DisplayMediaStreamConstraints {
   boolean cursor = true;
   boolean restrictOwnAudio = true;
 };</pre>
-          <dl data-link-for="MediaTrackSupportedConstraints" data-dfn-for="MediaTrackSupportedConstraints"
+          <dl  data-dfn-for="MediaTrackSupportedConstraints"
           class="dictionary-members">
             <dt>
-              <dfn><code>displaySurface</code></dfn> of type <span class=
-              "idlMemberType">boolean</span>, defaulting to <code>true</code>
+              <dfn>displaySurface</dfn> of type {{boolean}}, defaulting to <code>true</code>
             </dt>
             <dd>
               <p>
-                Whether <code><a>displaySurface</a></code> constraint is recognized.
+                Whether {{displaySurface}} constraint is recognized.
               </p>
             </dd>
             <dt>
-              <dfn><code>logicalSurface</code></dfn> of type <span class=
-              "idlMemberType">boolean</span>, defaulting to <code>true</code>
+              <dfn><code>logicalSurface</code></dfn> of type {{boolean}}, defaulting to <code>true</code>
             </dt>
             <dd>
               <p>
-                Whether <code><a>logicalSurface</a></code> constraint is recognized.
+                Whether {{logicalSurface}} constraint is recognized.
               </p>
             </dd>
             <dt>
-              <dfn><code>cursor</code></dfn> of type <span class=
-              "idlMemberType">boolean</span>, defaulting to <code>true</code>
+              <dfn>cursor</dfn> of type {{boolean}}, defaulting to <code>true</code>
             </dt>
             <dd>
               <p>
-                Whether <code><a>cursor</a></code> constraint is recognized.
+                Whether {{cursor}} constraint is recognized.
               </p>
             </dd>
             <dt>
-              <dfn><code>restrictOwnAudio</code></dfn> of type <span class=
-              "idlMemberType">boolean</span>, defaulting to <code>true</code>
+              <dfn>restrictOwnAudio</dfn> of type {{boolean}}, defaulting to <code>true</code>
             </dt>
             <dd>
               <p>
-                Whether <code><a>restrictOwnAudio</a></code> constraint is
+                Whether {{restrictOwnAudio}} constraint is
                 recognized.
               </p>
             </dd>
@@ -776,10 +748,10 @@ dictionary DisplayMediaStreamConstraints {
         </section>
         <section>
           <h2>
-            Extensions to <a>MediaTrackConstraintSet</a>
+            Extensions to {{MediaTrackConstraintSet}}
           </h2>
           <p>
-            <a data-cite="GETUSERMEDIA#dom-mediatrackconstraintset">MediaTrackConstraintSet</a> is used for reading the current status of constraints.
+            {{MediaTrackConstraintSet}} is used for reading the current status of constraints.
           </p>
           <pre class="idl" data-cite="mediacapture-streams"
 >partial dictionary MediaTrackConstraintSet {
@@ -788,43 +760,43 @@ dictionary DisplayMediaStreamConstraints {
   ConstrainDOMString cursor;
   ConstrainBoolean restrictOwnAudio;
 };</pre>
-          <dl data-link-for="MediaTrackConstraintSet" data-dfn-for="MediaTrackConstraintSet" class=
+          <dl data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
             <dt>
               <dfn><code>displaySurface</code></dfn> of type {{ConstrainDOMString}}
             </dt>
             <dd>
               <p>
-                The type of <a>display surface</a> that is being captured. This assumes values from
-                the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.
+                The type of [=display surface=] that is being captured. This assumes values from
+                the {{DisplayCaptureSurfaceType}} enumeration.
               </p>
             </dd>
             <dt>
-              <dfn><code>logicalSurface</code></dfn> of type {{ConstrainBoolean}}
+              <dfn>logicalSurface</dfn> of type {{ConstrainBoolean}}
             </dt>
             <dd>
               <p>
-                A value of <code>true</code> indicates capture of a <a>logical display surface</a>;
-                a value of <code>false</code> indicates a capture capture of a <a>visible display
-                surface</a>.
+                A value of <code>true</code> indicates capture of a [=logical display surface=];
+                a value of <code>false</code> indicates a capture capture of a [=visible display
+                surface=].
               </p>
             </dd>
             <dt>
-               <dfn><code>cursor</code></dfn> of type {{ConstrainDOMString}}
+               <dfn>cursor</dfn> of type {{ConstrainDOMString}}
             </dt>
             <dd>
               <p>
-                Assumes values from the <code><a>CursorCaptureConstraint</a></code> enumeration that
+                Assumes values from the {{CursorCaptureConstraint}} enumeration that
                 determines if and when the cursor is included in the captured display surface.
               </p>
             </dd>
             <dt>
-              <dfn><code>restrictOwnAudio</code></dfn> of type {{ConstrainBoolean}}
+              <dfn>restrictOwnAudio</dfn> of type {{ConstrainBoolean}}
             </dt>
             <dd>
               <p>
                 This constraint is only applicable to audio tracks. See
-                <code><a>restrictOwnAudio</a></code>.
+                {{restrictOwnAudio}}.
               </p>
             </dd>
           </dl>
@@ -848,18 +820,16 @@ dictionary DisplayMediaStreamConstraints {
           <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
           "dictionary-members">
             <dt>
-              <dfn><code>displaySurface</code></dfn> of type <span class=
-              "idlMemberType">DOMString</span>
+              <dfn>displaySurface</dfn> of type {{DOMString}}
             </dt>
             <dd>
               <p>
-                The type of <a>display surface</a> that is being captured. This assumes values from
-                the <code><a>DisplayCaptureSurfaceType</a></code> enumeration.
+                The type of [=display surface=] that is being captured. This assumes values from
+                the {{DisplayCaptureSurfaceType}} enumeration.
               </p>
             </dd>
             <dt>
-              <dfn><code>logicalSurface</code></dfn> of type <span class=
-              "idlMemberType">boolean</span>
+              <dfn>logicalSurface</dfn> of type {{boolean}}
             </dt>
             <dd>
               <p>
@@ -869,12 +839,11 @@ dictionary DisplayMediaStreamConstraints {
               </p>
             </dd>
             <dt>
-               <dfn><code>cursor</code></dfn> of type <span class=
-               "idlMemberType">DOMString</span>
+               <dfn>cursor</dfn> of type {{DOMString}}
             </dt>
             <dd>
               <p>
-                Assumes values from the <code><a>CursorCaptureConstraint</a></code> enumeration that
+                Assumes values from the {{CursorCaptureConstraint}} enumeration that
                 determines if and when the cursor is included in the captured display surface.
               </p>
             </dd>
@@ -885,7 +854,7 @@ dictionary DisplayMediaStreamConstraints {
             <dfn>DisplayCaptureSurfaceType</dfn>
           </h2>
           <p>
-            The <code><a>DisplayCaptureSurfaceType</a></code> enumeration describes the different
+            The {{DisplayCaptureSurfaceType}} enumeration describes the different
             types of display surface.
           </p>
           <pre class="idl"
@@ -895,7 +864,7 @@ dictionary DisplayMediaStreamConstraints {
   "application",
   "browser"
 };</pre>
-          <table data-link-for="DisplayCaptureSurfaceType" data-dfn-for="DisplayCaptureSurfaceType"
+          <table  data-dfn-for="DisplayCaptureSurfaceType"
           class="simple">
             <tbody>
               <tr>
@@ -905,37 +874,37 @@ dictionary DisplayMediaStreamConstraints {
               </tr>
               <tr>
                 <td>
-                  <dfn><code id="idl-def-DisplayCaptureSurfaceType.monitor">monitor</code></dfn>
+                  <dfn id="idl-def-DisplayCaptureSurfaceType.monitor">monitor</dfn>
                 </td>
                 <td>
-                  a <a>monitor</a> <a>display surface</a>, physical display, or collection of
+                  a [=monitor=] [=display surface=], physical display, or collection of
                   physical displays
                 </td>
               </tr>
               <tr>
                 <td>
-                  <dfn><code id="idl-def-DisplayCaptureSurfaceType.window">window</code></dfn>
+                  <dfn id="idl-def-DisplayCaptureSurfaceType.window">window</dfn>
                 </td>
                 <td>
-                  a <a>window</a> <a>display surface</a>, or single application window
+                  a [= window =] [=display surface=], or single application window
                 </td>
               </tr>
               <tr>
                 <td>
-                  <dfn><code id=
-                  "idl-def-DisplayCaptureSurfaceType.application">application</code></dfn>
+                  <dfn id=
+                  "idl-def-DisplayCaptureSurfaceType.application">application</dfn>
                 </td>
                 <td>
-                  an <a>application</a> <a>display surface</a>, or entire collection of windows for
+                  an [= application=] [=display surface=], or entire collection of windows for
                   an application
                 </td>
               </tr>
               <tr>
                 <td>
-                  <dfn><code id="idl-def-DisplayCaptureSurfaceType.browser">browser</code></dfn>
+                  <dfn id="idl-def-DisplayCaptureSurfaceType.browser">browser</dfn>
                 </td>
                 <td>
-                  a <a>browser</a> <a>display surface</a>, or single browser window
+                  a [=browser=] [=display surface=], or single browser window
                 </td>
               </tr>
             </tbody>
@@ -946,7 +915,7 @@ dictionary DisplayMediaStreamConstraints {
             <dfn>CursorCaptureConstraint</dfn>
           </h2>
           <p>
-            The <code><a>CursorCaptureConstraint</a></code> enumerates the conditions
+            The {{CursorCaptureConstraint}} enumerates the conditions
             under which the cursor is captured.
           </p>
           <pre class="idl"
@@ -955,7 +924,7 @@ dictionary DisplayMediaStreamConstraints {
   "always",
   "motion"
 };</pre>
-          <table data-link-for="CursorCaptureConstraint" data-dfn-for="CursorCaptureConstraint"
+          <table  data-dfn-for="CursorCaptureConstraint"
           class="simple">
             <tbody>
               <tr>
@@ -965,27 +934,27 @@ dictionary DisplayMediaStreamConstraints {
               </tr>
               <tr>
                 <td>
-                  <dfn><code id="idl-def-CursorCaptureConstraint.never">never</code></dfn>
+                  <dfn id="idl-def-CursorCaptureConstraint.never">never</dfn>
                 </td>
                 <td>
-                  a <a>never</a> cursor capture constraint omits the cursor from the captured display surface.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn><code id="idl-def-CursorCaptureConstraint.always">always</code></dfn>
-                </td>
-                <td>
-                  a <a>always</a> cursor capture constraint includes the cursor in the captured display surface.
+                  a {{CursorCaptureConstraint/"never"}} cursor capture constraint omits the cursor from the captured display surface.
                 </td>
               </tr>
               <tr>
                 <td>
-                  <dfn><code id=
-                  "idl-def-CursorCaptureConstraint.motion">motion</code></dfn>
+                  <dfn id="idl-def-CursorCaptureConstraint.always">always</dfn>
                 </td>
                 <td>
-                  a <a>motion</a> cursor capture constraint includes the cursor in the captured display
+                  a {{CursorCaptureConstraint/"always"}} cursor capture constraint includes the cursor in the captured display surface.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id=
+                  "idl-def-CursorCaptureConstraint.motion">motion</dfn>
+                </td>
+                <td>
+                  a {{CursorCaptureConstraint/"motion"}} cursor capture constraint includes the cursor in the captured display
                   surface when the cursor/pointer is moved. The captured cursor is removed when there
                   is no further movement of the pointer/cursor for certain period of time, as determined
                   by the <a>user agent</a>.
@@ -1006,8 +975,8 @@ dictionary DisplayMediaStreamConstraints {
           system.
         </p>
         <p>
-          Display capture sources therefore cannot be selected with the <code>deviceId</code>
-          constraint, since their <code>deviceId</code>s are not exposed.
+          Display capture sources therefore cannot be selected with the <code class=gum>deviceId</code>
+          constraint, since their <code class=gum>deviceId</code>s are not exposed.
         </p>
         <div class="note">
           <p>
@@ -1018,30 +987,20 @@ dictionary DisplayMediaStreamConstraints {
       </section>
     </section>
     <section>
-      <h1 id=feature-policy-integration>Feature Policy Integration</h1>
-      <p>This specification defines a <a data-link-type="dfn"
-        href="https://wicg.github.io/feature-policy/#policy-controlled-feature"
-        >policy-controlled feature</a>
+      <h1 id=feature-policy-integration>Permissions Policy Integration</h1>
+      <p>This specification defines a [=policy-controlled feature=]
       identified by the string
-      <code>"<dfn data-lt="display-capture-feature">display-capture</dfn>"</code>.
-      Its <a data-link-type="dfn"
-        href="https://wicg.github.io/feature-policy/#default-allowlist"
-        >default allowlist</a> is <code>"self"</code>.
+      <code><dfn data-lt="display-capture-feature">"display-capture"</dfn></code>.
+      Its [=default allowlist=] is <code>"self"</code>.
       <div class="note">
-        <p>A <a data-link-type="dfn"
-          href="https://dom.spec.whatwg.org/#concept-document"
-          >document</a>'s
-        <a data-link-type="dfn"
-          href="https://html.spec.whatwg.org/multipage/dom.html#concept-document-feature-policy"
-          >feature policy</a>
+        <p>A [=document=]'s
+        [=Document/permissions policy=]
         determines whether any content in that document is allowed to use
         {{MediaDevices/getDisplayMedia}}. If disabled in any document, no content in
         the document will be
-        <a data-link-type="dfn"
-          href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use"
-          >allowed to use</a>
+        [=allowed to use=]
         {{MediaDevices/getDisplayMedia}}. This is enforced by the
-        <a>prompt the user to choose</a> algorithm.
+        [=prompt the user to choose=] algorithm.
         </p>
       </div>
     </section>
@@ -1091,7 +1050,7 @@ dictionary DisplayMediaStreamConstraints {
       </div>
       <div class="note">
         <p>
-        Since this specification forbids user agents from persisting "granted"
+        Since this specification forbids user agents from persisting {{PermissionState/"granted"}}
         permissions, only the "Live" indicators are significant.
         </p>
       </div>
