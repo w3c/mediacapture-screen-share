@@ -162,6 +162,8 @@
         <pre class="idl"
 >partial interface MediaDevices {
   Promise&lt;MediaStream&gt; getDisplayMedia(optional DisplayMediaStreamConstraints constraints = {});
+
+  Promise&lt;MediaStream&gt; getCurrentBrowsingContextMedia(optional DisplayMediaStreamConstraints constraints = {});
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
@@ -370,6 +372,15 @@
                 <p>Return <var>p</var>.</p>
               </li>
             </ol>
+          </dd>
+          <dt>
+            <dfn>getCurrentBrowsingContextMedia</dfn>
+          </dt>
+          <dd>
+            <p>
+              Equivalent to {{MediaDevices/getDisplayMedia}}, other than that it
+              will trigger capturing the browser tab from which it was called.
+            </p>
           </dd>
         </dl>
       </section>
