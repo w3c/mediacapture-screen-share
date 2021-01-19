@@ -1,0 +1,21 @@
+name: Validate and Auto Publish
+
+on:
+  push:
+    branches:
+      - gh-pages
+  pull_request: {}
+
+jobs:
+  validate-and-publish:
+    name: Validate and Publish
+    runs-on: ubuntu-latest # only linux supported at present
+    steps:
+      - uses: actions/checkout@v2
+      - uses: w3c/spec-prod@v1 # use the action
+        with:
+          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
+          W3C_MANIFEST_URL: "https://w3c.github.io/mediacapture-screen-share/W3CTRMANIFEST"
+          W3C_WG_DECISION_URL: "https://lists.w3.org/Archives/Public/public-webrtc/2016Mar/0031.html"
+          W3C_NOTIFICATIONS_CC: "dom@w3.org"
+          VALIDATE_LINKS: false
