@@ -6,10 +6,10 @@
       Screen Capture
     </title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <script class="remove" src="respec-w3c.js" type="text/javascript"></script>
     <script class="remove" src="screenshare.js" type="text/javascript"></script>
+  <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c"></script>
   </head>
-  <body data-cite="mediacapture-streams webidl html">
+  <body>
     <section id="abstract">
       <p>
         This document defines how a user's display, or parts thereof, can be used as the source of
@@ -129,12 +129,8 @@
         The <dfn>source pixel ratio</dfn> of a <a>display surface</a> is 1/96th of 1 inch divided
         by its vertical pixel size.
       </p>
-      <p>The terms <dfn data-cite="permissions#reading-current-states">reading current permission state</dfn> and [=request permission to
-  use=]  are defined in [[!permissions]].</p>
-      <p>The <dfn>devicechange</dfn> event is defined in [[GETUSERMEDIA]] Section 9.2, 
-      the <dfn>MediaTrackSupportedConstraints</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.4,
-      the <dfn>MediaTrackConstraintSet</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.6, and
-      the <dfn>MediaTrackSettings</dfn> dictionary is defined in [[GETUSERMEDIA]] Section 4.3.7.</p>
+
+      <p>The <dfn>devicechange</dfn> event is defined in [[GETUSERMEDIA]].</p>
     </section>
     <section>
       <h2>
@@ -151,7 +147,7 @@
       <p>
         Capture of displayed media is enabled through the addition of a new
         {{MediaDevices/getDisplayMedia}} method on the {{MediaDevices}}
-        interface, that is similar to <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>
+        interface, that is similar to {{MediaDevices/getUserMedia()}}
         , except that it acquires media from one display device
         chosen by the end-user each time.
       </p>
@@ -184,7 +180,7 @@
               the audio source(s) are not necessarily the same as the video source(s). An audio
               source may be a particular <a>application</a>, <a>window</a>, <a>browser</a>, the
               entire system audio or any combination thereof. Unlike
-              <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a> with regards to audio+video, the user agent is
+              {{MediaDevices/getUserMedia()}} with regards to audio+video, the user agent is
               allowed not to return audio even if the audio constraint is present. If the user
               agent knows no audio will be shared for the lifetime of the stream it MUST NOT
               include an audio track in the resulting stream. The user agent MAY accept a
@@ -195,7 +191,7 @@
             <p>
               In addition to drawing from a different set of sources and requiring user selection,
               {{MediaDevices/getDisplayMedia}} also differs from
-              <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a> in that {{PermissionState/"granted"}} permissions cannot be persisted.
+              {{MediaDevices/getUserMedia()}} in that {{PermissionState/"granted"}} permissions cannot be persisted.
             </p>
             <p>When the {{MediaDevices/getDisplayMedia()}}
             method is called, the User Agent MUST run the following
@@ -282,7 +278,7 @@
                         {{NotFoundError}}.</p>
                       </li>
                       <li>
-                        <p>[=reading current permission state|Read the current permission state=] for obtaining
+                        <p>Read the current [= permission state=] for obtaining
                         sources of type <var>T</var> in the current browsing
                         context. If the permission state is {{PermissionState/"denied"}}, jump to
                         the step labeled <em>PermissionFailure</em> below.</p>
@@ -342,8 +338,7 @@
                     granted permission.</p>
                   </li>
                   <li>
-                    <p>Run the <a data-cite="GETUSERMEDIA#dfn-applyconstraints-algorithm">
-                    <dfn>ApplyConstraints algorithm</dfn></a> on all
+                    <p>Run the [=ApplyConstraints algorithm=] on all
                     tracks in <var>stream</var> with the appropriate
                     constraints. Should this fail, let <var>failedConstraint</var>
                     be the result of the algorithm that failed, and let
@@ -387,19 +382,19 @@
         <p>
           When <a>display surface</a> enters an inaccessible state that is not necessarily
           permanent, the user agent MUST queue a task that
-          <a data-cite="GETUSERMEDIA#set-track-muted">sets the muted state</a>
+          [= set a track's muted state|sets the muted state =]
           of the corresponding media track to <code>true</code>.
         </p>
         <p>
           When <a>display surface</a> exits an inaccessible state and becomes accessible, the
           user agent MUST queue a task that
-          <a data-cite="GETUSERMEDIA#set-track-muted">sets the muted state</a>
+          [= set a track's muted state|sets the muted state =]
           of the corresponding media track to <code>false</code>.
         </p>
         <p>
           When a <a>display surface</a> enters an inaccessible state that is permanent (such as
           the source application terminating), the user agent MUST queue a task that
-          <a data-cite="GETUSERMEDIA#track-ended">ends</a> the
+          [= track/ended | ends =] the
           corresponding media track.
         </p>
         <p>
@@ -425,11 +420,11 @@
         </h2>
         <p>Constraints serve a different purpose in
         {{MediaDevices/getDisplayMedia}} than they do in
-        <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>.
+        {{MediaDevices/getUserMedia()}}.
         They do not aid discovery, instead they are applied only after user-selection.</p>
         <p>This section define which constraints apply to {{MediaDevices/getDisplayMedia}} tracks;
         constraints defined for
-        <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>
+        {{MediaDevices/getUserMedia()}}
         do not apply unless listed here.</p>
         <p>Some of these constraints enable user agent processing like downscaling
         and frame decimation, as well as display-specific features. Others enable
@@ -489,17 +484,17 @@
               <td>
                 This string (or each string, when a list) should be one of the members of
                 {{VideoResizeModeEnum}}.
-                As a setting, <code class=gum>none</code> means the {{MediaStreamTrack}}
+                As a setting, {{VideoResizeModeEnum/"none"}} means the {{MediaStreamTrack}}
                 contains all bits needed to render the display in full detail,
-                which if the <code><a>source pixel ratio</a> > 1</code>, means
+                which if the <code><a>source pixel ratio</a> &gt; 1</code>, means
                 <code>width</code> and <code>height</code> will be larger
                 than the display's appearance from an end-user viewpoint would
-                suggest, whereas <code class=gum>crop-and-scale</code> means the
+                suggest, whereas {{VideoResizeModeEnum/"crop-and-scale"}} means the
                 {{MediaStreamTrack}} contains an
                 aspect-preserved representation of the <a>display surface</a>
                 that has been downscaled by the user agent, but not cropped. As
-                a capability, the values <code class=gum>none</code> and
-                <code class=gum>crop-and-scale</code> both MUST be present.
+                a capability, the values {{VideoResizeModeEnum/"none"}} and
+                {{VideoResizeModeEnum/"crop-and-scale"}} both MUST be present.
               </td>
             </tr>
             <tr id="def-constraint-displaySurface">
@@ -607,17 +602,16 @@
             Downscaling and Frame Decimation
           </h2>
           <p>For the purposes of the
-          <a data-cite="GETUSERMEDIA#dfn-selectsettings">SelectSettings</a>
+          [=SelectSettings=]
           algorithm, the user agent SHOULD consider all possible combinations of
           downscaled dimensions that preserve the aspect ratio of the original
           <a>display surface</a> (to the nearest pixel), and frame rates
           available through frame decimation, as available
-          <a data-cite="GETUSERMEDIA#dfn-selectsettings">settings dictionaries</a>.
+          [= settings dictionaries =].
           </p>
           <p>The downscaling and decimation effects of constraints is then
           effectively governed by the
-          <a data-cite="GETUSERMEDIA#dfn-fitness-distance">
-          fitness distance algorithm</a>.</p>
+          [= fitness distance =] algorithm.</p>
           <p>The intent is for the user agent to produce output that is close to
           the ideal <code>width</code>, ideal <code>height</code>, and/or
           ideal <code>frameRate</code> when these are specified, while at all
@@ -695,10 +689,10 @@ dictionary DisplayMediaStreamConstraints {
         </section>
         <section>
           <h2>
-            Extensions to <a data-cite="GETUSERMEDIA#dom-mediatracksupportedconstraints">MediaTrackSupportedConstraints</a>
+            Extensions to {{MediaTrackSupportedConstraints}}
           </h2>
           <p>
-            <a data-cite="GETUSERMEDIA#dom-mediatracksupportedconstraints">MediaTrackSupportedConstraints</a>
+            {{MediaTrackSupportedConstraints}}
              is extended here with the list of constraints that a User
             Agent recognizes.
           </p>
@@ -753,7 +747,7 @@ dictionary DisplayMediaStreamConstraints {
           <p>
             {{MediaTrackConstraintSet}} is used for reading the current status of constraints.
           </p>
-          <pre class="idl" data-cite="mediacapture-streams"
+          <pre class="idl" 
 >partial dictionary MediaTrackConstraintSet {
   ConstrainDOMString displaySurface;
   ConstrainBoolean logicalSurface;
@@ -803,10 +797,10 @@ dictionary DisplayMediaStreamConstraints {
         </section>
         <section>
           <h2>
-            Extensions to <a class="idlType">MediaTrackSettings</a>
+            Extensions to {{MediaTrackSettings}}
           </h2>
           <p>
-            When the {{mediastreamtrack/getsettings()}}
+            When the {{MediaStreamTrack/getSettings()}}
             method is invoked on a video stream track, the user agent must return the extended
             {{MediaTrackSettings}}
             dictionary, representing the current status of the underlying user agent.
@@ -970,13 +964,13 @@ dictionary DisplayMediaStreamConstraints {
         </h2>
         <p>
           Each potential source of capture is treated by this API as a discrete media source.
-          However, display capture sources MUST NOT be enumerated by {{mediadevices/enumeratedevices()}},
+          However, display capture sources MUST NOT be enumerated by {{MediaDevices/enumerateDevices()}},
           since this would reveal too much information about the host
           system.
         </p>
         <p>
-          Display capture sources therefore cannot be selected with the <code class=gum>deviceId</code>
-          constraint, since their <code class=gum>deviceId</code>s are not exposed.
+          Display capture sources therefore cannot be selected with the {{MediaTrackSupportedConstraints/deviceId}}
+          constraint, since their {{MediaDeviceInfo/deviceId}}s are not exposed.
         </p>
         <div class="note">
           <p>
@@ -1008,11 +1002,11 @@ dictionary DisplayMediaStreamConstraints {
       <h1>Privacy Indicator Requirements</h1>
       <p>This specification extends the <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
-      <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a> to include {{MediaDevices/getDisplayMedia}}.</p>
+      {{MediaDevices/getUserMedia()}} to include {{MediaDevices/getDisplayMedia}}.</p>
       <p>References in this specification to [[\devicesLiveMap]],
       [[\devicesAccessibleMap]], and [[\kindsAccessibleMap]] refer to the
       definitions already created to support Privacy Indicator Requirements for
-      <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>.</p>
+      {{MediaDevices/getUserMedia()}}.</p>
       <p>For each <var>kind</var> of device that
       {{MediaDevices/getDisplayMedia}} exposes, using a stable and private id
       for the device, <var>deviceId</var>, set <var>kind</var>
@@ -1039,7 +1033,7 @@ dictionary DisplayMediaStreamConstraints {
       <p>Then, given the new definitions above, the requirements on the User
       Agent are those specified in <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
-      <a data-cite="MEDIACAPTURE-STREAMS#dom-mediadevices-getusermedia"><code>mediadevices.getUserMedia()</code></a>.</p>
+      {{MediaDevices/getUserMedia()}}.</p>
       <div class="note">
         <p>
         Even though there's a single permission descriptor for {{MediaDevices/getDisplayMedia}},
