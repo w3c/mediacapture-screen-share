@@ -570,6 +570,25 @@
                 again.</p>
               </td>
             </tr>
+            <tr id="def-constraint-suppressLocalAudioPlayback">
+              <td><dfn>suppressLocalAudioPlayback</dfn></td>
+              <td>{{ConstrainBoolean}}</td>
+              <td>
+                <p>As a constraint, this value is only meaningful if the user
+                selects capturing audio+video from a tab.
+                In that case, a value of <code>true</code> indicates that the
+                user agent SHOULD perform <a>local audio playback
+                suppression</a> on the captured tab.</p>
+
+                <p><dfn>Local audio playback suppression</dfn> means that
+                the user agent stops relaying audio to the local speakers,
+                but that audio is still captured by any ongoing audio-capturing
+                sessions. In the case of multiple concurrent captures of the
+                same tab, local audio playback suppression will be active if and
+                only if at least one of the active sessions specified
+                <a>suppressLocalAudioPlayback<a>.</p>
+              </td>
+            </tr>
           </tbody>
         </table>  
         <p>When inherent properties of the underlying source of a user-selected
@@ -702,6 +721,7 @@ dictionary DisplayMediaStreamConstraints {
   boolean logicalSurface = true;
   boolean cursor = true;
   boolean restrictOwnAudio = true;
+  boolean suppressLocalAudioPlayback = true;
 };</pre>
           <dl  data-dfn-for="MediaTrackSupportedConstraints"
           class="dictionary-members">
@@ -738,6 +758,14 @@ dictionary DisplayMediaStreamConstraints {
                 recognized.
               </p>
             </dd>
+            <dt>
+              <dfn>suppressLocalAudioPlayback</dfn> of type {{boolean}}, defaulting to <code>true</code>
+            </dt>
+            <dd>
+              <p>
+                Whether {{suppressLocalAudioPlayback}} constraint is recognized.
+              </p>
+            </dd>
           </dl>
         </section>
         <section>
@@ -753,6 +781,7 @@ dictionary DisplayMediaStreamConstraints {
   ConstrainBoolean logicalSurface;
   ConstrainDOMString cursor;
   ConstrainBoolean restrictOwnAudio;
+  ConstrainBoolean suppressLocalAudioPlayback;
 };</pre>
           <dl data-dfn-for="MediaTrackConstraintSet" class=
           "dictionary-members">
@@ -791,6 +820,15 @@ dictionary DisplayMediaStreamConstraints {
               <p>
                 This constraint is only applicable to audio tracks. See
                 {{restrictOwnAudio}}.
+              </p>
+            </dd>
+            <dt>
+              <dfn>suppressLocalAudioPlayback</dfn> of type {{ConstrainBoolean}}
+            </dt>
+            <dd>
+              <p>
+                This constraint is only applicable to audio tracks. See
+                {{suppressLocalAudioPlayback}}.
               </p>
             </dd>
           </dl>
