@@ -158,6 +158,7 @@
         <pre class="idl"
 >partial interface MediaDevices {
   Promise&lt;MediaStream&gt; getDisplayMedia(optional DisplayMediaStreamConstraints constraints = {});
+  attribute DOMString displayMediaCaptureHandle;
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
@@ -365,6 +366,30 @@
                 <p>Return <var>p</var>.</p>
               </li>
             </ol>
+          </dd>
+        </dl>
+        <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices">
+          <dt>
+            <dfn>displayMediaCaptureHandle</dfn>
+          </dt>
+          <dd>
+            <p>By setting this field to a non-empty string, the application
+            signals to the user agent that, should this application be captured
+            using <a>getDisplayMedia</a>, the following data may be exposed to
+            the capturing application:<p>
+            <ol>
+              <li>The captured application's origin may be exposed as
+              {{CaptureHandleType/origin}}.</li>
+              <li>The value to which <a>displayMediaCaptureHandle</a> was set
+              may be exposed as {{CaptureHandleType/handle}}.</li>
+            </ol>
+            <p>Setting the value to a new non-empty value updates handle.</p>
+            <p>Setting the value to the empty string rescinds the permission to
+            expose either {{CaptureHandleType/origin}} or
+            {{CaptureHandleType/handle}}.
+            (However, applications should be aware that once a value is read by
+            a capturing application, it may be retained locally by that
+            application.)</p>
           </dd>
         </dl>
       </section>
@@ -810,6 +835,7 @@ dictionary DisplayMediaStreamConstraints {
   DOMString displaySurface;
   boolean logicalSurface;
   DOMString cursor;
+  CaptureHandleType? captureHandle;
 };</pre>
           <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
           "dictionary-members">
@@ -839,6 +865,18 @@ dictionary DisplayMediaStreamConstraints {
               <p>
                 Assumes values from the {{CursorCaptureConstraint}} enumeration that
                 determines if and when the cursor is included in the captured display surface.
+              </p>
+            </dd>
+            <dt>
+               <dfn>captureHandle</dfn> of type {{CaptureHandleType}}
+            </dt>
+            <dd>
+              <p>
+                Non-null if and only if the [=display surface=] is of type
+                [=browser=] and the captured application set
+                {{MediaDevices/displayMediaCaptureHandle}} to some non-empty
+                string. If so, it contains information about the captured
+                application.
               </p>
             </dd>
           </dl>
@@ -956,6 +994,44 @@ dictionary DisplayMediaStreamConstraints {
               </tr>
             </tbody>
           </table>
+        </section>
+        <section>
+          <h2>
+            <dfn>CaptureHandleType</dfn>
+          </h2>
+          <p>
+            Self-declared information about a <a>browser</a> <a>display
+            surface</a> captured via using {{MediaDevices/getDisplayMedia}}.
+          </p>
+          <pre class="idl">
+            dictionary CaptureHandleType {
+              DOMString origin;
+              DOMString handle;
+            };
+          </pre>
+          <dl data-dfn-for="CaptureHandleType" class="dictionary-members">
+            <dt>
+              <dfn>origin</dfn> of type {{DOMString}}
+            </dt>
+            <dd>
+              <p>
+                The origin of the captured <a>browser</a> <a>display
+                surface</a>.
+              </p>
+            </dd>
+            <dt>
+              <dfn>handle</dfn> of type {{DOMString}}
+            </dt>
+            <dd>
+              <p>
+                A self-declared, informative handle, set by the captured
+                application via {{MediaDevices/displayMediaCaptureHandle}}.
+                (For example, a hypothetical encyclopedia may self-declare as
+                "Hypothetical Encyclpedia Inc." or may also expose the name of 
+                thge specific article.)
+              </p>
+            </dd>
+          </dl>
         </section>
       </section>
       <section>
