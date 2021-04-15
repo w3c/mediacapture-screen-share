@@ -158,7 +158,7 @@
         <pre class="idl"
 >partial interface MediaDevices {
   Promise&lt;MediaStream&gt; getDisplayMedia(optional DisplayMediaStreamConstraints constraints = {});
-  attribute DOMString displayMediaCaptureHandle;
+  attribute CaptureHandleConfigType? captureHandleConfig;
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
@@ -370,26 +370,22 @@
         </dl>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices">
           <dt>
-            <dfn>displayMediaCaptureHandle</dfn>
+            <dfn>captureHandleConfig</dfn>
           </dt>
           <dd>
-            <p>By setting this field to a non-empty string, the application
-            signals to the user agent that, should this application be captured
-            using <a>getDisplayMedia</a>, the following data may be exposed to
-            the capturing application:<p>
-            <ol>
-              <li>The captured application's origin may be exposed as
-              {{CaptureHandleType/origin}}.</li>
-              <li>The value to which <a>displayMediaCaptureHandle</a> was set
-              may be exposed as {{CaptureHandleType/handle}}.</li>
-            </ol>
-            <p>Setting the value to a new non-empty value updates handle.</p>
-            <p>Setting the value to the empty string rescinds the permission to
-            expose either {{CaptureHandleType/origin}} or
-            {{CaptureHandleType/handle}}.
-            (However, applications should be aware that once a value is read by
-            a capturing application, it may be retained locally by that
-            application.)</p>
+            <p>
+              By setting this attribute, an application signals to the user agent what
+              information may be exposed to capturers through {{MediaTrackSettings/captureHandle}}.
+            </p>
+            <p>
+              Unsetting this attribute rescinds the permission to expose said information.
+              (However, applications should be aware that once a value is read by a capturing
+              application, it may be retained locally by that application.)
+            </p>
+            <p>
+              Navigating a document implicitly unsets its {{MediaDevices/captureHandleConfig}}.
+              (The new document may of course set a new value.)
+            </p>
           </dd>
         </dl>
       </section>
@@ -874,9 +870,9 @@ dictionary DisplayMediaStreamConstraints {
               <p>
                 Non-null if and only if the [=display surface=] is of type
                 [=browser=] and the captured application set
-                {{MediaDevices/displayMediaCaptureHandle}} to some non-empty
-                string. If so, it contains information about the captured
-                application.
+                {{MediaDevices/captureHandleConfig}} to some non-null
+                value. If so, {{captureHandle}} contains information about the captured
+                application based on the captured application's {{MediaDevices/captureHandleConfig}}.
               </p>
             </dd>
           </dl>
@@ -996,6 +992,40 @@ dictionary DisplayMediaStreamConstraints {
           </table>
         </section>
         <section>
+          <h2><dfn>CaptureHandleConfigType</dfn></h2>
+          <p>
+            Dictionary through which a an application can set its capture handle.
+          </p>
+          <pre class="idl">
+            dictionary CaptureHandleConfigType {
+              boolean exposeOrigin = false;
+              DOMString handle;
+            };</pre>
+          <dl data-dfn-for="CaptureHandleConfigType" class="dictionary-members">
+            <dt>
+              <dfn>exposeOrigin</dfn> of type {{boolean}} defaulting to <code>false</code>
+            </dt>
+            <dd>
+              <p>
+                Whether the application is opting into exposing its origin to
+                capturing applications.
+              </p>
+            </dd>
+            <dt>
+              <dfn>handle</dfn> of type {{DOMString}}
+            </dt>
+            <dd>
+              <p>
+                A self-declared handle the application exposes to capturing applications.
+                For example, an ID could be exposed that's meaningful to collaborating
+                applications - an encyclopedia could expose the article number, a productivity
+                suite could expose a session ID that allows communication with it over some
+                external API, etc.
+              </p>
+            </dd>
+          </dl>              
+        </section>
+        <section>
           <h2>
             <dfn>CaptureHandleType</dfn>
           </h2>
@@ -1025,7 +1055,7 @@ dictionary DisplayMediaStreamConstraints {
             <dd>
               <p>
                 A self-declared, informative handle, set by the captured
-                application via {{MediaDevices/displayMediaCaptureHandle}}.
+                application via {{MediaDevices/captureHandleConfig}}.
                 (For example, a hypothetical encyclopedia may self-declare as
                 "Hypothetical Encyclpedia Inc." or may also expose the name of 
                 thge specific article.)
