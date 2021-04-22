@@ -863,9 +863,23 @@ dictionary DisplayMediaStreamConstraints {
             </dt>
             <dd>
               <p>
-                Contains information about the captured application. The captured application
-                can set these values through {{MediaDevices/setCaptureHandleConfig}}.
+                The user agent SHOULD expose if and only if the track's underlying source is
+                of a type that could have set a {{CaptureHandle}}.
               </p>
+              <p>
+                <var>captureHandle</var> exposes to a capturing application information set
+                by the captured application. The captured application does so either explicitly
+                or implicitly.
+              </p>
+              <ul>
+                <li>
+                  {{CaptureHandle}} can be set explicitly through {{MediaDevices/setCaptureHandleConfig}}.
+                </li>
+                <li>
+                  Not calling {{MediaDevices/setCaptureHandleConfig}} is an impilict call with the
+                  [=Empty CaptureHandleConfig|empty CaptureHandleConfig=].
+                </li>
+              </ul>
             </dd>
           </dl>
         </section>
@@ -1068,10 +1082,10 @@ dictionary DisplayMediaStreamConstraints {
             </dt>
             <dd>
               <p>
-                If the captured application opted-in to exposing its origin (by setting
-                {{CaptureHandleConfig}}.{{CaptureHandleConfig/exposeOrigin}} to <code>true</code>),
-                then this field is set to the origin of the captured application; otherwise, it's
-                set to the empty string.
+                If the captured application opted-in to exposing its origin (through
+                {{CaptureHandleConfig}}.{{CaptureHandleConfig/exposeOrigin}}),
+                then <var>origin</var> is set to the origin of the captured application.
+                Otherwise, <var>origin</var> is set to the empty string.
               </p>
             </dd>
             <dt>
