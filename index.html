@@ -158,7 +158,7 @@
         <pre class="idl"
 >partial interface MediaDevices {
   Promise&lt;MediaStream&gt; getDisplayMedia(optional DisplayMediaStreamConstraints constraints = {});
-  attribute CaptureHandleConfigType? captureHandleConfig;
+  undefined setCaptureHandleConfig(optional CaptureHandleConfig config = {});
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
@@ -370,21 +370,16 @@
         </dl>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices">
           <dt>
-            <dfn>captureHandleConfig</dfn>
+            <dfn>setCaptureHandleConfig</dfn>
           </dt>
           <dd>
             <p>
-              By setting this attribute, an application signals to the user agent what
-              information may be exposed to capturers through {{MediaTrackSettings/captureHandle}}.
+              Allows an application <code>app</code> to signal to the user agent what information
+              the user agent may expose to applications that display-capture <code>app</code>.
             </p>
             <p>
-              Unsetting this attribute rescinds the permission to expose said information.
-              (However, applications should be aware that once a value is read by a capturing
-              application, it may be retained locally by that application.)
-            </p>
-            <p>
-              Navigating a document implicitly unsets its {{MediaDevices/captureHandleConfig}}.
-              (The new document may of course set a new value.)
+              Navigating a document is treated as an implicit call to {{MediaDevices/setCaptureHandleConfig}}
+              with the [=empty configuration|Empty CaptureHandleConfig=].
             </p>
           </dd>
         </dl>
@@ -831,7 +826,7 @@ dictionary DisplayMediaStreamConstraints {
   DOMString displaySurface;
   boolean logicalSurface;
   DOMString cursor;
-  CaptureHandleType? captureHandle;
+  CaptureHandle captureHandle;
 };</pre>
           <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
           "dictionary-members">
@@ -864,15 +859,35 @@ dictionary DisplayMediaStreamConstraints {
               </p>
             </dd>
             <dt>
-               <dfn>captureHandle</dfn> of type {{CaptureHandleType}}
+               <dfn>captureHandle</dfn> of type {{CaptureHandle}}
             </dt>
             <dd>
               <p>
-                Non-null if and only if the [=display surface=] is of type
-                [=browser=] and the captured application set
-                {{MediaDevices/captureHandleConfig}} to some non-null
-                value. If so, {{captureHandle}} contains information about the captured
-                application based on the captured application's {{MediaDevices/captureHandleConfig}}.
+                Contains information about the captured application. The captured application
+                can set these values through {{MediaDevices/setCaptureHandleConfig}}.
+              </p>
+            </dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Extensions to {{MediaStreamTrack}}</h2>
+          <p>
+            When the user agent produces a {{MediaStreamTrack}}, if the track's underlying
+            source can set a {{CaptureHandle}}, then the user agent should produce
+            an extended {{MediaStreamTrack}} which exposes the following additional attributes.
+          </p>
+          <pre class="idl">
+            partial interface MediaStreamTrack {
+              attribute EventHandler oncapturehandleupdate;
+            };
+          </pre>
+          <dl data-link-for="MediaStreamTrack" data-dfn-for="MediaStreamTrack" class="members">
+            <dt>
+              <dfn>oncapturehandleupdate</dfn> of type {{EventHandler}}
+            </dt>
+            <dd>
+              <p>
+                The event type of this event handler is {{capturehandleupdate}}.
               </p>
             </dd>
           </dl>
@@ -992,61 +1007,71 @@ dictionary DisplayMediaStreamConstraints {
           </table>
         </section>
         <section>
-          <h2><dfn>CaptureHandleConfigType</dfn></h2>
+          <h2><dfn>CaptureHandleConfig</dfn></h2>
           <p>
-            Dictionary through which a an application can set its capture handle.
+            Configuration by which an application sets what its own {{CaptureHandle}} should be.
           </p>
           <pre class="idl">
-            dictionary CaptureHandleConfigType {
+            dictionary CaptureHandleConfig {
               boolean exposeOrigin = false;
-              DOMString handle;
+              DOMString handle = "";
             };</pre>
-          <dl data-dfn-for="CaptureHandleConfigType" class="dictionary-members">
+          <dl data-dfn-for="CaptureHandleConfig" class="dictionary-members">
             <dt>
               <dfn>exposeOrigin</dfn> of type {{boolean}} defaulting to <code>false</code>
             </dt>
             <dd>
               <p>
-                Whether the application is opting into exposing its origin to
-                capturing applications.
+                Whether the application is opting into exposing its origin to capturing applications.
+                If true, the origin is exposed via {{CaptureHandle}}.{{CaptureHandle/origin}}.
               </p>
             </dd>
             <dt>
-              <dfn>handle</dfn> of type {{DOMString}}
+              <dfn>handle</dfn> of type {{DOMString}} defaulting to <code>""</code>
             </dt>
             <dd>
               <p>
-                A self-declared handle the application exposes to capturing applications.
+                A self-declared handle the application exposes to capturing applications
+                via {{CaptureHandle}}.{{CaptureHandle/handle}}.
                 For example, an ID could be exposed that's meaningful to collaborating
                 applications - an encyclopedia could expose the article number, a productivity
                 suite could expose a session ID that allows communication with it over some
                 external API, etc.
               </p>
             </dd>
-          </dl>              
+          </dl>
+          <section>
+            <h3><dfn>Empty CaptureHandleConfig</dfn></h3>
+            <p>
+              To clarify, when discussing the [=empty CaptureHandleConfig=], we mean the
+              one which has all values set to their defaults, whether implicitly or explicitly.
+            </p>
+          </section>
         </section>
         <section>
           <h2>
-            <dfn>CaptureHandleType</dfn>
+            <dfn>CaptureHandle</dfn>
           </h2>
           <p>
-            Self-declared information about a <a>browser</a> <a>display
-            surface</a> captured via using {{MediaDevices/getDisplayMedia}}.
+            Information exposed by an application <code>app</code> to any application that might
+            display-capture <code>app</code>.
           </p>
           <pre class="idl">
-            dictionary CaptureHandleType {
+            dictionary CaptureHandle {
               DOMString origin;
               DOMString handle;
             };
           </pre>
-          <dl data-dfn-for="CaptureHandleType" class="dictionary-members">
+          <dl data-dfn-for="CaptureHandle" class="dictionary-members">
             <dt>
               <dfn>origin</dfn> of type {{DOMString}}
             </dt>
             <dd>
               <p>
-                The origin of the captured <a>browser</a> <a>display
-                surface</a>.
+                If the captured application opted-in to exposing its origin (by setting
+                {{CaptureHandleConfig}}.{{CaptureHandleConfig/exposeOrigin}} to <code>true</code>),
+                then this field is set to the origin of the captured application; otherwise, it's
+                set to the empty string.
               </p>
             </dd>
             <dt>
@@ -1054,10 +1079,82 @@ dictionary DisplayMediaStreamConstraints {
             </dt>
             <dd>
               <p>
-                The self-declared {{CaptureHandleConfigType/handle}} set by the captured application.
+                If the captured application set a value to {{CaptureHandleConfig/handle}}, then this
+                value is reflected here. Otherwise, the empty string.
               </p>
             </dd>
           </dl>
+        </section>
+        <section>
+          <h2><dfn>CaptureHandleUpdateEvent</dfn></h2>
+          <p>
+            The <dfn>capturehandleupdate</dfn> event uses the {{CaptureHandleUpdateEvent}} interface.
+            It is fired whenever the {{CaptureHandle}} of the captured application is updated.
+          </p>
+          <section>
+            <h3>Event Firing</h3>
+            <p>
+              This event fires in a capturing application whenever an update occurs
+              of the {{CaptureHandle}} associated with the captured {{MediaStreamTrack}}.
+            </p>
+            <p>
+              This typically happens when:
+            </p>
+            <ul>
+              <li>
+                The top-level document of a captured <a>browser</a> <a>display surface</a>
+                calls {{MediaDevices/setCaptureHandleConfig}}.
+              </li>
+              <li>
+                The top-level document of a captured <a>browser</a> <a>display surface</a>
+                is navigated. (Note that this includes navigation between two sites that
+                do not set a {{CaptureHandleConfig}}, in which case the {{CaptureHandle}}
+                is considered "updated" although it did not "change."
+              </li>
+              </ul>
+          </section>
+          <section>
+            <h3>Event Type Definition</h3>
+            <pre class="idl">
+              [Exposed=Window]
+              interface CaptureHandleUpdateEvent : Event {
+                constructor(CaptureHandleUpdateEventInit init);
+                [SameObject] CaptureHandle getCaptureHandle();
+              };            
+            </pre>
+            <dl data-link-for="CaptureHandleUpdateEvent" data-dfn-for="CaptureHandleUpdateEvent" class="constructors">
+              <dt><dfn>constructor()</dfn></dt>
+              <dd>
+                <p>
+                  Constructs a new {{CaptureHandleUpdateEvent}} based on <var>init</var>.
+                </p>
+              </dd>
+            </dl>
+            <dl data-link-for="CaptureHandleUpdateEvent" data-dfn-for="CaptureHandleUpdateEvent" class="methods">
+              <dt><dfn>getCaptureHandle()</dfn></dt>
+              <dd>
+                <p>
+                  Getter for the {{CaptureHandle}} of the associated track at the time when the event was fired.
+                </p>
+              </dd>
+            </dl>
+          </section>
+          <section>
+            <h3><dfn>CaptureHandleUpdateEventInit</dfn></h3>
+            <pre class="idl">
+              dictionary CaptureHandleUpdateEventInit {
+                required CaptureHandle captureHandle;
+              };
+            </pre>
+            <dl data-dfn-for="CaptureHandleUpdateEventInit" class="dictionary-members">
+              <dt><dfn>captureHandle</dfn></dt>
+              <dd>
+                <p>
+                  The new {{CaptureHandle}} of the track at the time the event was fired.
+                </p>
+              </dd>
+            </dl>
+          </section>
         </section>
       </section>
       <section>
