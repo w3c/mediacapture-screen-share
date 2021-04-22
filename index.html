@@ -1023,7 +1023,7 @@ dictionary DisplayMediaStreamConstraints {
         <section>
           <h2><dfn>CaptureHandleConfig</dfn></h2>
           <p>
-            Configuration by which an application sets what its own {{CaptureHandle}} should be.
+            Allows an application <code>app</code> to expose information to applications that display-capture <code>app</code>.
           </p>
           <pre class="idl">
             dictionary CaptureHandleConfig {
@@ -1157,17 +1157,10 @@ dictionary DisplayMediaStreamConstraints {
             <h3><dfn>CaptureHandleUpdateEventInit</dfn></h3>
             <pre class="idl">
               dictionary CaptureHandleUpdateEventInit {
-                required CaptureHandle captureHandle;
+                required DOMString origin;
+                required DOMString handle;
               };
             </pre>
-            <dl data-dfn-for="CaptureHandleUpdateEventInit" class="dictionary-members">
-              <dt><dfn>captureHandle</dfn></dt>
-              <dd>
-                <p>
-                  The new {{CaptureHandle}} of the track at the time the event was fired.
-                </p>
-              </dd>
-            </dl>
           </section>
         </section>
       </section>
