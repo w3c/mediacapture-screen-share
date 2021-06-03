@@ -194,7 +194,7 @@
               {{MediaDevices/getUserMedia()}} in that {{PermissionState/"granted"}} permissions cannot be persisted.
             </p>
             <p>When the {{MediaDevices/getDisplayMedia()}}
-            method is called, the User Agent MUST run the following
+            method is called, the user agent MUST run the following
             steps:</p>
             <ol>
               <li>
@@ -318,7 +318,7 @@
                     [[\devicesAccessibleMap]]<var>[deviceId]</var> to
                     <code>true</code>, if it isn’t already
                     <code>true</code>.</p>
-                    <p>The User Agent MUST NOT
+                    <p>The user agent MUST NOT
                     store a {{PermissionState/"granted"}} permission entry.
                     </p>
                     <p>If the result is {{PermissionState/"denied"}}, jump to the step labeled
@@ -532,7 +532,7 @@
                 This string (or each string, when a list) should be one of the
                 members of {{CursorCaptureConstraint}}. As a
                 setting, indicates if and when the cursor is included in the
-                captured [=display surface=].  As a capability, the user
+                captured [=display surface=]. As a capability, the user
                 agent MUST include only the set of values from
                 {{CursorCaptureConstraint}} it is capable of
                 supporting for this [=display surface=].
@@ -586,10 +586,7 @@
             <p>Update all affected constrainable properties at the same time.</p>
             <p>If this causes an "overconstrained" situation, then the user agent
             MUST ignore the culprit constraints for as long as they
-            overconstrain. The user agent MUST NOT mute the track, and
-            the user agent MUST NOT fire the
-            <a href="https://www.w3.org/TR/mediacapture-streams#event-mediastreamtrack-overconstrained">overconstrained</a>
-            event.</p>
+            overconstrain. The user agent MUST NOT mute the track.</p>
           </li>
         </ol>
         <div class="note">
@@ -652,7 +649,7 @@
         <section>
           <h2>DisplayMediaStreamConstraints</h2>
           <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
-          instruct the User Agent what sort of {{MediaStreamTrack}}s may be
+          instruct the user agent what sort of {{MediaStreamTrack}}s may be
           included in the {{MediaStream}} returned by
           {{MediaDevices/getDisplayMedia}}.</p>
           <div>
@@ -674,7 +671,9 @@ dictionary DisplayMediaStreamConstraints {
                   structure is provided, it further specifies desired processing
                   options to be applied to the video track rendition of the
                   display surface chosen by the user. If <code>false</code>, the
-                  request MUST be [=rejected=] with a {{TypeError}}.</p>
+                  request will be [=rejected=] with a {{TypeError}}, as per the
+                  <a href="#dom-mediadevices-getdisplaymedia">getDisplayMedia
+                  algorithm</a>.</p>
                 </dd>
                 <dt><dfn><code>audio</code></dfn> of type <code>(boolean or {{MediaTrackConstraints}})</code>,
                 defaulting to <code>false</code></dt>
@@ -685,7 +684,7 @@ dictionary DisplayMediaStreamConstraints {
                   the user. If a <code>Constraints</code> structure is provided, it
                   further specifies desired processing options to be applied to
                   the audio track. If <code>false</code>, the {{MediaStream}}
-                  MUST NOT contain an audio track.</p>
+                  will not contain an audio track.</p>
                 </dd>
               </dl>
             </section>
@@ -696,9 +695,8 @@ dictionary DisplayMediaStreamConstraints {
             Extensions to {{MediaTrackSupportedConstraints}}
           </h2>
           <p>
-            {{MediaTrackSupportedConstraints}}
-             is extended here with the list of constraints that a User
-            Agent recognizes.
+            {{MediaTrackSupportedConstraints}} is extended here with the list of
+            constraints that a user agent recognizes.
           </p>
           <pre class="idl"
 >partial dictionary MediaTrackSupportedConstraints {
@@ -813,6 +811,7 @@ dictionary DisplayMediaStreamConstraints {
   DOMString displaySurface;
   boolean logicalSurface;
   DOMString cursor;
+  boolean restrictOwnAudio;
 };</pre>
           <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
           "dictionary-members">
@@ -844,7 +843,62 @@ dictionary DisplayMediaStreamConstraints {
                 determines if and when the cursor is included in the captured display surface.
               </p>
             </dd>
+            <dt>
+               <dfn>restrictOwnAudio</dfn> of type {{boolean}}
+            </dt>
+            <dd>
+              <p>
+                Indicates whether the <a href="#dfn-restrictownaudio">restrictOwnAudio</a>
+                constraint is applied (<code>true</code>) or not (<code>false</code>).
+              </p>
+            </dd>
           </dl>
+        </section>
+        <section>
+          <h2>
+            Extensions to {{MediaTrackCapabilities}}
+          </h2>
+          <p>
+            When the {{MediaStreamTrack/getCapabilities()}} method is invoked on a video stream track,
+            the user agent must return the extended {{MediaTrackCapabilities}} dictionary,
+            representing the capabilities of the underlying user agent.
+          </p>
+          <pre class="idl"
+>partial dictionary MediaTrackCapabilities {
+  DOMString displaySurface;
+  boolean logicalSurface;
+  sequence&lt;DOMString&gt; cursor;
+};</pre>
+          <dl data-link-for="MediaTrackCapabilities" data-dfn-for="MediaTrackCapabilities" class=
+          "dictionary-members">
+            <dt>
+              <dfn>displaySurface</dfn> of type {{DOMString}}
+            </dt>
+            <dd>
+              <p>
+                MUST be the same value as is returned by {{MediaStreamTrack/getSettings()}},
+                rendering this property immutable from the application's viewpoint.
+              </p>
+            </dd>
+            <dt>
+              <dfn>logicalSurface</dfn> of type {{boolean}}
+            </dt>
+            <dd>
+              <p>
+                MUST be the same value as is returned by {{MediaStreamTrack/getSettings()}},
+                rendering this property immutable from the application's viewpoint.
+              </p>
+            </dd>
+            <dt>
+               <dfn>cursor</dfn> of type sequence&lt;DOMString&gt;
+            </dt>
+            <dd>
+              <p>
+                MUST consist of exactly the set of values from {{CursorCaptureConstraint}}
+                that the user agent is capable of supporting for this track.
+              </p>
+            </dd>
+        </dl>
         </section>
         <section>
           <h2>
@@ -1033,8 +1087,8 @@ dictionary DisplayMediaStreamConstraints {
           kind.
         </li>
       </ul>
-      <p>Then, given the new definitions above, the requirements on the User
-      Agent are those specified in <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
+      <p>Then, given the new definitions above, the requirements on the user
+      agent are those specified in <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
       {{MediaDevices/getUserMedia()}}.</p>
       <div class="note">
@@ -1051,7 +1105,7 @@ dictionary DisplayMediaStreamConstraints {
         permissions, only the "Live" indicators are significant.
         </p>
       </div>
-      <p>The User Agent MUST NOT fire the <code><a>devicechange</a></code> event based on
+      <p>The user agent MUST NOT fire the <code><a>devicechange</a></code> event based on
       changes in the set of available sources from {{MediaDevices/getDisplayMedia}}.</p>
     </section>
     <section>
