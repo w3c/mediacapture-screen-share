@@ -295,12 +295,15 @@
                     a display device, with a {{PermissionDescriptor}} named
                     {{PermissionName/"display-capture"}}, resulting in a set of
                     provided media.</p>
-                    <p>The provided media MUST include precisely one track of
-                    each media type in <var>requestedMediaTypes</var>.
-                    The devices chosen MUST be the ones determined by the user.
-                    Once selected, the source of a
-                    {{MediaStreamTrack}} MUST NOT change, unless the user
-                    permits it through their interaction with the user agent.</p>
+                    <p>The provided media MUST include precisely one video track.</p>
+                    <p>The provided media MUST include at most one audio track. This audio
+                    track MUST NOT be included if audio was not specified in
+                    <var>requestedMediaTypes</var>, or if it was specified as
+                    <code>false</code>.</p>
+                    <p>The devices chosen MUST be the ones determined by the user.
+                    Once selected, the source of a {{MediaStreamTrack}} MUST NOT change,
+                    unless the user permits it through their interaction with
+                    the user agent.</p>
                     <p>User agents are encouraged to warn users against sharing
                     <a>browser</a> display devices as well as <a>monitor</a>
                     display devices where browser windows are visible, or
