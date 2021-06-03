@@ -194,7 +194,7 @@
               {{MediaDevices/getUserMedia()}} in that {{PermissionState/"granted"}} permissions cannot be persisted.
             </p>
             <p>When the {{MediaDevices/getDisplayMedia()}}
-            method is called, the User Agent MUST run the following
+            method is called, the user agent MUST run the following
             steps:</p>
             <ol>
               <li>
@@ -301,7 +301,7 @@
                     Once selected, the source of a
                     {{MediaStreamTrack}} MUST NOT change, unless the user
                     permits it through their interaction with the user agent.</p>
-                    <p>User Agents are encouraged to warn users against sharing
+                    <p>User agents are encouraged to warn users against sharing
                     <a>browser</a> display devices as well as <a>monitor</a>
                     display devices where browser windows are visible, or
                     otherwise try to discourage their selection on the basis
@@ -315,7 +315,7 @@
                     [[\devicesAccessibleMap]]<var>[deviceId]</var> to
                     <code>true</code>, if it isn’t already
                     <code>true</code>.</p>
-                    <p>The User Agent MUST NOT
+                    <p>The user agent MUST NOT
                     store a {{PermissionState/"granted"}} permission entry.
                     </p>
                     <p>If the result is {{PermissionState/"denied"}}, jump to the step labeled
@@ -646,7 +646,7 @@
         <section>
           <h2>DisplayMediaStreamConstraints</h2>
           <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
-          instruct the User Agent what sort of {{MediaStreamTrack}}s may be
+          instruct the user agent what sort of {{MediaStreamTrack}}s may be
           included in the {{MediaStream}} returned by
           {{MediaDevices/getDisplayMedia}}.</p>
           <div>
@@ -692,9 +692,8 @@ dictionary DisplayMediaStreamConstraints {
             Extensions to {{MediaTrackSupportedConstraints}}
           </h2>
           <p>
-            {{MediaTrackSupportedConstraints}}
-             is extended here with the list of constraints that a User
-            Agent recognizes.
+            {{MediaTrackSupportedConstraints}} is extended here with the list of
+            constraints that a user agent recognizes.
           </p>
           <pre class="idl"
 >partial dictionary MediaTrackSupportedConstraints {
@@ -1085,8 +1084,8 @@ dictionary DisplayMediaStreamConstraints {
           kind.
         </li>
       </ul>
-      <p>Then, given the new definitions above, the requirements on the User
-      Agent are those specified in <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
+      <p>Then, given the new definitions above, the requirements on the user
+      agent are those specified in <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
         Privacy Indicator Requirements</a> of
       {{MediaDevices/getUserMedia()}}.</p>
       <div class="note">
@@ -1103,7 +1102,7 @@ dictionary DisplayMediaStreamConstraints {
         permissions, only the "Live" indicators are significant.
         </p>
       </div>
-      <p>The User Agent MUST NOT fire the <code><a>devicechange</a></code> event based on
+      <p>The user agent MUST NOT fire the <code><a>devicechange</a></code> event based on
       changes in the set of available sources from {{MediaDevices/getDisplayMedia}}.</p>
     </section>
     <section>
