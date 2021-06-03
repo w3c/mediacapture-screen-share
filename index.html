@@ -670,7 +670,9 @@ dictionary DisplayMediaStreamConstraints {
                   structure is provided, it further specifies desired processing
                   options to be applied to the video track rendition of the
                   display surface chosen by the user. If <code>false</code>, the
-                  request MUST be [=rejected=] with a {{TypeError}}.</p>
+                  request will be [=rejected=] with a {{TypeError}}, as per the
+                  <a href="#dom-mediadevices-getdisplaymedia">getDisplayMedia
+                  algorithm</a>.</p>
                 </dd>
                 <dt><dfn><code>audio</code></dfn> of type <code>(boolean or {{MediaTrackConstraints}})</code>,
                 defaulting to <code>false</code></dt>
@@ -681,7 +683,7 @@ dictionary DisplayMediaStreamConstraints {
                   the user. If a <code>Constraints</code> structure is provided, it
                   further specifies desired processing options to be applied to
                   the audio track. If <code>false</code>, the {{MediaStream}}
-                  MUST NOT contain an audio track.</p>
+                  will not contain an audio track.</p>
                 </dd>
               </dl>
             </section>
