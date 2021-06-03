@@ -528,7 +528,7 @@
                 This string (or each string, when a list) should be one of the
                 members of {{CursorCaptureConstraint}}. As a
                 setting, indicates if and when the cursor is included in the
-                captured [=display surface=].  As a capability, the user
+                captured [=display surface=]. As a capability, the user
                 agent MUST include only the set of values from
                 {{CursorCaptureConstraint}} it is capable of
                 supporting for this [=display surface=].
@@ -810,6 +810,7 @@ dictionary DisplayMediaStreamConstraints {
   DOMString displaySurface;
   boolean logicalSurface;
   DOMString cursor;
+  boolean restrictOwnAudio;
 };</pre>
           <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
           "dictionary-members">
@@ -841,7 +842,62 @@ dictionary DisplayMediaStreamConstraints {
                 determines if and when the cursor is included in the captured display surface.
               </p>
             </dd>
+            <dt>
+               <dfn>restrictOwnAudio</dfn> of type {{boolean}}
+            </dt>
+            <dd>
+              <p>
+                Indicates whether the <a href="#dfn-restrictownaudio">restrictOwnAudio</a>
+                constraint is applied (<code>true</code>) or not (<code>false</code>).
+              </p>
+            </dd>
           </dl>
+        </section>
+        <section>
+          <h2>
+            Extensions to {{MediaTrackCapabilities}}
+          </h2>
+          <p>
+            When the {{MediaStreamTrack/getCapabilities()}} method is invoked on a video stream track,
+            the user agent must return the extended {{MediaTrackCapabilities}} dictionary,
+            representing the capabilities of the underlying user agent.
+          </p>
+          <pre class="idl"
+>partial dictionary MediaTrackCapabilities {
+  DOMString displaySurface;
+  boolean logicalSurface;
+  sequence&lt;DOMString&gt; cursor;
+};</pre>
+          <dl data-link-for="MediaTrackCapabilities" data-dfn-for="MediaTrackCapabilities" class=
+          "dictionary-members">
+            <dt>
+              <dfn>displaySurface</dfn> of type {{DOMString}}
+            </dt>
+            <dd>
+              <p>
+                MUST be the same value as is returned by {{MediaStreamTrack/getSettings()}},
+                rendering this property immutable from the application's viewpoint.
+              </p>
+            </dd>
+            <dt>
+              <dfn>logicalSurface</dfn> of type {{boolean}}
+            </dt>
+            <dd>
+              <p>
+                MUST be the same value as is returned by {{MediaStreamTrack/getSettings()}},
+                rendering this property immutable from the application's viewpoint.
+              </p>
+            </dd>
+            <dt>
+               <dfn>cursor</dfn> of type sequence&lt;DOMString&gt;
+            </dt>
+            <dd>
+              <p>
+                MUST consist of exactly the set of values from {{CursorCaptureConstraint}}
+                that the user agent is capable of supporting for this track.
+              </p>
+            </dd>
+        </dl>
         </section>
         <section>
           <h2>
