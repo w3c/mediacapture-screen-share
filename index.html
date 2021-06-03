@@ -301,7 +301,9 @@
                     <var>requestedMediaTypes</var>, or if it was specified as
                     <code>false</code>.</p>
                     <p>The devices chosen MUST be the ones determined by the user.
-                    Once selected, the source of a {{MediaStreamTrack}} MUST NOT change.</p>
+                    Once selected, the source of a {{MediaStreamTrack}} MUST NOT change,
+                    unless the user permits it through their interaction with
+                    the user agent.</p>
                     <p>User Agents are encouraged to warn users against sharing
                     <a>browser</a> display devices as well as <a>monitor</a>
                     display devices where browser windows are visible, or
@@ -773,8 +775,7 @@ dictionary DisplayMediaStreamConstraints {
             <dd>
               <p>
                 A value of <code>true</code> indicates capture of a [=logical display surface=];
-                a value of <code>false</code> indicates a capture capture of a [=visible display
-                surface=].
+                a value of <code>false</code> indicates a capture of a [=visible display surface=].
               </p>
             </dd>
             <dt>
