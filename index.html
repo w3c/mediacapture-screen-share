@@ -231,15 +231,13 @@
                     [=exception/created=] {{TypeError}}.</p>
                   </li>
                   <li>
-                    <p>If <var>CS</var> contains a member whose name,
-                    <var>failedConstraint</var> specifies a
-                    constrainable property, <var>constraint</var>, applicable to
-                    [=display surface=]s, and whose value in turn is a
-                    dictionary containing a member named <code>max</code>, and
-                    that member's value in turn is less than the constrainable
-                    property's [=floor value=], then let
+                    <p>If <var>CS</var> contains a member whose name specifies a
+                    constrainable property applicable to [=display surface=]s,
+                    and whose value in turn is a dictionary containing a member
+                    named <code>max</code>, and that member's value in turn is
+                    less than the constrainable property's [=floor value=], then let
                     <var>failedConstraint</var> be the name of the
-                    <var>constraint</var>, let <var>message</var> be either
+                    member, let <var>message</var> be either
                     <code>undefined</code> or an informative human-readable
                     message, and return a promise [=reject|rejected=] with a new
                     <code>OverconstrainedError</code> created by calling
