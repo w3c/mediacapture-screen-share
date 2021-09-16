@@ -265,6 +265,13 @@
                 <p>Run the following steps in parallel:</p>
                 <ol>
                   <li>
+                    <p>The User Agent MUST wait to proceed to the next step
+                    until the [=relevant settings object=]'s
+                    [=environment settings object/responsible document=] is
+                    [=Document/fully active=] and
+                    <a data-cite="!HTML/#gains-focus">has focus.</a></p>
+                  </li>
+                  <li>
                     <p>For each media type <var>T</var> in
                     <var>requestedMediaTypes</var>,</p>
                     <ol>
