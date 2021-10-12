@@ -252,7 +252,8 @@
                 value or a value of <code>true</code>.</p>
               </li>
               <li>
-                <p>If the <a>current settings object</a>'s [=environment settings object/responsible document=] is NOT [=Document/fully active=], return
+                <p>If the <a>current settings object</a>'s [=environment settings object/responsible document=] is NOT [=Document/fully active=] or does NOT
+                <a data-cite="!HTML/#gains-focus">have focus</a>, return
                   a promise [=reject|rejected=] with a
                   {{DOMException}} object whose
                   {{DOMException/name}} attribute has the value
@@ -264,13 +265,6 @@
               <li>
                 <p>Run the following steps in parallel:</p>
                 <ol>
-                  <li>
-                    <p>The User Agent MUST wait to proceed to the next step
-                    until the [=relevant settings object=]'s
-                    [=environment settings object/responsible document=] is
-                    [=Document/fully active=] and
-                    <a data-cite="!HTML/#gains-focus">has focus.</a></p>
-                  </li>
                   <li>
                     <p>For each media type <var>T</var> in
                     <var>requestedMediaTypes</var>,</p>
