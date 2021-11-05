@@ -1081,6 +1081,25 @@ dictionary DisplayMediaStreamConstraints {
         </div>
       </section>
     </section>
+    <section data-cite="permissions">
+      <h1 id="permissions-intergration">Permissions Integration</h1>
+      <p>
+        <cite>Screen Capture</cite> is a [=powerful feature=], requiring [=express permission=] to be used.
+      </p>
+      <p>
+        As required for integration with the [[[Permissions]]] specification, this specification defines the following:
+      </p>
+      <dl>
+        <dt>
+          [=powerful feature/permission state constraints=]
+        </dt>
+        <dd>
+          Valid values for this descriptor's <a>permission state</a> are
+          {{PermissionState/"prompt"}} and {{PermissionState/"denied"}}. The user agent MUST NOT
+          ever set this descriptor's <a>permission state</a> to {{PermissionState/"granted"}}.
+        </dd>
+      </dl>
+    </section>
     <section>
       <h1 id=feature-policy-integration>Permissions Policy Integration</h1>
       <p>This specification defines a [=policy-controlled feature=]
