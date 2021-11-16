@@ -290,8 +290,8 @@
                   </li>
                   <li>
                     <p>[=Prompt the user to choose=]
-                    a display device, with a {{PermissionDescriptor}} named
-                    {{PermissionName/"display-capture"}}, resulting in a set of
+                    a display device, for a {{PermissionDescriptor}} with its
+                    {{PermissionDescriptor/name}} set to "display-capture", resulting in a set of
                     provided media.</p>
                     <p>The provided media MUST include precisely one video track.</p>
                     <p>The provided media MUST include at most one audio track. This audio
@@ -600,7 +600,7 @@
               </td>
             </tr>
           </tbody>
-        </table>  
+        </table>
         <p>When inherent properties of the underlying source of a user-selected
         <a>display surface</a> change, for example in response to the end-user
         resizing a captured window, and these changes render the capabilities
@@ -783,7 +783,7 @@ dictionary DisplayMediaStreamConstraints {
           <p>
             {{MediaTrackConstraintSet}} is used for reading the current status of constraints.
           </p>
-          <pre class="idl" 
+          <pre class="idl"
 >partial dictionary MediaTrackConstraintSet {
   ConstrainDOMString displaySurface;
   ConstrainBoolean logicalSurface;
@@ -1084,7 +1084,8 @@ dictionary DisplayMediaStreamConstraints {
     <section data-cite="permissions">
       <h1 id="permissions-intergration">Permissions Integration</h1>
       <p>
-        <cite>Screen Capture</cite> is a [=powerful feature=], requiring [=express permission=] to be used.
+        <cite>Screen Capture</cite> is a [=powerful feature=] which is identified by the
+        [=powerful feature/name=] "display-capture", requiring [=express permission=] to be used.
       </p>
       <p>
         As required for integration with the [[[Permissions]]] specification, this specification defines the following:
