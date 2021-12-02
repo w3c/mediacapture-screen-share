@@ -252,7 +252,8 @@
                 value or a value of <code>true</code>.</p>
               </li>
               <li>
-                <p>If the <a>current settings object</a>'s [=environment settings object/responsible document=] is NOT [=Document/fully active=], return
+                <p>If the <a>current settings object</a>'s [=environment settings object/responsible document=] is NOT [=Document/fully active=] or does NOT
+                <a data-cite="!HTML/#gains-focus">have focus</a>, return
                   a promise [=reject|rejected=] with a
                   {{DOMException}} object whose
                   {{DOMException/name}} attribute has the value
