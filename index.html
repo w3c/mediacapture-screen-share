@@ -1181,10 +1181,6 @@ dictionary DisplayMediaStreamConstraints {
         This section is informative; however, it notes some serious risks to platform security if
         the advice it contains are not adhered to.
       </p>
-      <p class="issue">
-        This is consistent with other documents, but the absence of strong normative language here
-        is a little worrying.
-      </p>
       <p>
         The risks to user privacy and security posed by capture of displayed content are twofold.
         The immediate and obvious risk is that users inadvertently share content that they did not
@@ -1194,7 +1190,7 @@ dictionary DisplayMediaStreamConstraints {
         Display capture presents a less obvious risk to the cross site request forgery protections
         offered by the browser sandbox. Display and capture of information that is also under the
         control of an application, even indirectly, can allow that application to access
-        information that would otherwise by inaccessible to it directly. For example, the canvas
+        information that would otherwise be inaccessible to it directly. For example, the canvas
         API does not permit sampling of a canvas, or conversion to an accessible form if it is not
         origin-clean [[2DCONTEXT]].
       </p>
@@ -1223,56 +1219,57 @@ dictionary DisplayMediaStreamConstraints {
           human recipient is less able to process content that appears only briefly.
         </p>
         <p>
-          Information that is not currently rendered to the screen SHOULD be obscured in captures
-          unless the application has been specifically authorized to access that content (this
-          might require <a>elevated permissions</a>).
+          It is recommended that <a>user agents</a> obscure in captures such information which
+          is not actively rendered to the screen, unless the application has been specifically
+          authorized to access that content. (Such authorization might require
+          <a>elevated permissions</a>.)
         </p>
         <p>
           How obscured areas of the <a>logical display surface</a> are captured to produce a
-          <a>visible display surface</a> capture MAY vary. Some applications, like presentation
+          <a>visible display surface</a> capture may vary. Some applications, like presentation
           software, benefit from having obscured portions of the screen render the image that
           appeared prior to being obscured. Freezing images can cause visual artifacts for changing
-          content, or hide the fact that content is being obscured. Note that frozen portions of a
-          capture can be incorrectly perceived as a bug. Alternatively, obscured areas might be
-          replaced with content that marks them as being obscured, such as a grey color or
-          hatching.
+          content, or hide the fact that new content is being obscured. Note that frozen portions 
+          of a capture could be incorrectly perceived as a bug. Alternatively, obscured areas might be
+          replaced with content that marks them as being obscured, such as a grey color or hatching.
         </p>
         <p>
-          Some systems MAY only capture the <a>logical display surface</a>. Devices with small
+          Some systems might only capture the <a>logical display surface</a>. Devices with small
           screens, for instance, do not typically have the concept of a <a>window</a>, and render
           applications in full screen modes only. These systems might provide a capture of an
           application that is not currently visible, which could be unusable without capturing the
           <a>logical display surface</a>.
         </p>
         <p>
-          An important consideration when capturing a <a>window</a> or other <a>display surface</a>
-          that is partially transparent is that content from the background might be shared. A
-          <a>user agent</a> MUST NOT capture content from the background of a captured <a>display
-          surface</a>.
+          An important implementation consideration when capturing a <a>window</a> or other
+          <a>display surface</a> that is partially transparent, is that content from the
+          background could be accidentally shared. <a>User agent</a> are strongly warned of
+          this risk.
         </p>
         <p>
-          There is a risk that the user prompt be exposed to the web page for a short amount of time
-          by the newly created {{MediaStreamTrack}}, for instance if the user
-          selects the screen on which the user prompt is displayed.
-          In the case the user prompt displays previews of the various surfaces available for selection,
-          the <a>user agent</a> MUST NOT capture, for the newly created {{MediaStreamTrack}},
-          the previews that the user did not intend to share explicitly.
+          Another important implementation risk is that the user prompt employed by the
+          <a>user agent</a>, might display previews of multiple <a>display surfaces</a>,
+          and that some of these previews might be erroneously captured in the first frames.
+          For example, if the user selects to capture their current monitor, the capture's
+          first frame could aford the application a glimpse of previews from all of the
+          user's monitors. <a>User agents</a> are strongly warned to keep this implementation
+          risk in mind.
         </p>
         <h2>
           Capturing Audio
         </h2>
         <p>
-          {{MediaDevices/getDisplayMedia}} allows capturing audio alongside video, this poses
-          privacy and security concern as this may expose additional information about system
+          {{MediaDevices/getDisplayMedia}} allows capturing audio alongside video. This poses
+          privacy and security concerns, as this may expose additional information about system
           applications, and the set of shared audio sources are not necessarily the same as the set
-          of shared video sources. For example, a <a>user agent</a> MAY be capturing the video of a
+          of shared video sources. For example, a <a>user agent</a> might be capturing the video of a
           <a>window</a> and capture the audio of the entire system, including applications
-          unrelated to that window. The <a>user agent</a> MUST NOT share audio without <a>active
-          user consent</a>. It is important that the user is aware of what content will be shared,
-          including any possible audio. It is strongly recommended that the user is allowed to give
-          consent to video but not audio, resulting in a video-only stream. This ensures that the
-          request for audio is always optional and does not restrict the user's choices compared to
-          a video-only request.
+          unrelated to that window. <a>User agents</a> are strongly warned against sharing any audio
+          without <a>active user consent</a>. It is important that the user is aware of what content
+          will be shared, including any possible audio. It is strongly recommended that the user is
+          allowed to give consent to video but not audio, resulting in a video-only stream.
+          This ensures that the request for audio is always optional and does not restrict the
+          user's choices compared to a video-only request.
         </p>
       </section>
       <section>
@@ -1280,13 +1277,13 @@ dictionary DisplayMediaStreamConstraints {
           Authorizing Display Capture
         </h2>
         <p>
-          This document provides recommends that implementations provide additional limitations on
+          This document recommends that implementations provide additional limitations on
           the mechanisms used to affirm user consent. These limitations are designed to mitigate
           the security and privacy risks that the API poses.
         </p>
         <p>
           Two forms of consent interaction are described: <a>active user consent</a> and a range of
-          <a>elevated permissions</a>. These are non-normative recommandations only.
+          <a>elevated permissions</a>. These are non-normative recommendations only.
         </p>
         <section>
           <h2>
@@ -1295,7 +1292,7 @@ dictionary DisplayMediaStreamConstraints {
           <p>
             <dfn>Active user consent</dfn> is sufficient where there is little or no risk of an
             application gaining information that the user did not intend to share. These cases can
-            be identified by those where the application that requests capture has no control over
+            be identified as those where the application that requests capture has no control over
             what is rendered to the captured <a>display surface</a>.
           </p>
           <p>
@@ -1355,9 +1352,11 @@ dictionary DisplayMediaStreamConstraints {
             <a>logical display surfaces</a>, where that would not ordinarily be provided.
           </p>
           <p>
-            A <a>user agent</a> SHOULD persist any <a>elevated permissions</a> that are granted to
-            an origin. An <a>elevated permissions</a> process in part relies on its novelty to
-            ensure that it correctly captures user intent.
+            <a>User agent</a> are advised to persist <a>elevated permissions</a> that are granted
+            to an origin. That is because an <a>elevated permissions</a> process relies in part on
+            its novelty in order to ensure that it correctly captures user intent. If the process
+            were repeated too often on a trusted application, this novelty would be worn away,
+            and would have less power when used elsewhere.
           </p>
         </section>
       </section>
