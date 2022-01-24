@@ -379,8 +379,13 @@
           A <a>display surface</a> that is being shared may temporarily or permanently become
           inaccessible to the application because of actions taken by the operating system or user
           agent. What makes a <a>display surface</a> considered inaccesible is outside the scope
-          of this specification, but examples MAY include a <a>monitor</a> disconnecting or an
-          <a>application</a>, <a>window</a> or <a>browser</a> closing or becoming minimized.
+          of this specification, but examples MAY include a <a>monitor</a> disconnecting, an
+          <a>application</a>, <a>window</a> or <a>browser</a> closing or becoming minimized,
+          or due to an incoming call on a phone.
+        </p>
+        <p class="note">
+          User agents ultimately control what inaccesible means in this context, but are expected
+          to only fire mute and unmute events for interruptions that have external reasons.
         </p>
         <p>
           When <a>display surface</a> enters an inaccessible state that is not necessarily
