@@ -166,13 +166,21 @@
           <dd>
             <p>Prompts the user for permission to live-capture their display.</p>
             <p>
-              The user agent MUST let the end-user choose which display surface to share
-              out of all available choices every time, and MUST NOT use
-              <var>constraints</var> to limit that choice. Instead,
-              <var>constraints</var> MUST be applied to the media chosen by the user,
-              only after they have made their selection. This prevents an application
-              from influencing the selection of sources, see <a href="#constraints"></a>
-              for details.
+              The user agent MUST let the end-user choose which [=display surface=] to share
+              out of all available choices every time, and MUST NOT use <var>constraints</var>
+              to limit that choice.
+            </p>
+            <p>
+              The user agent MAY use the presence of the {{displaySurface}} constraint and its value to
+              influence the presentation to the user of the sources to pick from. The user agent MUST still
+              offer the user unlimited choice of any [=display surface=].
+              The user agent is strongly recommended to steer users away from sharing a monitor,
+              as this poses
+              <a href="#security-and-permissions">risks to user privacy</a>.
+            </p>
+            <p>  
+              Other than the {{displaySurface}} constraint, <var>constraints</var> MUST be applied
+              to the media chosen by the user only after the user has made their selection.
             </p>
             <p>
               In the case of audio, the user agent MAY present the end-user with audio sources
@@ -439,6 +447,9 @@
           whether audio, video or audio and video display sources are present. <img alt=
           "(This is a fingerprinting vector.)" src="images/fingerprint.png" width="15" height="21">
         </p>
+        <p>
+          Note that accepting the {{displaySurface}} constraint does not limit user selection.
+        </p>
       </section>
       <section>
         <h2 id="constrainable-properties">
@@ -527,12 +538,27 @@
               <td><dfn>displaySurface</dfn></td>
               <td>{{ConstrainDOMString}}</td>
               <td>
-                This string (or each string, when a list) should be one of the
-                members of {{DisplayCaptureSurfaceType}}. As a
-                setting, indicates the type of [=display surface=] that
-                is being captured. As a capability, the setting value MUST be
-                the lone value present, rendering this property immutable from
-                the application viewpoint.
+                <p>
+                  This string (or each string, when a list) should be one of the
+                  members of {{DisplayCaptureSurfaceType}}.
+                </p>
+                <p>
+                  As a setting, indicates the type of [=display surface=] that
+                  is being captured.
+                </p>
+                <p>
+                  As a capability, the setting value MUST be
+                  the lone value present, rendering this property immutable from
+                  the application viewpoint.
+                </p>
+                <p>
+                  As a constraint, the value signals the application's preference
+                  of a particular [=display surface=] type to the user agent;
+                  the user agent MAY reorder the options offered to the user
+                  according to that preference. This constraint is ignored for all
+                  other purposes, and can therefore not cause any side effects
+                  (such as being the cause of <code>OverconstrainedError</code>).
+                </p>
               </td>
             </tr>
             <tr id="def-constraint-logicalSurface">
