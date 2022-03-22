@@ -379,8 +379,7 @@
         </p>
         <p>
           When <a>display surface</a> enters an inaccessible state that is not necessarily
-          permanent (such as the source <a>window</a> closing), the user agent MUST queue
-          a task that [= set a track's muted state|sets the muted state =]
+          permanent, the user agent MUST queue a task that [= set a track's muted state|sets the muted state =]
           of the corresponding media track to <code>true</code>.
         </p>
         <p>
@@ -390,9 +389,9 @@
           of the corresponding media track to <code>false</code>.
         </p>
         <p>
-          When a <a>display surface</a> enters an inaccessible state that is permanent,
-          the user agent MUST queue a task that [= track/ended | ends =] the corresponding
-          media track.
+          When a <a>display surface</a> enters an inaccessible state that is permanent (such as
+          the source <a>window</a> closing), the user agent MUST queue a task that
+          [= track/ended | ends =] the corresponding media track.
         </p>
         <p>
           A stream that was just returned by {{MediaDevices/getDisplayMedia}} MAY contain
