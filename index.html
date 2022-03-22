@@ -722,6 +722,62 @@
           </div>
         </section>
         <section>
+          <h2><dfn>CurrentTabPreferenceEnum</dfn></h2>
+          <p>
+            Recall that when offering the user a choice of [=display surfaces=]
+            to capture, the user agent MAY offer the [=browser=] [=display surface=]
+            in which the application is running. An application might prefer that
+            this particular [=display surface=] not be offered to the user.
+            The CurrentTabPreferenceEnum enumeration describes the different
+            preferences an application might have.
+          </p>
+          <div class="note">
+            <p>
+              For clarity's sake, "tab" is used rather than "browser display surface".
+            </p>
+          </div>
+          <pre class="idl">
+            enum CurrentTabPreferenceEnum {
+              "none",
+              "include",
+              "exclude"
+            };
+          </pre>
+          <table  data-dfn-for="CurrentTabPreferenceEnum" class="simple">
+            <tbody>
+              <tr>
+                <th colspan="2">
+                  Enumeration description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-CurrentTabPreferenceEnum.none">none</dfn>
+                </td>
+                <td>
+                  No preference by the application.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-CurrentTabPreferenceEnum.include">include</dfn>
+                </td>
+                <td>
+                  An application preference of including the current tab.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-CurrentTabPreferenceEnum.exclude">exclude</dfn>
+                </td>
+                <td>
+                  An application preference of excluding the current tab.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
           <h2>DisplayMediaStreamConstraints</h2>
           <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
           instruct the user agent what sort of {{MediaStreamTrack}}s may be
@@ -732,6 +788,7 @@
 dictionary DisplayMediaStreamConstraints {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
+  CurrentTabPreferenceEnum currentTabPreference = "none";
 };</pre>
             <section>
               <h2>Dictionary <a class="idlType">DisplayMediaStreamConstraints</a>
@@ -760,6 +817,16 @@ dictionary DisplayMediaStreamConstraints {
                   further specifies desired processing options to be applied to
                   the audio track. If <code>false</code>, the {{MediaStream}}
                   will not contain an audio track.</p>
+                </dd>
+                <dt>
+                  <dfn><code>currentTabPreference</code></dfn> of type {{CurrentTabPreferenceEnum}},
+                  defaulting to {{CurrentTabPreferenceEnum/none}}
+                </dt>
+                <dd>
+                  Signals application preference for whether the current
+                  [=browser=] [=display surface=] should be included in the list
+                  of [=display surfaces=] offered to the user.
+                  The user agent MAY regard this hint.
                 </dd>
               </dl>
             </section>
