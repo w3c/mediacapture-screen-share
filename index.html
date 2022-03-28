@@ -823,10 +823,11 @@ dictionary DisplayMediaStreamConstraints {
                   defaulting to {{CurrentTabPreferenceEnum/none}}
                 </dt>
                 <dd>
-                  Signals application preference for whether the current
-                  [=browser=] [=display surface=] should be included in the list
-                  of [=display surfaces=] offered to the user.
-                  The user agent MAY regard this hint.
+                  If present, signals application preference for whether the
+                  [=browser=] [=display surface=] associated with
+                  [=this=]'s [=relevant global object=]'s [=associated Document=]'s
+                  [=top-level browsing context=] should be among the choices
+                  offered to the user. The user agent MAY ignore this hint.
                 </dd>
               </dl>
             </section>
