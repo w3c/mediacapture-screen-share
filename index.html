@@ -722,19 +722,19 @@
           </div>
         </section>
         <section>
-          <h2><dfn>CurrentTabPreferenceEnum</dfn></h2>
+          <h2><dfn>SelfCapturePreferenceEnum</dfn></h2>
           <p>
             Describes the different hints an application can provide about whether the
-            tab the application is in should be among the choices offered to the user.
+            display surface the application is in, should be among the choices offered
+            to the user.
           </p>
           <pre class="idl">
-            enum CurrentTabPreferenceEnum {
-              "no-preference",
+            enum SelfCapturePreferenceEnum {
               "include",
               "exclude"
             };
           </pre>
-          <table  data-dfn-for="CurrentTabPreferenceEnum" class="simple">
+          <table  data-dfn-for="SelfCapturePreferenceEnum" class="simple">
             <tbody>
               <tr>
                 <th colspan="2">
@@ -743,27 +743,19 @@
               </tr>
               <tr>
                 <td>
-                  <dfn id="idl-def-CurrentTabPreferenceEnum.none">none</dfn>
+                  <dfn id="idl-def-SelfCapturePreferenceEnum.include">include</dfn>
                 </td>
                 <td>
-                  No preference by the application.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-CurrentTabPreferenceEnum.include">include</dfn>
-                </td>
-                <td>
-                  The application prefers the tab it is in to be included
-                  in the choices offered.
+                  The application prefers the surface be included
+                  among the choices offered.
                 </td>
               </tr>
               <tr>
                 <td>
-                  <dfn id="idl-def-CurrentTabPreferenceEnum.exclude">exclude</dfn>
+                  <dfn id="idl-def-SelfCapturePreferenceEnum.exclude">exclude</dfn>
                 </td>
                 <td>
-                  The application prefers the tab it is in to be excluded
+                  The application prefers the surface be excluded
                   from the choices offered.
                 </td>
               </tr>
@@ -781,7 +773,7 @@
 dictionary DisplayMediaStreamConstraints {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
-  CurrentTabPreferenceEnum currentTabPreference = "none";
+  SelfCapturePreferenceEnum selfBrowserSurface = "none";
 };</pre>
             <section>
               <h2>Dictionary <a class="idlType">DisplayMediaStreamConstraints</a>
@@ -812,8 +804,8 @@ dictionary DisplayMediaStreamConstraints {
                   will not contain an audio track.</p>
                 </dd>
                 <dt>
-                  <dfn><code>currentTabPreference</code></dfn> of type {{CurrentTabPreferenceEnum}},
-                  defaulting to {{CurrentTabPreferenceEnum/none}}
+                  <dfn><code>selfBrowserSurface</code></dfn> of type {{SelfCapturePreferenceEnum}},
+                  defaulting to {{SelfCapturePreferenceEnum/none}}
                 </dt>
                 <dd>
                   If present, signals application preference for whether the
