@@ -715,6 +715,47 @@
           </div>
         </section>
         <section>
+          <h2><dfn>SelfCapturePreferenceEnum</dfn></h2>
+          <p>
+            Describes the different hints an application can provide about whether the
+            [=display surface=] the application is in, should be among the choices
+            offered to the user.
+          </p>
+          <pre class="idl">
+            enum SelfCapturePreferenceEnum {
+              "include",
+              "exclude"
+            };
+          </pre>
+          <table  data-dfn-for="SelfCapturePreferenceEnum" class="simple">
+            <tbody>
+              <tr>
+                <th colspan="2">
+                  Enumeration description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-SelfCapturePreferenceEnum.include">include</dfn>
+                </td>
+                <td>
+                  The application prefers the surface be included
+                  among the choices offered.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-SelfCapturePreferenceEnum.exclude">exclude</dfn>
+                </td>
+                <td>
+                  The application prefers the surface be excluded
+                  from the choices offered.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
           <h2>DisplayMediaStreamConstraints</h2>
           <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
           instruct the user agent what sort of {{MediaStreamTrack}}s may be
@@ -725,6 +766,7 @@
 dictionary DisplayMediaStreamConstraints {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
+  SelfCapturePreferenceEnum selfBrowserSurface;
 };</pre>
             <section>
               <h2>Dictionary <a class="idlType">DisplayMediaStreamConstraints</a>
@@ -753,6 +795,16 @@ dictionary DisplayMediaStreamConstraints {
                   further specifies desired processing options to be applied to
                   the audio track. If <code>false</code>, the {{MediaStream}}
                   will not contain an audio track.</p>
+                </dd>
+                <dt>
+                  <dfn><code>selfBrowserSurface</code></dfn> of type {{SelfCapturePreferenceEnum}}
+                </dt>
+                <dd>
+                  If present, signals application preference for whether the
+                  [=browser=] [=display surface=] which is associated with
+                  [=this=]'s [=relevant global object=]'s [=associated Document=]'s
+                  [=top-level browsing context=], should be among the choices
+                  offered to the user. The user agent MAY ignore this hint.
                 </dd>
               </dl>
             </section>
