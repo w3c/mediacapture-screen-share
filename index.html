@@ -756,6 +756,46 @@
           </table>
         </section>
         <section>
+          <h2><dfn>SystemAudioPreferenceEnum</dfn></h2>
+          <p>
+            Describes whether an application invoking {{MediaDevices/getDisplayMedia()}}
+            would like the user agent to include system audio among the audio sources
+            offered to the user.
+          </p>
+          <pre class="idl">
+            enum SystemAudioPreferenceEnum {
+              "include",
+              "exclude"
+            };
+          </pre>
+          <table  data-dfn-for="SystemAudioPreferenceEnum" class="simple">
+            <tbody>
+              <tr>
+                <th colspan="2">
+                  Enumeration description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-SystemAudioPreferenceEnum.include">include</dfn>
+                </td>
+                <td>
+                  The application prefers that options to share system audio be offered to the user
+                  for [=monitor=] [=display surfaces=].
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-SystemAudioPreferenceEnum.exclude">exclude</dfn>
+                </td>
+                <td>
+                  The application prefers that options to share system audio not be offered to the user.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
           <h2>DisplayMediaStreamConstraints</h2>
           <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
           instruct the user agent what sort of {{MediaStreamTrack}}s may be
@@ -767,6 +807,7 @@ dictionary DisplayMediaStreamConstraints {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
   SelfCapturePreferenceEnum selfBrowserSurface;
+  SystemAudioPreferenceEnum systemAudio;
 };</pre>
             <section>
               <h2>Dictionary <a class="idlType">DisplayMediaStreamConstraints</a>
@@ -805,6 +846,13 @@ dictionary DisplayMediaStreamConstraints {
                   [=this=]'s [=relevant global object=]'s [=associated Document=]'s
                   [=top-level browsing context=], should be among the choices
                   offered to the user. The user agent MAY ignore this hint.
+                </dd>
+                <dt>
+                  <dfn><code>systemAudio</code></dfn> of type {{SystemAudioPreferenceEnum}}
+                </dt>
+                <dd>
+                  If present, signals whether the application would like system audio
+                  to be included among the possible audio sources offered to the user.
                 </dd>
               </dl>
             </section>
