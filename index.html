@@ -126,6 +126,17 @@
       </p>
 
       <p>The <dfn>devicechange</dfn> event is defined in [[GETUSERMEDIA]].</p>
+
+      <p>
+        A document is called an <dfn class="export">actively screen-capturing document</dfn>
+        if that document holds a reference to a {{MediaStreamTrackState/"live"}} video track
+        derived from a call to {{MediaDevices/getDisplayMedia}}.
+      </p>
+
+      <p>
+        A user agent is called <dfn class="export">actively screen-capturing</dfn> if any of
+        its [=Document/fully active=] documents is an [=actively screen-capturing document=].
+      </p>
     </section>
     <section>
       <h2>
