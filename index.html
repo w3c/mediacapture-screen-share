@@ -728,13 +728,13 @@
             };
           </pre>
           <table  data-dfn-for="SelfCapturePreferenceEnum" class="simple">
-	    <caption>{{SelfCapturePreferenceEnum}} Enumeration description</caption>
+      <caption>{{SelfCapturePreferenceEnum}} Enumeration description</caption>
             <thead>
               <tr>
-		<th>Enum value</th><th>Description</th>
+    <th>Enum value</th><th>Description</th>
               </tr>
-	    </thead>
-	    <tbody>
+      </thead>
+      <tbody>
               <tr>
                 <td>
                   <dfn id="idl-def-SelfCapturePreferenceEnum.include">include</dfn>
@@ -797,19 +797,19 @@
           </table>
         </section>
         <section>
-          <h2><dfn>DynamicSourceOptionPreferenceEnum</dfn></h2>
+          <h2><dfn>SurfaceSwitchingPreferenceEnum</dfn></h2>
           <p>
             Describes whether an application invoking {{MediaDevices/getDisplayMedia()}}
             would like the user agent to offer the user the option to dynamically change
             the source [=display surface=] during the capture.
           </p>
           <pre class="idl">
-            enum DynamicSourceOptionPreferenceEnum {
-              "include",
-              "exclude"
+            enum SurfaceSwitchingPreferenceEnum {
+              "yes",
+              "no"
             };
           </pre>
-          <table  data-dfn-for="DynamicSourceOptionPreferenceEnum" class="simple">
+          <table  data-dfn-for="SurfaceSwitchingPreferenceEnum" class="simple">
             <tbody>
               <tr>
                 <th colspan="2">
@@ -818,7 +818,7 @@
               </tr>
               <tr>
                 <td>
-                  <dfn id="idl-def-DynamicSourceOptionPreferenceEnum.include">include</dfn>
+                  <dfn id="idl-def-SurfaceSwitchingPreferenceEnum.yes">yes</dfn>
                 </td>
                 <td>
                   The application prefers that option to dynamically change the source
@@ -827,7 +827,7 @@
               </tr>
               <tr>
                 <td>
-                  <dfn id="idl-def-DynamicSourceOptionPreferenceEnum.exclude">exclude</dfn>
+                  <dfn id="idl-def-SurfaceSwitchingPreferenceEnum.no">no</dfn>
                 </td>
                 <td>
                   The application prefers that option to dynamically change the source
@@ -850,7 +850,7 @@ dictionary DisplayMediaStreamConstraints {
   (boolean or MediaTrackConstraints) audio = false;
   SelfCapturePreferenceEnum selfBrowserSurface;
   SystemAudioPreferenceEnum systemAudio;
-  DynamicSourceOptionPreferenceEnum dynamicSourceOption;
+  SurfaceSwitchingPreferenceEnum surfaceSwitching;
 };</pre>
             <section>
               <h2>Dictionary <a class="idlType">DisplayMediaStreamConstraints</a>
@@ -898,7 +898,7 @@ dictionary DisplayMediaStreamConstraints {
                   to be included among the possible audio sources offered to the user.
                 </dd>
                 <dt>
-                  <dfn><code>dynamicSourceOption</code></dfn> of type {{DynamicSourceOptionPreferenceEnum}}
+                  <dfn><code>dynamicSourceOption</code></dfn> of type {{SurfaceSwitchingPreferenceEnum}}
                 </dt>
                 <dd>
                   If present, signals whether the application would like the
@@ -1153,14 +1153,14 @@ dictionary DisplayMediaStreamConstraints {
   "browser"
 };</pre>
           <table  data-dfn-for="DisplayCaptureSurfaceType"
-		  class="simple">
-	    <caption>{{DisplayCaptureSurfaceType}} Enumeration description</caption>
+      class="simple">
+      <caption>{{DisplayCaptureSurfaceType}} Enumeration description</caption>
             <thead>
               <tr>
-		<th>Enum value</th><th>Description</th>
+    <th>Enum value</th><th>Description</th>
               </tr>
-	    </thead>
-	    <tbody>
+      </thead>
+      <tbody>
               <tr>
                 <td>
                   <dfn id="idl-def-DisplayCaptureSurfaceType.monitor">monitor</dfn>
@@ -1204,14 +1204,14 @@ dictionary DisplayMediaStreamConstraints {
   "motion"
 };</pre>
           <table  data-dfn-for="CursorCaptureConstraint"
-		  class="simple">
-	    <caption>{{CursorCaptureConstraint}} Enumeration description</caption>
-	    <thead>
+      class="simple">
+      <caption>{{CursorCaptureConstraint}} Enumeration description</caption>
+      <thead>
               <tr>
-		<th>Enum value</th><th>Description</tH>
+    <th>Enum value</th><th>Description</tH>
               </tr>
-	    </thead>
-	    <tbody>
+      </thead>
+      <tbody>
               <tr>
                 <td>
                   <dfn id="idl-def-CursorCaptureConstraint.never">never</dfn>
