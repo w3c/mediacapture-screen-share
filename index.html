@@ -152,7 +152,7 @@
         </h2>
         <pre class="idl"
 >partial interface MediaDevices {
-  Promise&lt;MediaStream&gt; getDisplayMedia(optional DisplayMediaStreamConstraints constraints = {});
+  Promise&lt;MediaStream&gt; getDisplayMedia(optional DisplayMediaStreamOptions options = {});
 };</pre>
         <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
           <dt>
@@ -162,8 +162,9 @@
             <p>Prompts the user for permission to live-capture their display.</p>
             <p>
               The user agent MUST let the end-user choose which [=display surface=] to share
-              out of all available choices every time, and MUST NOT use <var>constraints</var>
-              to limit that choice.
+              out of all available choices every time, and MUST NOT use
+              any {{MediaTrackConstraints}} in <var>options</var>.<code>video</code>
+              or <var>options</var>.<code>audio</code> to limit that choice.
             </p>
             <p>
               The user agent MAY use the presence of the {{displaySurface}} constraint and its value to
@@ -173,8 +174,9 @@
               as this poses
               <a href="#security-and-permissions">risks to user privacy</a>.
             </p>
-            <p>  
-              Other than the {{displaySurface}} constraint, <var>constraints</var> MUST be applied
+            <p>
+              Any {{MediaTrackConstraints}} in <var>options</var>.<code>video</code>
+              or <var>options</var>.<code>audio</code> MUST be applied
               to the media chosen by the user only after the user has made their selection.
             </p>
             <p>
@@ -207,8 +209,13 @@
                 attribute has the value {{InvalidStateError}}.</p>
               </li>
               <li>
-                <p>Let <var>constraints</var> be the method's first
+                <p>Let <var>options</var> be the method's first
                 argument.</p>
+              </li>
+              <li>
+                <p>Let <var>constraints</var> be
+                <code>[</code><var>options</var>.<code>audio</code>,
+                <var>options</var>.<code>video</code><code>]</code>.</p>
               </li>
               <li>
                 <p>If <code>constraints.video</code> is <code>false</code>,
@@ -838,14 +845,14 @@
           </table>
         </section>
         <section>
-          <h2>DisplayMediaStreamConstraints</h2>
-          <p>The <dfn>DisplayMediaStreamConstraints</dfn> dictionary is used to
+          <h2>DisplayMediaStreamOptions</h2>
+          <p>The <dfn>DisplayMediaStreamOptions</dfn> dictionary is used to
           instruct the user agent what sort of {{MediaStreamTrack}}s may be
           included in the {{MediaStream}} returned by
           {{MediaDevices/getDisplayMedia}}.</p>
           <div>
             <pre class="idl">
-dictionary DisplayMediaStreamConstraints {
+dictionary DisplayMediaStreamOptions {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
   SelfCapturePreferenceEnum selfBrowserSurface;
@@ -853,10 +860,10 @@ dictionary DisplayMediaStreamConstraints {
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
 };</pre>
             <section>
-              <h2>Dictionary <a class="idlType">DisplayMediaStreamConstraints</a>
+              <h2>Dictionary <a class="idlType">DisplayMediaStreamOptions</a>
                 Members</h2>
-              <dl data-link-for="DisplayMediaStreamConstraints" data-dfn-for=
-                "DisplayMediaStreamConstraints" class="dictionary-members">
+              <dl data-link-for="DisplayMediaStreamOptions" data-dfn-for=
+                "DisplayMediaStreamOptions" class="dictionary-members">
                 <dt><dfn><code>video</code></dfn> of type <code>(boolean or {{MediaTrackConstraints}})</code>,
                 defaulting to <code>true</code></dt>
                 <dd>
