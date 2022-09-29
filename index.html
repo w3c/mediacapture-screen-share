@@ -214,24 +214,25 @@
               </li>
               <li>
                 <p>
-                  Let <var>controller</var> be <var>options</var>.<code>controller</code>.
+                  Let <var>controller</var> be <var>options</var>.<code>controller</code> if present,
+                  or null otherwise.
                 </p>
               </li>
               <li>
                 <p>
-                  If <var>controller</var> is <code>undefined</code>, continue to
-                  the next step.
+                  If controller is not null, run the following steps:
                 </p>
-                <p>
-                  Otherwise, if <var>controller</var>.{{CaptureController/[[isBound]]}}
-                  is set to <code>false</code>, set <var>controller</var>.{{CaptureController/[[isBound]]}}
-                  to <code>true</code> and continue to the next step.
-                </p>
-                <p>
-                  Otherwise, return a promise [=reject|rejected=] with
-                  a {{DOMException}} object whose {{DOMException/name}} attribute has
-                  the value {{InvalidStateError}}.
-                </p>
+                  <ol>
+                    <li>
+                      If <var>controller</var>.{{CaptureController/[[isBound]]}}
+                      is <code>true</code>, return a promise [=reject|rejected=] with
+                      a {{DOMException}} object whose {{DOMException/name}} attribute has
+                      the value {{InvalidStateError}}.
+                    </li>
+                    <li>
+                      Set <var>controller</var>.{{CaptureController/[[isBound]]}} to <code>true</code>.
+                    </li>
+                </ol>
               </li>
               <li>
                 <p>Let <var>constraints</var> be
@@ -746,9 +747,9 @@
         <section>
           <h2><dfn>CaptureController</dfn></h2>
           <p>
-            {{CaptureController}} objects may be associated with a [=capture-session=].
-            They are used to expose functionality that's associated with
-            the [=capture-session=] itself, rather than with the initial call
+            A {{CaptureController}} object may be associated with a [=capture-session=].
+            It would be used to expose functionality that's associated with
+            the [=capture-session=] itself, rather than with the call
             to {{MediaDevices/getDisplayMedia()}} or its resulting stream or tracks.
           </p>
           <p>
@@ -758,7 +759,7 @@
             At most one {{CaptureController}} is associated with any given [=capture-session=].
           </p>
           <pre class="idl">
-            [Exposed=Window]
+            [Exposed=Window, SecureContext]
             interface CaptureController {
               constructor();
               // TODO: Add setFocusBehavior() in a separate PR.
@@ -909,7 +910,7 @@
 dictionary DisplayMediaStreamOptions {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
-  CaptureController controller;
+  CaptureController controller = null;
   SelfCapturePreferenceEnum selfBrowserSurface;
   SystemAudioPreferenceEnum systemAudio;
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
