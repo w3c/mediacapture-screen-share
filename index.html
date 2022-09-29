@@ -213,6 +213,28 @@
                 argument.</p>
               </li>
               <li>
+                <p>
+                  Let <var>controller</var> be <var>options</var>.<code>controller</code> if present,
+                  or <code>null</code> otherwise.
+                </p>
+              </li>
+              <li>
+                <p>
+                  If controller is not <code>null</code>, run the following steps:
+                </p>
+                  <ol>
+                    <li>
+                      If <var>controller</var>.{{CaptureController/[[isBound]]}}
+                      is <code>true</code>, return a promise [=reject|rejected=] with
+                      a {{DOMException}} object whose {{DOMException/name}} attribute has
+                      the value {{InvalidStateError}}.
+                    </li>
+                    <li>
+                      Set <var>controller</var>.{{CaptureController/[[isBound]]}} to <code>true</code>.
+                    </li>
+                </ol>
+              </li>
+              <li>
                 <p>Let <var>constraints</var> be
                 <code>[</code><var>options</var>.<code>audio</code>,
                 <var>options</var>.<code>video</code><code>]</code>.</p>
@@ -363,7 +385,8 @@
                   </li>
                   <li>
                     <p><a>Resolve</a> <var>p</var> with <var>stream</var> and
-                    abort these steps.</p>
+                    abort these steps. This invocation of {{MediaDevices/getDisplayMedia()}}
+                    is now considered to have produced a new <dfn>capture-session</dfn></p>
                   </li>
                   <li>
                     <p><em>Permission Failure</em>: [=Reject=]
@@ -637,7 +660,7 @@
                 <p>When <dfn>local audio playback suppression</dfn> is applied,
                 the user agent SHOULD stop relaying audio to the local speakers,
                 but that audio MUST still be captured by any ongoing audio-capturing
-                capture-sessions. This suppression MUST NOT be observable to the
+                [=capture-sessions=]. This suppression MUST NOT be observable to the
                 captured document. Furthermore, the capturing document may only
                 observe whether it is applying <a>suppressLocalAudioPlayback</a>;
                 not whether that suppression is having an effect (i.e. can't
@@ -645,7 +668,7 @@
                 <p>When a [=browser=] [=display surface=] is subject to multiple
                 concurrent captures, <a>local audio playback suppression</a>
                 SHOULD be applied as long as at least one active audio-capturing
-                capture-session is constraining <a>suppressLocalAudioPlayback</a>
+                [=capture-session=] is constraining <a>suppressLocalAudioPlayback</a>
                 to <code>true</code>.</p>
               </td>
             </tr>
@@ -721,6 +744,38 @@
             </p>
           </div>
         </section>
+        <section>
+          <h2><dfn>CaptureController</dfn></h2>
+          <p>
+            A {{CaptureController}} object may be associated with a [=capture-session=].
+            It would be used to expose functionality that's associated with
+            the [=capture-session=] itself, rather than with the call
+            to {{MediaDevices/getDisplayMedia()}} or its resulting stream or tracks.
+          </p>
+          <p>
+            Any given [=capture-session=] is associated with at most one {{CaptureController}}.
+          </p>
+          <p>
+            At most one {{CaptureController}} is associated with any given [=capture-session=].
+          </p>
+          <pre class="idl">
+            [Exposed=Window, SecureContext]
+            interface CaptureController {
+              constructor();
+              // TODO: Add setFocusBehavior() in a separate PR.
+            };
+          </pre>
+          <dl data-link-for="CaptureController" data-dfn-for="CaptureController" class="methods">
+            <dt>
+              <dfn>constructor</dfn>
+            </dt>
+            <dd>
+              <p>
+                Create one internal slot: <dfn data-dfn-for="CaptureController">[[\isBound]]</dfn>,
+                initialized to <code>false</code>.
+              </p>
+            </dd>
+          </section>
         <section>
           <h2><dfn>SelfCapturePreferenceEnum</dfn></h2>
           <p>
@@ -855,6 +910,7 @@
 dictionary DisplayMediaStreamOptions {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
+  CaptureController controller = null;
   SelfCapturePreferenceEnum selfBrowserSurface;
   SystemAudioPreferenceEnum systemAudio;
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
@@ -888,6 +944,17 @@ dictionary DisplayMediaStreamOptions {
                   will not contain an audio track.</p>
                 </dd>
                 <dt>
+                  <dfn><code>controller</code></dfn> of type <code>{{CaptureController}})</code>,
+                  defaulting to <code>null</code>
+                  </dt>
+                  <dd>
+                    <p>
+                      If not <code>null</code>, this {{CaptureController}} object will be
+                      associated with the [=capture-session=]. Through the methods exposed
+                      on this object, the [=capture-session=] can be manipulated.
+                    </p>
+                  </dd>
+                  <dt>
                   <dfn><code>selfBrowserSurface</code></dfn> of type {{SelfCapturePreferenceEnum}}
                 </dt>
                 <dd>
