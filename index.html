@@ -215,12 +215,12 @@
               <li>
                 <p>
                   Let <var>controller</var> be <var>options</var>.<code>controller</code> if present,
-                  or null otherwise.
+                  or <code>null</code> otherwise.
                 </p>
               </li>
               <li>
                 <p>
-                  If controller is not null, run the following steps:
+                  If controller is not <code>null</code>, run the following steps:
                 </p>
                   <ol>
                     <li>
@@ -944,6 +944,17 @@ dictionary DisplayMediaStreamOptions {
                   will not contain an audio track.</p>
                 </dd>
                 <dt>
+                  <dfn><code>controller</code></dfn> of type <code>{{CaptureController}})</code>,
+                  defaulting to <code>null</code>
+                  </dt>
+                  <dd>
+                    <p>
+                      If not <code>null</code>, this {{CaptureController}} object will be
+                      associated with the [=capture-session=]. Through the methods exposed
+                      on this object, the [=capture-session=] can be manipulated.
+                    </p>
+                  </dd>
+                  <dt>
                   <dfn><code>selfBrowserSurface</code></dfn> of type {{SelfCapturePreferenceEnum}}
                 </dt>
                 <dd>
