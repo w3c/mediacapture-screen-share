@@ -898,19 +898,19 @@
             </dt>
             <dd>
               <p>
-                Run the following algorithm:
+                Run the following steps:
               </p>
               <ol>
                 <li>
                   <p>
-                    If {{CaptureController/[[isBound]]}} is <code>false</code>,
-                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                    If {{CaptureController/[[isBound]]}} is <code>true</code>,
+                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
                     If {{CaptureController/[[videoTrack]]}} is <code>null</code>,
-                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                    [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
