@@ -388,36 +388,39 @@
                       This invocation of {{MediaDevices/getDisplayMedia()}} is now
                       considered to have produced a new <dfn>capture-session</dfn>.
                     </p>
+                  </li>
+                  <li>
+                    If <var>controller</var> is not <code>null</code>:
+                    <ol>
+                      <li>
+                        <p>
+                          Set <var>controller</var>.{{CaptureController/[[videoTrack]]}}
+                          to <var>stream</var>'s video track.    
+                        </p>
+                      </li>
+                      <li>
+                        <p>
+                          <!-- TODO: Be more exact about which entity loses focus. -->
+                          At this point, it is guaranteed that
+                          <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
+                          is <code>false</code>. If TODO ever
+                          <a data-cite="!HTML/#focused">loses focus</a>, set it back
+                          to <code>true</code>.
+                        </p>
+                      </li>
+                      <li>
+                        <p>
+                          Schedule a task to set
+                          <var>controller</var>.{{CaptureController/[[focusWindowClosed]]}}
+                          to <code>true</code>.
+                        </p>
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
                     <p>
-                      If <var>controller</var> is not <code>null</code>:
-                      <ul>
-                        <li>
-                          <p>
-                            Set <var>controller</var>.{{CaptureController/[[videoTrack]]}}
-                            to <var>stream</var>'s video track.    
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <!-- TODO: Be more exact about which entity loses focus. -->
-                            At this point, it is guaranteed that
-                            <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
-                            is <code>false</code>. If TODO ever
-                            <a data-cite="!HTML/#focused">loses focus</a>, set it back
-                            to <code>true</code>.
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <!-- TODO: Add a task to close the window. -->
-                            TODO
-                          </p>
-                        </li>
-                      </ul>
-                    </p>
-                    <p>
-                      <a>Resolve</a> <var>p</var> with <var>stream</var> and abort
-                      these steps. 
+                      <a>Resolve</a> <var>p</var> with <var>stream</var> and
+                      abort these steps. 
                     </p>
                   </li>
                   <li>
