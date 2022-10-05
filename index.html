@@ -392,16 +392,26 @@
                       If <var>controller</var> is not <code>null</code>:
                       <ul>
                         <li>
-                          Set <var>controller</var>.{{CaptureController/[[videoTrack]]}}
-                          to <var>stream</var>'s video track.    
+                          <p>
+                            Set <var>controller</var>.{{CaptureController/[[videoTrack]]}}
+                            to <var>stream</var>'s video track.    
+                          </p>
                         </li>
                         <li>
-                          <!-- TODO: Be more exact about which entity loses focus. -->
-                          At this point, it is guaranteed that
-                          <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
-                          is <code>false</code>. If TODO ever
-                          <a data-cite="!HTML/#focused">loses focus</a>, set it back
-                          to <code>true</code>.
+                          <p>
+                            <!-- TODO: Be more exact about which entity loses focus. -->
+                            At this point, it is guaranteed that
+                            <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
+                            is <code>false</code>. If TODO ever
+                            <a data-cite="!HTML/#focused">loses focus</a>, set it back
+                            to <code>true</code>.
+                          </p>
+                        </li>
+                        <li>
+                          <p>
+                            <!-- TODO: Add a task to close the window. -->
+                            TODO
+                          </p>
                         </li>
                       </ul>
                     </p>
