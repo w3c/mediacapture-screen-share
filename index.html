@@ -220,7 +220,7 @@
               </li>
               <li>
                 <p>
-                  If controller is not <code>null</code>, run the following steps:
+                  If <var>controller</var> is not <code>null</code>, run the following steps:
                 </p>
                   <ol>
                     <li>
@@ -384,9 +384,31 @@
                     <var>message</var>)</code>.</p>
                   </li>
                   <li>
-                    <p><a>Resolve</a> <var>p</var> with <var>stream</var> and
-                    abort these steps. This invocation of {{MediaDevices/getDisplayMedia()}}
-                    is now considered to have produced a new <dfn>capture-session</dfn></p>
+                    <p>
+                      This invocation of {{MediaDevices/getDisplayMedia()}} is now
+                      considered to have produced a new <dfn>capture-session</dfn>.
+                    </p>
+                    <p>
+                      If <var>controller</var> is not <code>null</code>:
+                      <ul>
+                        <li>
+                          Set <var>controller</var>.{{CaptureController/[[videoTrack]]}}
+                          to <var>stream</var>'s video track.    
+                        </li>
+                        <li>
+                          <!-- TODO: Be more exact about which entity loses focus. -->
+                          At this point, it is guaranteed that
+                          <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
+                          is <code>false</code>. If TODO ever
+                          <a data-cite="!HTML/#focused">loses focus</a>, set it back
+                          to <code>true</code>.
+                        </li>
+                      </ul>
+                    </p>
+                    <p>
+                      <a>Resolve</a> <var>p</var> with <var>stream</var> and abort
+                      these steps. 
+                    </p>
                   </li>
                   <li>
                     <p><em>Permission Failure</em>: [=Reject=]
@@ -745,6 +767,46 @@
           </div>
         </section>
         <section>
+          <h2><dfn>CaptureStartFocusBehavior</dfn></h2>
+          <p>
+            Describes whether an application invoking {{CaptureController/setFocusBehavior()}}
+            would like the user agent to focus the [=display surface=] associated with
+            that {{CaptureController}}'s [=capture-session=].
+          </p>
+          <pre class="idl">
+            enum CaptureStartFocusBehavior {
+              "focus-captured-surface",
+              "no-focus-change"
+            };    
+          </pre>
+          <table  data-dfn-for="CaptureStartFocusBehavior" class="simple">
+            <tbody>
+              <tr>
+                <th colspan="2">
+                  Enumeration description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-CaptureStartFocusBehavior.focus-captured-surface">focus-captured-surface</dfn>
+                </td>
+                <td>
+                  The application prefers that the [=display surface=] associated with
+                  this {{CaptureController}}'s [=capture-session=] be focused.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-CaptureStartFocusBehavior.no-focus-change">no-focus-change</dfn>
+                </td>
+                <td>
+                  The application prefers that the user agent not change focus.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
           <h2><dfn>CaptureController</dfn></h2>
           <p>
             A {{CaptureController}} object may be associated with a [=capture-session=].
@@ -762,7 +824,7 @@
             [Exposed=Window, SecureContext]
             interface CaptureController {
               constructor();
-              // TODO: Add setFocusBehavior() in a separate PR.
+              undefined setFocusBehavior(CaptureStartFocusBehavior focusBehavior);
             };
           </pre>
           <dl data-link-for="CaptureController" data-dfn-for="CaptureController" class="methods">
@@ -770,10 +832,118 @@
               <dfn>constructor</dfn>
             </dt>
             <dd>
+              Run the following steps:
+              <ol>
+                <li>
+                  <p>
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\isBound]]</dfn>,
+                    initialized to <code>false</code>.
+                    <div class="note">
+                      This internal slot tracks whether [=this=] has been associated with a [=capture-session=].
+                    </div>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\videoTrack]]</dfn>,
+                    initialized to <code>null</code>.
+                    <div class="note">
+                      <!-- TODO: Ensure surfaceSwitching closes the focus window. -->
+                      This internal slot tracks with which [=display surface=] the [=capture-session=] is associated.
+                      It is distinct from {{CaptureController/[[isBound]]}} in that {{CaptureController/[[isBound]]}}
+                      is set even if {{MediaDevices/getDisplayMedia()}} rejects.
+                    </div>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\initialFocusLost]]</dfn>,
+                    initialized to <code>false</code>.
+                    <div class="note">
+                      This internal slot ensures that calls to {{CaptureController/setFocusBehavior()}} fail
+                      without throwing if the user manually focuses another tab or native application.
+                    </div>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\focusWindowClosed]]</dfn>,
+                    initialized to <code>false</code>.
+                    <div class="note">
+                      This internal slot tracks explicit closure of the window of opportunity, which happens when
+                      {{CaptureController/setFocusBehavior()}} is called, or the task to close the window executes.
+                      As applications can easily avoid such errors, {{CaptureController/setFocusBehavior()}} when
+                      this slot is set to <code>true</code> throw.
+                    </div>
+                  </p>
+                </li>
+              </ol>
+            </dd>
+            <dt>
+              <dfn>setFocusBehavior</dfn>
+            </dt>
+            <dd>
               <p>
-                Create one internal slot: <dfn data-dfn-for="CaptureController">[[\isBound]]</dfn>,
-                initialized to <code>false</code>.
+                Run the following algorithm:
               </p>
+              <ol>
+                <li>
+                  <p>
+                    If {{CaptureController/[[isBound]]}} is <code>false</code>,
+                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If {{CaptureController/[[videoTrack]]}} is <code>null</code>,
+                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If {{CaptureController/[[videoTrack]]}}.{{MediaStreamTrack/getSettings()}}.{{displaySurface}}
+                    is neither {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
+                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <!-- TODO: Fix the ReadyState reference. -->
+                    If {{CaptureController/[[videoTrack]]}}'s
+                    <code>ReadyState</code> is NOT {{MediaStreamTrackState/"live"}},
+                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If {{CaptureController/[[focusWindowClosed]]}} is <code>true</code>,
+                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If {{CaptureController/[[initialFocusLost]]}} is <code>true</code>,
+                    abort these steps.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    The user agent SHOULD abort these steps if too much time has elapsed since
+                    the [=capture-session=] started. The timespan is left up to the user agent,
+                    but it is recommended that a value of one second be used.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Set {{CaptureController/[[focusWindowClosed]]}} to <code>true</code>.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Focus the [=display surface=] referred to by {{CaptureController/[[videoTrack]]}}.
+                  </p>
+                </li>
+              </ol>
             </dd>
           </section>
         <section>
