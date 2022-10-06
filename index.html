@@ -401,12 +401,14 @@
                       <li>
                         <p>
                           <!-- TODO: Be more exact about which entity loses focus. -->
-                          At this point, it is guaranteed that
-                          <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
-                          is <code>false</code>. If TODO ever
-                          <a data-cite="!HTML/#focused">loses focus</a>, set
+                          If TODO ever <a data-cite="!HTML/#focused">loses focus</a>, set
                           <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
                           to <code>true</code>.
+                          <p class="note">
+                            Capture might already have been lost by this point, for example
+                            if the user agent employs a prompt in which selectiing
+                            a [=browser surface=] is done simultaneously with focusing it.
+                          </p>
                         </p>
                       </li>
                       <li>
