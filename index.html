@@ -222,16 +222,28 @@
                 <p>
                   If <var>controller</var> is not <code>null</code>, run the following steps:
                 </p>
-                  <ol>
-                    <li>
+                <ol>
+                  <li>
+                    <p>
                       If <var>controller</var>.{{CaptureController/[[isBound]]}}
                       is <code>true</code>, return a promise [=reject|rejected=] with
                       a {{DOMException}} object whose {{DOMException/name}} attribute has
                       the value {{InvalidStateError}}.
-                    </li>
-                    <li>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
                       Set <var>controller</var>.{{CaptureController/[[isBound]]}} to <code>true</code>.
-                    </li>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      <!-- TODO: Be more exact about which entity loses focus. -->
+                      If TODO ever <a data-cite="!HTML/#focused">loses focus</a>, set
+                      <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
+                      to <code>true</code>.
+                    </p>
+                  </li>
                 </ol>
               </li>
               <li>
@@ -396,19 +408,6 @@
                         <p>
                           Set <var>controller</var>.{{CaptureController/[[videoTrack]]}}
                           to <var>stream</var>'s video track.    
-                        </p>
-                      </li>
-                      <li>
-                        <p>
-                          <!-- TODO: Be more exact about which entity loses focus. -->
-                          If TODO ever <a data-cite="!HTML/#focused">loses focus</a>, set
-                          <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
-                          to <code>true</code>.
-                          <p class="note">
-                            Capture might already have been lost by this point, for example
-                            if the user agent employs a prompt in which selectiing
-                            a [=display surface=] is done simultaneously with focusing it.
-                          </p>
                         </p>
                       </li>
                       <li>
