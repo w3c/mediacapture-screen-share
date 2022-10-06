@@ -903,6 +903,11 @@
               <ol>
                 <li>
                   <p>
+                    Let <var>focusBehavior</var> be the method's first argument.
+                  </p>
+                </li>
+                <li>
+                  <p>
                     If {{CaptureController/[[isBound]]}} is <code>false</code>,
                     [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
@@ -950,6 +955,12 @@
                 <li>
                   <p>
                     Set {{CaptureController/[[focusWindowClosed]]}} to <code>true</code>.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If <var>focusBehavior</var> is NOT {{CaptureStartFocusBehavior/"focus-captured-surface"}},
+                    abort these steps.
                   </p>
                 </li>
                 <li>
