@@ -225,7 +225,7 @@
                 <ol>
                   <li>
                     <p>
-                      If <var>controller</var>.{{CaptureController/[[isBound]]}}
+                      If <var>controller</var>.{{CaptureController/[[IsBound]]}}
                       is <code>true</code>, return a promise [=reject|rejected=] with
                       a {{DOMException}} object whose {{DOMException/name}} attribute has
                       the value {{InvalidStateError}}.
@@ -233,14 +233,14 @@
                   </li>
                   <li>
                     <p>
-                      Set <var>controller</var>.{{CaptureController/[[isBound]]}} to <code>true</code>.
+                      Set <var>controller</var>.{{CaptureController/[[IsBound]]}} to <code>true</code>.
                     </p>
                   </li>
                   <li>
                     <p>
-                      <!-- TODO: Be more exact about which entity loses focus. -->
-                      If TODO ever <a data-cite="!HTML/#focused">loses focus</a>, set
-                      <var>controller</var>.{{CaptureController/[[initialFocusLost]]}}
+                      If the <a>current settings object</a>'s [=relevant global object=]'s
+                      [=associated `Document`=] ever <a data-cite="!HTML/#focused">loses focus</a>,
+                      set <var>controller</var>.{{CaptureController/[[InitialFocusLost]]}}
                       to <code>true</code>.
                     </p>
                   </li>
@@ -406,14 +406,14 @@
                     <ol>
                       <li>
                         <p>
-                          Set <var>controller</var>.{{CaptureController/[[videoTrack]]}}
-                          to <var>stream</var>'s video track.    
+                          Set <var>controller</var>.{{CaptureController/[[Source]]}}
+                          to <var>stream</var>'s video track's <a data-cite="GETUSERMEDIA#dfn-source-0">[[\Source]]</a>.
                         </p>
                       </li>
                       <li>
                         <p>
                           Schedule a task to set
-                          <var>controller</var>.{{CaptureController/[[focusWindowClosed]]}}
+                          <var>controller</var>.{{CaptureController/[[FocusWindowClosed]]}}
                           to <code>true</code>.
                         </p>
                       </li>
@@ -851,7 +851,7 @@
               <ol>
                 <li>
                   <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\isBound]]</dfn>,
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\IsBound]]</dfn>,
                     initialized to <code>false</code>.
                     <div class="note">
                       This internal slot tracks whether [=this=] has been associated with a [=capture-session=].
@@ -860,19 +860,18 @@
                 </li>
                 <li>
                   <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\videoTrack]]</dfn>,
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\Source]]</dfn>,
                     initialized to <code>null</code>.
                     <div class="note">
-                      <!-- TODO: Ensure surfaceSwitching closes the focus window. -->
-                      This internal slot tracks with which [=display surface=] the [=capture-session=] is associated.
-                      It is distinct from {{CaptureController/[[isBound]]}} in that {{CaptureController/[[isBound]]}}
+                      This internal slot tracks with which source the [=capture-session=] is associated.
+                      It is distinct from {{CaptureController/[[IsBound]]}} in that {{CaptureController/[[IsBound]]}}
                       is set even if {{MediaDevices/getDisplayMedia()}} rejects.
                     </div>
                   </p>
                 </li>
                 <li>
                   <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\initialFocusLost]]</dfn>,
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\InitialFocusLost]]</dfn>,
                     initialized to <code>false</code>.
                     <div class="note">
                       This internal slot ensures that calls to {{CaptureController/setFocusBehavior()}} fail
@@ -882,7 +881,7 @@
                 </li>
                 <li>
                   <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\focusWindowClosed]]</dfn>,
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\FocusWindowClosed]]</dfn>,
                     initialized to <code>false</code>.
                     <div class="note">
                       This internal slot tracks explicit closure of the window of opportunity, which happens when
@@ -909,19 +908,19 @@
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[isBound]]}} is <code>false</code>,
+                    If {{CaptureController/[[IsBound]]}} is <code>false</code>,
                     [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[videoTrack]]}} is <code>null</code>,
+                    If {{CaptureController/[[Source]]}} is <code>null</code>,
                     [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[videoTrack]]}}.{{MediaStreamTrack/getSettings()}}.{{displaySurface}}
+                    If {{CaptureController/[[Source]]}}.{{MediaStreamTrack/getSettings()}}.{{displaySurface}}
                     is neither {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
                     [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
                   </p>
@@ -929,20 +928,20 @@
                 <li>
                   <p>
                     <!-- TODO: Fix the ReadyState reference. -->
-                    If {{CaptureController/[[videoTrack]]}}'s
+                    If {{CaptureController/[[Source]]}}'s
                     <code>ReadyState</code> is NOT {{MediaStreamTrackState/"live"}},
                     [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[focusWindowClosed]]}} is <code>true</code>,
+                    If {{CaptureController/[[FocusWindowClosed]]}} is <code>true</code>,
                     [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[initialFocusLost]]}} is <code>true</code>,
+                    If {{CaptureController/[[InitialFocusLost]]}} is <code>true</code>,
                     abort these steps.
                   </p>
                 </li>
@@ -955,7 +954,7 @@
                 </li>
                 <li>
                   <p>
-                    Set {{CaptureController/[[focusWindowClosed]]}} to <code>true</code>.
+                    Set {{CaptureController/[[FocusWindowClosed]]}} to <code>true</code>.
                   </p>
                 </li>
                 <li>
@@ -966,7 +965,7 @@
                 </li>
                 <li>
                   <p>
-                    Focus the [=display surface=] referred to by {{CaptureController/[[videoTrack]]}}.
+                    Focus the [=display surface=] referred to by {{CaptureController/[[Source]]}}.
                   </p>
                 </li>
               </ol>
