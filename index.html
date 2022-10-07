@@ -853,61 +853,63 @@
               <dfn>constructor</dfn>
             </dt>
             <dd>
-              Run the following steps:
-              <ol>
-                <li>
-                  <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\IsBound]]</dfn>,
-                    initialized to <code>false</code>.
-                    <div class="note">
-                      This internal slot tracks whether [=this=] has been associated with a [=capture-session=].
-                    </div>
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\Source]]</dfn>,
-                    initialized to <code>null</code>.
-                    <div class="note">
-                      This internal slot tracks with which source the [=capture-session=] is associated.
-                      It is distinct from {{CaptureController/[[IsBound]]}}, in that {{CaptureController/[[IsBound]]}}
-                      is set even if {{MediaDevices/getDisplayMedia()}} rejects, whereas {{CaptureController/[[Source]]}}
+              Create a new object with the following internal slots:
+              <table class="simple">
+                <thead>
+                  <tr>
+                    <th>Internal Slot</th>
+                    <th>Initial value</th>
+                    <th>Description (<em>non-normative</em>)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><dfn>[[\IsBound]]</dfn></td>
+                    <td><code>false</code></td>
+                    <td>
+                      Tracks whether an application has attempted to associate [=this=]
+                      with a [=capture-session=], by providing it as a value to
+                      {{CaptureController/setFocusBehavior()}}.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\Source]]</dfn></td>
+                    <td><code>null</code></td>
+                    <td>
+                      Tracks with which source the [=capture-session=] is associated.
+                      It is distinct from {{CaptureController/[[IsBound]]}}, in that
+                      {{CaptureController/[[IsBound]]}} is set even if
+                      {{MediaDevices/getDisplayMedia()}} rejects, whereas {{CaptureController/[[Source]]}}
                       will only be set if {{MediaDevices/getDisplayMedia()}} succeeds.
-                    </div>
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\DisplaySurfaceType]]</dfn>,
-                    initialized to <code>null</code>.
-                    <div class="note">
-                      Once capture starts, this will be set to the type of the capture [=display surface=].
-                    </div>
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\InitialFocusLost]]</dfn>,
-                    initialized to <code>false</code>.
-                    <div class="note">
-                      This internal slot ensures that calls to {{CaptureController/setFocusBehavior()}} fail
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\DisplaySurfaceType]]</dfn></td>
+                    <td><code>null</code></td>
+                    <td>
+                      Once capture starts, this will be set to the type of the captured [=display surface=].
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\InitialFocusLost]]</dfn></td>
+                    <td><code>false</code></td>
+                    <td>
+                      Ensures that calls to {{CaptureController/setFocusBehavior()}} fail
                       without throwing if the user manually focuses another tab or native application.
-                    </div>
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\FocusWindowClosed]]</dfn>,
-                    initialized to <code>false</code>.
-                    <div class="note">
-                      This internal slot tracks explicit closure of the window of opportunity, which happens when
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\FocusWindowClosed]]</dfn></td>
+                    <td><code>false</code></td>
+                    <td>
+                      Tracks explicit closure of the window of opportunity, which happens when
                       {{CaptureController/setFocusBehavior()}} is called, or the task to close the window executes.
                       As applications can easily avoid such errors, {{CaptureController/setFocusBehavior()}} throws 
                       when this slot is set to <code>true</code>.
-                    </div>
-                  </p>
-                </li>
-              </ol>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </dd>
             <dt>
               <dfn>setFocusBehavior</dfn>
