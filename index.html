@@ -412,6 +412,12 @@
                       </li>
                       <li>
                         <p>
+                          Set <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}} to the 
+                          to <var>stream</var>'s video track's {{DisplayCaptureSurfaceType}}.
+                        </p>
+                      </li>
+                      <li>
+                        <p>
                           Schedule a task to set
                           <var>controller</var>.{{CaptureController/[[FocusWindowClosed]]}}
                           to <code>true</code>.
@@ -864,8 +870,18 @@
                     initialized to <code>null</code>.
                     <div class="note">
                       This internal slot tracks with which source the [=capture-session=] is associated.
-                      It is distinct from {{CaptureController/[[IsBound]]}} in that {{CaptureController/[[IsBound]]}}
-                      is set even if {{MediaDevices/getDisplayMedia()}} rejects.
+                      It is distinct from {{CaptureController/[[IsBound]]}}, in that {{CaptureController/[[IsBound]]}}
+                      is set even if {{MediaDevices/getDisplayMedia()}} rejects, whereas {{CaptureController/[[Source]]}}
+                      will only be set if {{MediaDevices/getDisplayMedia()}} succeeds.
+                    </div>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Create one internal slot: <dfn data-dfn-for="CaptureController">[[\DisplaySurfaceType]]</dfn>,
+                    initialized to <code>null</code>.
+                    <div class="note">
+                      Once capture starts, this will be set to the type of the capture [=display surface=].
                     </div>
                   </p>
                 </li>
@@ -920,16 +936,15 @@
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[Source]]}}.{{MediaStreamTrack/getSettings()}}.{{displaySurface}}
-                    is neither {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
+                    If the {{CaptureController/[[Source]]}} has been
+                    <a data-cite="GETUSERMEDIA#source-stopped">stopped</a>,
                     [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    <!-- TODO: Fix the ReadyState reference. -->
-                    If {{CaptureController/[[Source]]}}'s
-                    <code>ReadyState</code> is NOT {{MediaStreamTrackState/"live"}},
+                    If {{CaptureController/[[DisplaySurfaceType]]}} is neither
+                    {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
                     [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
                   </p>
                 </li>
