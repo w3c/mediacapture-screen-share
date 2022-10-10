@@ -236,14 +236,6 @@
                       Set <var>controller</var>.{{CaptureController/[[IsBound]]}} to <code>true</code>.
                     </p>
                   </li>
-                  <li>
-                    <p>
-                      If the <a>current settings object</a>'s [=relevant global object=]'s
-                      [=associated `Document`=] ever <a data-cite="!HTML/#focused">loses focus</a>,
-                      set <var>controller</var>.{{CaptureController/[[InitialFocusLost]]}}
-                      to <code>true</code>.
-                    </p>
-                  </li>
                 </ol>
               </li>
               <li>
@@ -423,6 +415,14 @@
                           to <code>true</code> when it executes.
                         </p>
                       </li>
+                      <li>
+                        <p>
+                          If the <a>current settings object</a>'s [=relevant global object=]'s
+                          [=associated `Document`=] ever <a data-cite="!HTML/#focused">loses focus</a>,
+                          set <var>controller</var>.{{CaptureController/[[InitialFocusLost]]}}
+                          to <code>true</code>.
+                        </p>
+                      </li>    
                     </ol>
                   </li>
                   <li>
