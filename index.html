@@ -208,16 +208,6 @@
             steps:</p>
             <ol>
               <li>
-                <p>If the [=relevant global object=] of [=this=] does not have
-          [=transient activation=], return a promise <a>rejected</a>
-                with a {{DOMException}} object whose {{DOMException/name}}
-                attribute has the value {{InvalidStateError}}.</p>
-              </li>
-              <li>
-                <p>Let <var>options</var> be the method's first
-                argument.</p>
-              </li>
-              <li>
                 <p>
                   Let <var>controller</var> be <var>options</var>.<code>controller</code> if present,
                   or <code>null</code> otherwise.
