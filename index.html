@@ -415,9 +415,8 @@
                       </li>
                       <li>
                         <p>
-                          Schedule a <dfn>task to close the window of opportunity to set focus behavior</dfn>,
-                          which will set <var>controller</var>.{{CaptureController/[[FocusWindowClosed]]}}
-                          to <code>true</code> when it executes.
+                          Queue a task to set <var>controller</var>.{{CaptureController/[[FocusOpportunityExpired]]}}
+                          to <code>true</code>.
                         </p>
                       </li>
                       <li>
