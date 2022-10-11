@@ -417,8 +417,7 @@
                       </li>
                       <li>
                         <p>
-                          Queue a task to set <var>controller</var>.{{CaptureController/[[FocusOpportunityExpired]]}}
-                          to <code>true</code>.
+                          Queue a task to run the [=finalize focus decision algorithm=].
                         </p>
                       </li>
                     </ol>
@@ -905,10 +904,17 @@
                     </td>
                   </tr>
                   <tr>
-                    <td><dfn>[[\FocusOpportunityExpired]]</dfn></td>
+                    <td><dfn>[[\FocusDecisionFinalized]]</dfn></td>
                     <td><code>false</code></td>
                     <td>
-                      Set to true once the opportunity to set focus behavior has passed.
+                      Set to true when the focus decision is finalized.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\FocusBehavior]]</dfn></td>
+                    <td><code>null</code></td>
+                    <td>
+                      The focus behavior desired by the application.
                     </td>
                   </tr>
                 </tbody>
@@ -929,74 +935,95 @@
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[IsBound]]}} is <code>false</code>,
-                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
-                  </p>
-                </li>
-                <li>
-                  <p>
                     If {{CaptureController/[[Source]]}} is <code>null</code>,
-                    [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
+                    set {{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>
+                    and abort these steps.
                   </p>
                 </li>
                 <li>
                   <p>
                     If {{CaptureController/[[Source]]}} has been
                     <a data-cite="GETUSERMEDIA#source-stopped">stopped</a>,
-                    [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
+                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
                     If {{CaptureController/[[DisplaySurfaceType]]}} is neither
                     {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
-                    [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
+                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[FocusOpportunityExpired]]}} is <code>true</code>,
-                    [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
+                    If {{CaptureController/[[FocusDecisionFinalized]]}} is <code>true</code>,
+                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[InitialFocusLost]]}} is <code>true</code>,
-                    abort these steps.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    The user agent SHOULD abort these steps if too much time has elapsed since
-                    the [=capture-session=] started. The timespan is left up to the user agent,
+                    If too much time has elapsed since the [=capture-session=] started,
+                    the user agent SHOULD set {{CaptureController/[[FocusDecisionFinalized]]}}
+                    to <code>true</code>. The timespan is left up to the user agent,
                     but it is recommended that a value of one second be used.
                   </p>
                 </li>
                 <li>
                   <p>
-                    Set {{CaptureController/[[FocusOpportunityExpired]]}} to <code>true</code>.
+                    Run the [=finalize focus decision algorithm=].
                   </p>
-                </li>
-                <li>
-                  <p>
-                    If <var>focusBehavior</var> is NOT {{CaptureStartFocusBehavior/"focus-captured-surface"}},
-                    abort these steps.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    Run the following steps in parallel:
-                  </p>
-                  <ol>
-                    <li>
-                      <p>
-                        Focus the [=display surface=] referred to by {{CaptureController/[[Source]]}}.
-                      </p>
-                    </li>
-                  </ol>
                 </li>
               </ol>
             </dd>
+            <p>
+              The <dfn>finalize focus decision algorithm</dfn> consists of running
+              the following steps:
+            </p>
+            <ol>
+              <li>
+                <p>
+                  If {{CaptureController/[[FocusDecisionFinalized]]}} is <code>true</code>,
+                  abort these steps.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Set {{CaptureController/[[FocusDecisionFinalized]]}} to <code>true</code>.
+                </p>
+              </li>
+              <li>
+                <p>
+                  If {{CaptureController/[[InitialFocusLost]]}} is <code>true</code>,
+                  abort these steps.
+                </p>
+              </li>
+              <li>
+                <p>
+                  If {{CaptureController/[[FocusBehavior]]}} is NOT
+                  {{CaptureStartFocusBehavior/"focus-captured-surface"}},
+                  abort these steps.
+                </p>
+              </li>
+              <li>
+                <p>
+                  If {{CaptureController/[[DisplaySurfaceType]]}} is neither
+                  {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
+                  abort these steps.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Run the following steps in parallel:
+                </p>
+              </li>
+              <ol>
+                <li>
+                  <p>
+                    Focus the [=display surface=] referred to by {{CaptureController/[[Source]]}}.
+                  </p>
+                </li>
+              </ol>
+            </ol>  
           </section>
         <section>
           <h2><dfn>SelfCapturePreferenceEnum</dfn></h2>
