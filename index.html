@@ -234,10 +234,12 @@
                 </ol>
               </li>
               <li>
-                <p>If the [=relevant global object=] of [=this=] does not have
-          [=transient activation=], return a promise <a>rejected</a>
-                with a {{DOMException}} object whose {{DOMException/name}}
-                attribute has the value {{InvalidStateError}}.</p>
+                <p>
+                  If the [=relevant global object=] of [=this=] does not have
+                  [=transient activation=], return a promise <a>rejected</a>
+                  with a {{DOMException}} object whose {{DOMException/name}}
+                  attribute has the value {{InvalidStateError}}.
+                </p>
               </li>
               <li>
                 <p>Let <var>options</var> be the method's first
@@ -446,7 +448,7 @@
             </p>
             <ol>
               <li>
-                If {{CaptureController/[[Source]]}} is <code>null</code>, abort these steps.
+                If {{CaptureController/[[IsBound]]}} is <code>false</code>, abort these steps.
               </li>
               <li>
                 Set {{CaptureController/[[InitialFocusLost]]}} to <code>true</code>.
