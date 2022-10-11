@@ -872,20 +872,15 @@
                     <td><dfn>[[\IsBound]]</dfn></td>
                     <td><code>false</code></td>
                     <td>
-                      Tracks whether an application has attempted to associate [=this=]
-                      with a [=capture-session=], by providing it as a value to
-                      {{CaptureController/setFocusBehavior()}}.
+                      Whether an application has attempted to associate [=this=]
+                      with a [=capture-session=].
                     </td>
                   </tr>
                   <tr>
                     <td><dfn>[[\Source]]</dfn></td>
                     <td><code>null</code></td>
                     <td>
-                      Tracks with which source the [=capture-session=] is associated.
-                      It is distinct from {{CaptureController/[[IsBound]]}}, in that
-                      {{CaptureController/[[IsBound]]}} is set even if
-                      {{MediaDevices/getDisplayMedia()}} rejects, whereas {{CaptureController/[[Source]]}}
-                      will only be set if {{MediaDevices/getDisplayMedia()}} succeeds.
+                      The source of the associated [=capture-session=].
                     </td>
                   </tr>
                   <tr>
