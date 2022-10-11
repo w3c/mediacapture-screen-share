@@ -936,20 +936,20 @@
                   <p>
                     If {{CaptureController/[[Source]]}} has been
                     <a data-cite="GETUSERMEDIA#source-stopped">stopped</a>,
-                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                    [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
                     If {{CaptureController/[[DisplaySurfaceType]]}} is neither
                     {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
-                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                    [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
                     If {{CaptureController/[[FocusWindowClosed]]}} is <code>true</code>,
-                    [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+                    [=exception/throw=] a "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
