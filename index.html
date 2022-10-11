@@ -419,14 +419,6 @@
                           to <code>true</code>.
                         </p>
                       </li>
-                      <li>
-                        <p>
-                          If the <a>current settings object</a>'s [=relevant global object=]'s
-                          [=associated `Document`=] ever <a data-cite="!HTML/#focused">loses focus</a>,
-                          set <var>controller</var>.{{CaptureController/[[InitialFocusLost]]}}
-                          to <code>true</code>.
-                        </p>
-                      </li>    
                     </ol>
                   </li>
                   <li>
@@ -445,6 +437,19 @@
               </li>
               <li>
                 <p>Return <var>p</var>.</p>
+              </li>
+            </ol>
+            <p>
+              When the top-level document loses focus, run the following steps on all
+              {{CaptureController}} objects in that document and in documents of its nested
+              [=browsing contexts=]:
+            </p>
+            <ol>
+              <li>
+                If {{CaptureController/[[Source]]}} is <code>null</code>, abort these steps.
+              </li>
+              <li>
+                Set {{CaptureController/[[InitialFocusLost]]}} to <code>true</code>.
               </li>
             </ol>
             <p>
