@@ -975,67 +975,67 @@
                 </li>
               </ol>
             </dd>
-            <p>
-              The <dfn>finalize focus decision algorithm</dfn>, given a
-              <var>controller</var>, consists of running
-              the following steps:
-            </p>
+          </dl>
+          <p>
+            The <dfn>finalize focus decision algorithm</dfn>, given a
+            <var>controller</var>, consists of running
+            the following steps:
+          </p>
+          <ol>
+            <li>
+              <p>
+                If <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
+                is <code>true</code>, abort these steps.
+              </p>
+            </li>
+            <li>
+              <p>
+                Set <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
+                to <code>true</code>.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var>controller</var>.{{CaptureController/[[FocusChangeDisabled]]}}
+                is <code>true</code>, abort these steps.
+              </p>
+            </li>
+            <li>
+              <p>
+                If too much time has elapsed since the [=capture-session=] started,
+                the user agent SHOULD set {{CaptureController/[[FocusDecisionFinalized]]}}
+                to <code>true</code>. The timespan is left up to the user agent,
+                but it is recommended that a value of one second be used.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}} is neither
+                {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
+                abort these steps.
+              </p>
+            </li>
+            <li>
+              <p>
+                Run the following step  [=in parallel=]:
+              </p>
+            </li>
             <ol>
               <li>
                 <p>
-                  If <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
-                  is <code>true</code>, abort these steps.
+                  If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                  is {{CaptureStartFocusBehavior/"no-focus-change"}},
+                  focus the capturing document.
                 </p>
-              </li>
-              <li>
                 <p>
-                  Set <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
-                  to <code>true</code>.
+                  If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                  is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
+                  focus the [=display surface=] referred to by
+                  <var>controller</var>.{{CaptureController/[[Source]]}}.
                 </p>
               </li>
-              <li>
-                <p>
-                  If <var>controller</var>.{{CaptureController/[[FocusChangeDisabled]]}}
-                  is <code>true</code>, abort these steps.
-                </p>
-              </li>
-              <li>
-                <p>
-                  If too much time has elapsed since the [=capture-session=] started,
-                  the user agent SHOULD set {{CaptureController/[[FocusDecisionFinalized]]}}
-                  to <code>true</code>. The timespan is left up to the user agent,
-                  but it is recommended that a value of one second be used.
-                </p>
-              </li>
-              <li>
-                <p>
-                  If <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}} is neither
-                  {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
-                  abort these steps.
-                </p>
-              </li>
-              <li>
-                <p>
-                  Run the following step  [=in parallel=]:
-                </p>
-              </li>
-              <ol>
-                <li>
-                  <p>
-                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
-                    is {{CaptureStartFocusBehavior/"no-focus-change"}},
-                    focus the capturing document.
-                  </p>
-                  <p>
-                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
-                    is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
-                    focus the [=display surface=] referred to by
-                    <var>controller</var>.{{CaptureController/[[Source]]}}.
-                  </p>
-                </li>
-              </ol>
-            </ol>  
-          </dl>
+            </ol>
+          </ol>  
         </section>
         <section>
           <h2><dfn>SelfCapturePreferenceEnum</dfn></h2>
