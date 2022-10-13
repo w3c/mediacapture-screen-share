@@ -981,39 +981,40 @@
               </ol>
             </dd>
             <p>
-              The <dfn>finalize focus decision algorithm</dfn> consists of running
+              The <dfn>finalize focus decision algorithm</dfn>, given a
+              <var>controller</var>, consists of running
               the following steps:
             </p>
             <ol>
               <li>
                 <p>
-                  If {{CaptureController/[[FocusDecisionFinalized]]}} is <code>true</code>,
-                  abort these steps.
+                  If <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
+                  is <code>true</code>, abort these steps.
                 </p>
               </li>
               <li>
                 <p>
-                  Set {{CaptureController/[[FocusDecisionFinalized]]}} to <code>true</code>.
+                  Set <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
+                  to <code>true</code>.
                 </p>
               </li>
               <li>
                 <p>
-                  If {{CaptureController/[[InitialFocusLost]]}} is <code>true</code>,
-                  abort these steps.
+                  If <var>controller</var>.{{CaptureController/[[InitialFocusLost]]}}
+                  is <code>true</code>, abort these steps.
                 </p>
               </li>
               <li>
                 <p>
-                  If {{CaptureController/[[DisplaySurfaceType]]}} is neither
+                  If <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}} is neither
                   {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
                   abort these steps.
                 </p>
               </li>
               <li>
                 <p>
-                  If {{CaptureController/[[FocusBehavior]]}} is NOT
-                  {{CaptureStartFocusBehavior/"focus-captured-surface"}},
-                  abort these steps.
+                  If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}} is NOT
+                  {{CaptureStartFocusBehavior/"focus-captured-surface"}}, abort these steps.
                 </p>
               </li>
               <li>
@@ -1024,7 +1025,8 @@
               <ol>
                 <li>
                   <p>
-                    Focus the [=display surface=] referred to by {{CaptureController/[[Source]]}}.
+                    Focus the [=display surface=] referred to by
+                    <var>controller</var>.{{CaptureController/[[Source]]}}.
                   </p>
                 </li>
               </ol>
