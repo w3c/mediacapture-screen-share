@@ -967,14 +967,6 @@
                 </li>
                 <li>
                   <p>
-                    If too much time has elapsed since the [=capture-session=] started,
-                    the user agent SHOULD set {{CaptureController/[[FocusDecisionFinalized]]}}
-                    to <code>true</code>. The timespan is left up to the user agent,
-                    but it is recommended that a value of one second be used.
-                  </p>
-                </li>
-                <li>
-                  <p>
                     Run the [=finalize focus decision algorithm=] on [=this=].
                   </p>
                 </li>
@@ -1002,6 +994,14 @@
                 <p>
                   If <var>controller</var>.{{CaptureController/[[InitialFocusLost]]}}
                   is <code>true</code>, abort these steps.
+                </p>
+              </li>
+              <li>
+                <p>
+                  If too much time has elapsed since the [=capture-session=] started,
+                  the user agent SHOULD set {{CaptureController/[[FocusDecisionFinalized]]}}
+                  to <code>true</code>. The timespan is left up to the user agent,
+                  but it is recommended that a value of one second be used.
                 </p>
               </li>
               <li>
