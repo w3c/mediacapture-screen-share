@@ -202,16 +202,6 @@
             steps:</p>
             <ol>
               <li>
-                <p>If the [=relevant global object=] of [=this=] does not have
-          [=transient activation=], return a promise <a>rejected</a>
-                with a {{DOMException}} object whose {{DOMException/name}}
-                attribute has the value {{InvalidStateError}}.</p>
-              </li>
-              <li>
-                <p>Let <var>options</var> be the method's first
-                argument.</p>
-              </li>
-              <li>
                 <p>
                   Let <var>controller</var> be <var>options</var>.<code>controller</code> if present,
                   or <code>null</code> otherwise.
@@ -219,19 +209,35 @@
               </li>
               <li>
                 <p>
-                  If controller is not <code>null</code>, run the following steps:
+                  If <var>controller</var> is not <code>null</code>, run the following steps:
                 </p>
-                  <ol>
-                    <li>
-                      If <var>controller</var>.{{CaptureController/[[isBound]]}}
+                <ol>
+                  <li>
+                    <p>
+                      If <var>controller</var>.{{CaptureController/[[IsBound]]}}
                       is <code>true</code>, return a promise [=reject|rejected=] with
                       a {{DOMException}} object whose {{DOMException/name}} attribute has
                       the value {{InvalidStateError}}.
-                    </li>
-                    <li>
-                      Set <var>controller</var>.{{CaptureController/[[isBound]]}} to <code>true</code>.
-                    </li>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      Set <var>controller</var>.{{CaptureController/[[IsBound]]}} to <code>true</code>.
+                    </p>
+                  </li>
                 </ol>
+              </li>
+              <li>
+                <p>
+                  If the [=relevant global object=] of [=this=] does not have
+                  [=transient activation=], return a promise <a>rejected</a>
+                  with a {{DOMException}} object whose {{DOMException/name}}
+                  attribute has the value {{InvalidStateError}}.
+                </p>
+              </li>
+              <li>
+                <p>Let <var>options</var> be the method's first
+                argument.</p>
               </li>
               <li>
                 <p>Let <var>constraints</var> be
@@ -293,7 +299,7 @@
                 <p>Let <var>p</var> be a new promise.</p>
               </li>
               <li>
-                <p>Run the following steps in parallel:</p>
+                <p>Run the following steps  [=in parallel=]:</p>
                 <ol>
                   <li>
                     <p>For each media type <var>T</var> in
@@ -383,9 +389,39 @@
                     <var>message</var>)</code>.</p>
                   </li>
                   <li>
-                    <p><a>Resolve</a> <var>p</var> with <var>stream</var> and
-                    abort these steps. This invocation of {{MediaDevices/getDisplayMedia()}}
-                    is now considered to have produced a new <dfn>capture-session</dfn></p>
+                    <p>
+                      This invocation of {{MediaDevices/getDisplayMedia()}} is now
+                      considered to have produced a new <dfn>capture-session</dfn>.
+                    </p>
+                  </li>
+                  <li>
+                    If <var>controller</var> is not <code>null</code>, run the following steps:
+                    <ol>
+                      <li>
+                        <p>
+                          Set <var>controller</var>.{{CaptureController/[[Source]]}}
+                          to <var>stream</var>'s video track's <a data-cite="GETUSERMEDIA#dfn-source-0">[[\Source]]</a>.
+                        </p>
+                      </li>
+                      <li>
+                        <p>
+                          Set <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}} to the 
+                          to <var>stream</var>'s video track's {{DisplayCaptureSurfaceType}}.
+                        </p>
+                      </li>
+                      <li>
+                        <p>
+                          Queue a task to run the [=finalize focus decision algorithm=]
+                          on <var>controller</var>.
+                        </p>
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
+                    <p>
+                      <a>Resolve</a> <var>p</var> with <var>stream</var> and
+                      abort these steps. 
+                    </p>
                   </li>
                   <li>
                     <p><em>Permission Failure</em>: [=Reject=]
@@ -397,6 +433,23 @@
               </li>
               <li>
                 <p>Return <var>p</var>.</p>
+              </li>
+            </ol>
+            <p>
+              When the top-level document loses focus, run the following steps on all
+              {{CaptureController}} objects in that document and in documents of its nested
+              [=browsing contexts=]:
+            </p>
+            <ol>
+              <li>
+                <p>
+                  If {{CaptureController/[[Source]]}} is <code>undefined</code>, abort these steps.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Set {{CaptureController/[[FocusChangeDisabled]]}} to <code>true</code>.
+                </p>
               </li>
             </ol>
             <p>
@@ -744,6 +797,46 @@
           </div>
         </section>
         <section>
+          <h2><dfn>CaptureStartFocusBehavior</dfn></h2>
+          <p>
+            Describes whether an application invoking {{CaptureController/setFocusBehavior()}}
+            would like the user agent to focus the [=display surface=] associated with
+            that {{CaptureController}}'s [=capture-session=].
+          </p>
+          <pre class="idl">
+            enum CaptureStartFocusBehavior {
+              "focus-captured-surface",
+              "no-focus-change"
+            };    
+          </pre>
+          <table  data-dfn-for="CaptureStartFocusBehavior" class="simple">
+            <tbody>
+              <tr>
+                <th colspan="2">
+                  Enumeration description
+                </th>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap">
+                  <dfn id="idl-def-CaptureStartFocusBehavior.focus-captured-surface">focus-captured-surface</dfn>
+                </td>
+                <td>
+                  The application prefers that the [=display surface=] associated with
+                  this {{CaptureController}}'s [=capture-session=] be focused.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-CaptureStartFocusBehavior.no-focus-change">no-focus-change</dfn>
+                </td>
+                <td>
+                  The application prefers that the user agent not change focus.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
           <h2><dfn>CaptureController</dfn></h2>
           <p>
             A {{CaptureController}} object may be associated with a [=capture-session=].
@@ -761,7 +854,7 @@
             [Exposed=Window, SecureContext]
             interface CaptureController {
               constructor();
-              // TODO: Add setFocusBehavior() in a separate PR.
+              undefined setFocusBehavior(CaptureStartFocusBehavior focusBehavior);
             };
           </pre>
           <dl data-link-for="CaptureController" data-dfn-for="CaptureController" class="methods">
@@ -769,12 +862,183 @@
               <dfn>constructor</dfn>
             </dt>
             <dd>
+              Create a new {{CaptureController}} object with the following internal slots:
+              <table class="simple">
+                <thead>
+                  <tr>
+                    <th>Internal Slot</th>
+                    <th>Initial value</th>
+                    <th>Description (<em>non-normative</em>)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><dfn>[[\IsBound]]</dfn></td>
+                    <td><code>false</code></td>
+                    <td>
+                      Whether an application has attempted to associate [=this=]
+                      with a [=capture-session=].
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\Source]]</dfn></td>
+                    <td><code>null</code></td>
+                    <td>
+                      The source of the associated [=capture-session=].
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\DisplaySurfaceType]]</dfn></td>
+                    <td><code>null</code></td>
+                    <td>
+                      Once capture starts, this will be set to the type of the captured [=display surface=].
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\FocusChangeDisabled]]</dfn></td>
+                    <td><code>false</code></td>
+                    <td>
+                      Whether focus-change has been disabled by an external event
+                      or a user agent consideration.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\FocusDecisionFinalized]]</dfn></td>
+                    <td><code>false</code></td>
+                    <td>
+                      Set to true when the focus decision is finalized.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><dfn>[[\FocusBehavior]]</dfn></td>
+                    <td><code>null</code></td>
+                    <td>
+                      The focus behavior desired by the application.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               <p>
-                Create one internal slot: <dfn data-dfn-for="CaptureController">[[\isBound]]</dfn>,
-                initialized to <code>false</code>.
+                The user agent MAY set {{CaptureController/[[FocusChangeDisabled]]}}
+                to <code>true</code> at any moment based on its own logic.
               </p>
             </dd>
-          </section>
+            <dt>
+              <dfn>setFocusBehavior</dfn>
+            </dt>
+            <dd>
+              <p>
+                Run the following steps:
+              </p>
+              <ol>
+                <li>
+                  <p>
+                    Let <var>focusBehavior</var> be the method's first argument.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If {{CaptureController/[[Source]]}} is <code>null</code>,
+                    set {{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>
+                    and abort these steps.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If {{CaptureController/[[Source]]}} has been
+                    <a data-cite="GETUSERMEDIA#source-stopped">stopped</a>,
+                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If {{CaptureController/[[DisplaySurfaceType]]}} is neither
+                    {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
+                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If {{CaptureController/[[FocusDecisionFinalized]]}} is <code>true</code>,
+                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Set {{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Run the [=finalize focus decision algorithm=] on [=this=].
+                  </p>
+                </li>
+              </ol>
+            </dd>
+          </dl>
+          <p>
+            The <dfn>finalize focus decision algorithm</dfn>, given a
+            <var>controller</var>, consists of running
+            the following steps:
+          </p>
+          <ol>
+            <li>
+              <p>
+                If <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
+                is <code>true</code>, abort these steps.
+              </p>
+            </li>
+            <li>
+              <p>
+                Set <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
+                to <code>true</code>.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var>controller</var>.{{CaptureController/[[FocusChangeDisabled]]}}
+                is <code>true</code>, abort these steps.
+              </p>
+            </li>
+            <li>
+              <p>
+                If too much time has elapsed since the [=capture-session=] started,
+                the user agent SHOULD set {{CaptureController/[[FocusDecisionFinalized]]}}
+                to <code>true</code>. The timespan is left up to the user agent,
+                but it is recommended that a value of one second be used.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}} is neither
+                {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
+                abort these steps.
+              </p>
+            </li>
+            <li>
+              <p>
+                Run the following step  [=in parallel=]:
+              </p>
+            </li>
+            <ol>
+              <li>
+                <p>
+                  If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                  is {{CaptureStartFocusBehavior/"no-focus-change"}},
+                  focus the [=display surface=] representing the capturing document.
+                </p>
+              </li>
+              <li>
+                <p>
+                  If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                  is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
+                  focus the [=display surface=] referred to by
+                  <var>controller</var>.{{CaptureController/[[Source]]}}.
+                </p>
+              </li>
+            </ol>
+          </ol>
+        </section>
         <section>
           <h2><dfn>SelfCapturePreferenceEnum</dfn></h2>
           <p>
