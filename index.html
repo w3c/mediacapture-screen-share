@@ -454,7 +454,7 @@
               </li>
               <li>
                 <p>
-                  Set {{CaptureController/[[InitialFocusLost]]}} to <code>true</code>.
+                  Set {{CaptureController/[[FocusChangeDisabled]]}} to <code>true</code>.
                 </p>
               </li>
             </ol>
@@ -901,11 +901,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <td><dfn>[[\InitialFocusLost]]</dfn></td>
+                    <td><dfn>[[\FocusChangeDisabled]]</dfn></td>
                     <td><code>false</code></td>
                     <td>
-                      Whether focus was lost after {{MediaDevices/getDisplayMedia()}}
-                      was called.
+                      Whether focus-change has been disabled by an external event
+                      or a user agent consideration.
                     </td>
                   </tr>
                   <tr>
@@ -924,6 +924,10 @@
                   </tr>
                 </tbody>
               </table>
+              <p>
+                The user agent MAY set {{CaptureController/[[FocusChangeDisabled]]}}
+                to <code>true</code> at any moment based on its own logic.
+              </p>
             </dd>
             <dt>
               <dfn>setFocusBehavior</dfn>
@@ -997,7 +1001,7 @@
               </li>
               <li>
                 <p>
-                  If <var>controller</var>.{{CaptureController/[[InitialFocusLost]]}}
+                  If <var>controller</var>.{{CaptureController/[[FocusChangeDisabled]]}}
                   is <code>true</code>, abort these steps.
                 </p>
               </li>
