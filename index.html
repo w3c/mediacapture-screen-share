@@ -1016,19 +1016,20 @@
               </li>
               <li>
                 <p>
-                  If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}} is NOT
-                  {{CaptureStartFocusBehavior/"focus-captured-surface"}}, abort these steps.
-                </p>
-              </li>
-              <li>
-                <p>
                   Run the following step  [=in parallel=]:
                 </p>
               </li>
               <ol>
                 <li>
                   <p>
-                    Focus the [=display surface=] referred to by
+                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                    is {{CaptureStartFocusBehavior/"no-focus-change"}},
+                    focus the capturing document.
+                  </p>
+                  <p>
+                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                    is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
+                    focus the [=display surface=] referred to by
                     <var>controller</var>.{{CaptureController/[[Source]]}}.
                   </p>
                 </li>
