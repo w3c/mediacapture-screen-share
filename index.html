@@ -1019,24 +1019,24 @@
               <p>
                 Run the following step  [=in parallel=]:
               </p>
+              <ol>
+                <li>
+                  <p>
+                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                    is {{CaptureStartFocusBehavior/"no-focus-change"}},
+                    focus the [=display surface=] representing the capturing document.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                    is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
+                    focus the [=display surface=] referred to by
+                    <var>controller</var>.{{CaptureController/[[Source]]}}.
+                  </p>
+                </li>
+              </ol>
             </li>
-            <ol>
-              <li>
-                <p>
-                  If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
-                  is {{CaptureStartFocusBehavior/"no-focus-change"}},
-                  focus the [=display surface=] representing the capturing document.
-                </p>
-              </li>
-              <li>
-                <p>
-                  If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
-                  is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
-                  focus the [=display surface=] referred to by
-                  <var>controller</var>.{{CaptureController/[[Source]]}}.
-                </p>
-              </li>
-            </ol>
           </ol>
         </section>
         <section>
