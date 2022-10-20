@@ -1,3 +1,8 @@
+# Screen Capture 
+
+[![WPT Chrome](https://wpt-badge.glitch.me/?product=chrome&prefix=/screen-capture/)](https://wpt.fyi/results/screen-capture)
+[![WPT Firefox](https://wpt-badge.glitch.me/?product=firefox&prefix=/screen-capture/)](https://wpt.fyi/results/screen-capture)
+[![WPT Safari](https://wpt-badge.glitch.me/?product=safari&prefix=/screen-capture/)](https://wpt.fyi/results/screen-capture)
 
 This work is currently licensed under a Creative Commons Attribution-NoDerivatives 4.0
 International (CC BY-ND 4.0) License. See
