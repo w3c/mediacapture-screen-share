@@ -701,9 +701,9 @@
               <td><dfn class=export>suppressLocalAudioPlayback</dfn></td>
               <td>{{ConstrainBoolean}}</td>
               <td>
-                <p>As a setting, this value indicates whether or not the user
-                agent is applying <a>local audio playback suppression</a> to
-                the source.</p>
+                <p>As a setting, this value indicates whether or not the application
+                instructed the user agent to apply <a>local audio playback suppression</a>
+                to the source.</p>
                 <p>As a constraint, this value is only meaningful if the user
                 selects capturing a [= display surface/browser=] [=display surface=]. In that
                 case, a value of <code>true</code> indicates that the user
@@ -1385,6 +1385,7 @@ dictionary DisplayMediaStreamOptions {
   boolean logicalSurface;
   DOMString cursor;
   boolean restrictOwnAudio;
+  boolean suppressLocalAudioPlayback;
 };</pre>
           <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
           "dictionary-members">
@@ -1423,6 +1424,15 @@ dictionary DisplayMediaStreamOptions {
               <p>
                 Indicates whether the <a href="#dfn-restrictownaudio">restrictOwnAudio</a>
                 constraint is applied (<code>true</code>) or not (<code>false</code>).
+              </p>
+            </dd>
+            <dt>
+               <dfn>suppressLocalAudioPlayback</dfn> of type {{boolean}}
+            </dt>
+            <dd>
+              <p>
+                Indicates whether or not the application instructed the user agent to apply
+                [=local audio playback suppression=] to the source.
               </p>
             </dd>
           </dl>
