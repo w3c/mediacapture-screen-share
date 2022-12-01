@@ -37,12 +37,15 @@ var respecConfig = {
   editors:  [
     // { name: "Your Name", url: "http://example.org/",
     // company: "Your Company", companyURL: "http://example.com/" },
+    { name: "Jan-Ivar Bruaroey", company: "Mozilla", w3cid: 79152},
+    { name: "Elad Alon", company: "Google", w3cid: 118124}
+  ],
+  
+  formerEditors: [
     { name: "Martin Thomson", company: "Mozilla", w3cid: 68503 },
     { name: "Keith Griffin", company: "Cisco", w3cid: 65606 },
     { name: "Suhas Nandakumar", company: "Cisco", w3cid: 48827},
     { name: "Henrik Boström", company: "Google", w3cid: 96936},
-    { name: "Jan-Ivar Bruaroey", company: "Mozilla", w3cid: 79152},
-    { name: "Elad Alon", company: "Google", w3cid: 118124}
   ],
 
   // authors, add as many as you like.
