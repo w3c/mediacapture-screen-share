@@ -557,16 +557,16 @@
           <tbody>
             <tr id="def-constraint-width">
               <td><dfn class=export>width</dfn></td>
-              <td>{{ConstrainULong}}</td>
-              <td>The width or width range, in pixels. As a capability, max MUST
+              <td>{{unsigned long}}</td>
+              <td>The width, in pixels. As a capability, max MUST
               reflect the <a>display surface</a>'s width, and min MUST reflect
               the width of the smallest aspect-preserving representation
               available through downscaling by the user agent.</td>
             </tr>
             <tr id="def-constraint-height">
               <td><dfn class=export>height</dfn></td>
-              <td>{{ConstrainULong}}</td>
-              <td>The height or height range, in pixels. As a capability, max
+              <td>{{unsigned long}}</td>
+              <td>The height, in pixels. As a capability, max
               MUST reflect the <a>display surface</a>'s height, and min MUST
               reflect the height of the smallest aspect-preserving
               representation available through downscaling by the user agent.
@@ -574,15 +574,15 @@
             </tr>
             <tr id="def-constraint-frameRate">
               <td><dfn class=export>frameRate</dfn></td>
-              <td>{{ConstrainDouble}}</td>
-              <td>The frame rate (frames per second) or frame rate range. As a
+              <td>{{double}}</td>
+              <td>The frame rate (frames per second). As a
               capability, max MUST reflect the <a>display surface</a>'s frame
               rate, and min MUST reflect the lowest frame rate available through
               frame decimation by the user agent.</td>
             </tr>
             <tr id="def-constraint-aspect">
               <td><dfn class=export>aspectRatio</dfn></td>
-              <td>{{ConstrainDouble}}</td>
+              <td>{{double}}</td>
               <td>The exact aspect ratio (width in pixels divided by height in
               pixels, represented as a double rounded to the tenth decimal
               place) or aspect ratio range. As a setting, represents
@@ -592,9 +592,9 @@
             </tr>
             <tr id="def-constraint-resizeMode">
               <td><dfn class=export>resizeMode</dfn></td>
-              <td>{{ConstrainDOMString}}</td>
+              <td>{{DOMString}}</td>
               <td>
-                This string (or each string, when a list) should be one of the members of
+                This string is one of the members of
                 {{VideoResizeModeEnum}}.
                 As a setting, {{VideoResizeModeEnum/"none"}} means the {{MediaStreamTrack}}
                 contains all bits needed to render the display in full detail,
@@ -611,10 +611,10 @@
             </tr>
             <tr id="def-constraint-displaySurface">
               <td><dfn class=export>displaySurface</dfn></td>
-              <td>{{ConstrainDOMString}}</td>
+              <td>{{DOMString}}</td>
               <td>
                 <p>
-                  This string (or each string, when a list) should be one of the
+                  This string is one of the
                   members of {{DisplayCaptureSurfaceType}}.
                 </p>
                 <p>
@@ -638,7 +638,7 @@
             </tr>
             <tr id="def-constraint-logicalSurface">
               <td><dfn class=export>logicalSurface</dfn></td>
-              <td>{{ConstrainBoolean}}</td>
+              <td>{{boolean}}</td>
               <td>
                 As a setting, a value of <code>true</code> indicates capture of
                 a [=logical display surface=], whereas a value of
@@ -650,9 +650,9 @@
             </tr>
             <tr id="def-constraint-cursor">
               <td><dfn class=export>cursor</dfn></td>
-              <td>{{ConstrainDOMString}}</td>
+              <td>{{DOMString}}</td>
               <td>
-                This string (or each string, when a list) should be one of the
+                This string is one of the
                 members of {{CursorCaptureConstraint}}. As a
                 setting, indicates if and when the cursor is included in the
                 captured [=display surface=]. As a capability, the user
@@ -678,7 +678,7 @@
           <tbody>
             <tr id="def-constraint-restrictOwnAudio">
               <td><dfn class=export>restrictOwnAudio</dfn></td>
-              <td>{{ConstrainBoolean}}</td>
+              <td>{{boolean}}</td>
               <td>
                 <p>As a setting, this value indicates whether or not the user
                 agent is applying <a>own audio restriction</a> to the
@@ -699,7 +699,7 @@
             </tr>
             <tr id="def-constraint-suppressLocalAudioPlayback">
               <td><dfn class=export>suppressLocalAudioPlayback</dfn></td>
-              <td>{{ConstrainBoolean}}</td>
+              <td>{{boolean}}</td>
               <td>
                 <p>As a setting, this value indicates whether or not the application
                 instructed the user agent to apply <a>local audio playback suppression</a>
