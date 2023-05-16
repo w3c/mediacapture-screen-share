@@ -852,7 +852,7 @@
           </p>
           <pre class="idl">
             [Exposed=Window, SecureContext]
-            interface CaptureController {
+            interface CaptureController : EventTarget {
               constructor();
               undefined setFocusBehavior(CaptureStartFocusBehavior focusBehavior);
             };
