@@ -857,6 +857,16 @@
               undefined setFocusBehavior(CaptureStartFocusBehavior focusBehavior);
             };
           </pre>
+          <div class="note">
+            <p>
+              {{CaptureController}} does not yet not define any event handlers.
+              As such, it is not required to inherit from {{EventTarget}}.
+              This inheritance was added for the benefit of other specifications
+              that extend {{CaptureController}} with event handler attributes.
+              This inheritance may be removed if these other specifications do
+              not mature successfully.
+            </p>
+          </div>
           <dl data-link-for="CaptureController" data-dfn-for="CaptureController" class="methods">
             <dt>
               <dfn>constructor</dfn>
