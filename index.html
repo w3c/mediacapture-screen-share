@@ -805,6 +805,7 @@
           </p>
           <pre class="idl">
             enum CaptureStartFocusBehavior {
+              "focus-capturing-application",
               "focus-captured-surface",
               "no-focus-change"
             };    
@@ -815,6 +816,14 @@
                 <th colspan="2">
                   Enumeration description
                 </th>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap">
+                  <dfn id="idl-def-CaptureStartFocusBehavior.focus-capturing-application">focus-capturing-application</dfn>
+                </td>
+                <td>
+                  The application prefers to focused itself.
+                </td>
               </tr>
               <tr>
                 <td style="white-space:nowrap">
@@ -830,7 +839,9 @@
                   <dfn id="idl-def-CaptureStartFocusBehavior.no-focus-change">no-focus-change</dfn>
                 </td>
                 <td>
-                  The application prefers that the user agent not change focus.
+                  The application prefers that the user agent not change focus, leaving focus
+                  with whichever surface last had focus following the user's interaction with
+                  the user agent and/or operating system.
                 </td>
               </tr>
             </tbody>
