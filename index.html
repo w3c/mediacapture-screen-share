@@ -805,6 +805,7 @@
           </p>
           <pre class="idl">
             enum CaptureStartFocusBehavior {
+              "focus-capturing-application",
               "focus-captured-surface",
               "no-focus-change"
             };    
@@ -815,6 +816,14 @@
                 <th colspan="2">
                   Enumeration description
                 </th>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap">
+                  <dfn id="idl-def-CaptureStartFocusBehavior.focus-capturing-application">focus-capturing-application</dfn>
+                </td>
+                <td>
+                  The application prefers to be focused.
+                </td>
               </tr>
               <tr>
                 <td style="white-space:nowrap">
@@ -830,11 +839,17 @@
                   <dfn id="idl-def-CaptureStartFocusBehavior.no-focus-change">no-focus-change</dfn>
                 </td>
                 <td>
-                  The application prefers that the user agent not change focus.
+                  The application prefers that the user agent not change focus, leaving focus
+                  with whichever surface last had focus following the user's interaction with
+                  the user agent and/or operating system.
                 </td>
               </tr>
             </tbody>
           </table>
+          <div class="note">
+            The Working Group is investigating the possibility of 
+            deprecating {{CaptureStartFocusBehavior/"no-focus-change"}}.
+          </div>
         </section>
         <section>
           <h2><dfn>CaptureController</dfn></h2>
@@ -1032,7 +1047,7 @@
                 <li>
                   <p>
                     If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
-                    is {{CaptureStartFocusBehavior/"no-focus-change"}},
+                    is {{CaptureStartFocusBehavior/"focus-capturing-application"}},
                     focus the [=display surface=] representing the capturing document.
                   </p>
                 </li>
