@@ -859,12 +859,11 @@
           </pre>
           <div class="issue atrisk">
             <p>
-              {{CaptureController}} does not yet define any event handlers.
-              As such, it is not required to inherit from {{EventTarget}}.
-              This inheritance was added for the benefit of other specifications
-              that extend {{CaptureController}} with event handler attributes.
-              This inheritance may be removed if these other specifications do
-              not mature successfully.
+              {{CaptureController}} does not yet define event handlers, so
+              it is not required to inherit from {{EventTarget}}.  This is
+              for the benefit of future specifications that extend
+              {{CaptureController}} with event handler attributes; if 
+              inheritance is not used, it can be removed.
             </p>
           </div>
           <dl data-link-for="CaptureController" data-dfn-for="CaptureController" class="methods">
