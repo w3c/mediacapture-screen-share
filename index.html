@@ -852,11 +852,20 @@
           </p>
           <pre class="idl">
             [Exposed=Window, SecureContext]
-            interface CaptureController {
+            interface CaptureController : EventTarget {
               constructor();
               undefined setFocusBehavior(CaptureStartFocusBehavior focusBehavior);
             };
           </pre>
+          <div class="issue atrisk">
+            <p>
+              {{CaptureController}} does not yet define event handlers, so
+              it is not required to inherit from {{EventTarget}}.  This is
+              for the benefit of future specifications that extend
+              {{CaptureController}} with event handler attributes; if 
+              inheritance is not used, it can be removed.
+            </p>
+          </div>
           <dl data-link-for="CaptureController" data-dfn-for="CaptureController" class="methods">
             <dt>
               <dfn>constructor</dfn>
