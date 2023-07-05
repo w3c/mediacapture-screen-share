@@ -424,13 +424,12 @@
                     </p>
                   </li>
                   <li>
-                    <p>Let <var>topContext</var> be the <a>current settings object</a>'s's [=relevant global object=]'s
-                      [=associated Document=]'s [=top-level browsing context=].</p>
+                    <p>Let <var>toplevelTraversable</var> be the <a>current settings object</a>'s's [=relevant global object=]'s
+                      [=navigable=]'s [=top-level traversable=].</p>
                   </li>
                   <li>
-                    <p>Start listening to <var>topContext</var>'s change of <a data-cite="!HTML/#gains-focus">focus</a>.
-                      Whenever <var>topContext</var> is losing <a data-cite="!HTML/#gains-focus">focus</a>, stop listening
-                      to <var>topContext</var>'s change of <a data-cite="!HTML/#gains-focus">focus</a> and
+                    <p>Listen to <var>toplevelTraversable</var>'s change of <a data-cite="!HTML/#system-focus">system focus</a>.</p>
+                    <p>The first time <var>toplevelTraversable</var> is losing <a data-cite="!HTML/#system-focus">focus</a>,
                       queue a global task on the <a data-cite="!HTML/#user-interaction-task-source">user interaction task source</a>
                       given <a>current settings object</a>'s [=relevant global object=] to run the following step:
                       <ol>
