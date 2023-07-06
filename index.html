@@ -1,135 +1,139 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <link href="screenshare.css" rel="stylesheet" type="text/css">
-    <title>
-      Screen Capture
-    </title>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <script class="remove" src="screenshare.js" type="text/javascript"></script>
-  <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c"></script>
-  </head>
-  <body>
-    <section id="abstract">
-      <p>
-        This document defines how a user's display, or parts thereof, can be used as the source of
-        a media stream using {{MediaDevices/getDisplayMedia}}, an extension to the Media Capture API
-        [[GETUSERMEDIA]].
-      </p>
-    </section>
-    <section id="sotd">
-      <p>
-        This document is not complete. It is subject to major changes and, while early
-        experimentations are encouraged, it is therefore not intended for implementation.
-      </p>
-    </section>
-    <section class="informative" id="intro">
-      <h2>
-        Introduction
-      </h2>
-      <p>
-        This document describes an extension to the Media Capture API [[GETUSERMEDIA]] that enables
-        the acquisition of a user's display, or part thereof, in the form of a video track. In some
-        cases system, application or window audio is also captured which is presented in the form
-        of an audio track. This enables a number of applications, including screen sharing using
-        WebRTC [[WEBRTC]].
-      </p>
-      <p>
-        This feature has signficant security implications. Applications that use this API to access
-        information that is displayed to users could access confidential information from other
-        origins if that information is under the control of the application. This includes content
-        that would otherwise be inaccessible due to the protections offered by the user agent
-        sandbox.
-      </p>
-      <p>
-        This document concerns itself primarily with the capture of video and audio [[GETUSERMEDIA]],
-        but the general mechanisms defined here could be extended to other types of media, of which
-        depth [[MEDIACAPTURE-DEPTH]] is currently defined.
-      </p>
-    </section>
-    <section id="conformance">
-      <p>
-        This specification defines conformance criteria that apply to a single product: the
-        <dfn data-lt="user agents">user agent</dfn> that implements the interfaces that it
-        contains.
-      </p>
-      <p>
-        Implementations that use ECMAScript [[ECMA-262]] to implement the APIs defined in this
-        specification must implement them in a manner consistent with the ECMAScript Bindings
-        defined in the Web IDL specification [[!WEBIDL]], as this specification uses that
-        specification and terminology.
-      </p>
-    </section>
-    <section>
-      <h2>
-        Example
-      </h2>
-      <p>
-        The following example demonstrates a request for display capture using the
-        <code>navigator.mediaDevices.getDisplayMedia</code> method defined in this document.
-      </p>
-      <pre class="example highlight">try {
+<head>
+  <link href="screenshare.css" rel="stylesheet" type="text/css">
+  <title>Screen Capture</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <script class="remove" src="screenshare.js" type="text/javascript"></script>
+  <script class="remove" src=
+  "https://www.w3.org/Tools/respec/respec-w3c"></script>
+</head>
+<body>
+  <section id="abstract">
+    <p>This document defines how a user's display, or parts thereof, can be
+    used as the source of a media stream using
+    {{MediaDevices/getDisplayMedia}}, an extension to the Media Capture API
+    [[GETUSERMEDIA]].</p>
+  </section>
+
+  <section id="sotd">
+    <p>This document is not complete. It is subject to major changes and, while
+    early experimentations are encouraged, it is therefore not intended for
+    implementation.</p>
+  </section>
+
+  <section class="informative" id="intro">
+    <h2>Introduction</h2>
+
+    <p>This document describes an extension to the Media Capture API
+    [[GETUSERMEDIA]] that enables the acquisition of a user's display, or part
+    thereof, in the form of a video track. In some cases system, application or
+    window audio is also captured which is presented in the form of an audio
+    track. This enables a number of applications, including screen sharing
+    using WebRTC [[WEBRTC]].</p>
+
+    <p>This feature has signficant security implications. Applications that use
+    this API to access information that is displayed to users could access
+    confidential information from other origins if that information is under
+    the control of the application. This includes content that would otherwise
+    be inaccessible due to the protections offered by the user agent
+    sandbox.</p>
+
+    <p>This document concerns itself primarily with the capture of video and
+    audio [[GETUSERMEDIA]], but the general mechanisms defined here could be
+    extended to other types of media, of which depth [[MEDIACAPTURE-DEPTH]] is
+    currently defined.</p>
+  </section>
+
+  <section id="conformance">
+    <p>This specification defines conformance criteria that apply to a single
+    product: the <dfn data-lt="user agents">user agent</dfn> that implements
+    the interfaces that it contains.</p>
+
+    <p>Implementations that use ECMAScript [[ECMA-262]] to implement the APIs
+    defined in this specification must implement them in a manner consistent
+    with the ECMAScript Bindings defined in the Web IDL specification
+    [[!WEBIDL]], as this specification uses that specification and
+    terminology.</p>
+  </section>
+
+  <section>
+    <h2>Example</h2>
+
+    <p>The following example demonstrates a request for display capture using
+    the <code>navigator.mediaDevices.getDisplayMedia</code> method defined in
+    this document.</p>
+
+    <pre class="example highlight">try {
   let mediaStream = await navigator.mediaDevices.getDisplayMedia({video:true});
   videoElement.srcObject = mediaStream;
 } catch (e) {
   console.log('Unable to acquire screen capture: ' + e);
 }</pre>
-    </section>
-    <section>
-      <h2>
-        Terminology
-      </h2>
-      <p>
-        This document uses the definition of {{MediaStream}}, {{MediaStreamTrack}}
-        and {{ConstrainablePattern}} from [[!GETUSERMEDIA]].
-      </p>
-      <p>
-        Screen capture encompasses the capture of several different types of screen-based surfaces.
-        Collectively, these are referred to as <dfn class="export" data-lt="display surface">display
-        surfaces</dfn>, of which this document defines the following types:
-      </p>
-      <ul>
-        <li>A <dfn data-dfn-for="display surface" class=export>monitor</dfn> <a>display surface</a> represents a physical display. Some systems
-        have multiple [= display surface/monitor =]s, which can be identified separately. Multiple [= display surface/monitor =]s
-        might also be aggregated into a single logical [= display surface/monitor =]. An aggregated <a>display
-        surface</a> is captured as a single {{MediaStreamTrack}}.
-        </li>
-        <li>A <dfn data-dfn-for="display surface" class=export>window</dfn> <a>display surface</a> is a single contiguous
-        surface that is used by a single application.
-        </li>
-        <li>A <dfn data-dfn-for="display surface" class=export>browser</dfn> <a>display surface</a> is the rendered form of a
-        [=browsing context=].
-        This is not strictly limited to HTML [[HTML]] documents, though the discussion in this
-        document will address some specific concerns with the capture of HTML.
-        </li>
-      </ul>
-      <p>
-        This document draws a distinction between two variants of each type of display surface:
-      </p>
-      <ul>
-        <li>A <dfn class=export>logical display surface</dfn> is the surface
-        that an operating system makes available to an application for the purposes of rendering.
-        </li>
-        <li>a <dfn class=export>visible display surface</dfn> is the portion of a [=logical display surface=]
-        that is rendered to a [= display surface/monitor=].
-        </li>
-      </ul>
-      <p>
-        Some operating systems permit windows from different applications to occlude other windows,
-        in whole or part, so the <a>visible display surface</a> is a strict subset of the
-        <a>logical display surface</a>.
-      </p>
-      <p>
-        The <dfn class=export>source pixel ratio</dfn> of a <a>display surface</a> is 1/96th of 1 inch divided
-        by its vertical pixel size.
-      </p>
+  </section>
 
-      <p>The <dfn class=event>devicechange</dfn> event is defined in [[GETUSERMEDIA]].</p>
-    </section>
-    <section>
-      <h2>
-        Capturing Displayed Media
-      </h2><!--
+  <section>
+    <h2>Terminology</h2>
+
+    <p>This document uses the definition of {{MediaStream}},
+    {{MediaStreamTrack}} and {{ConstrainablePattern}} from
+    [[!GETUSERMEDIA]].</p>
+
+    <p>Screen capture encompasses the capture of several different types of
+    screen-based surfaces. Collectively, these are referred to as <dfn class=
+    "export" data-lt="display surface">display surfaces</dfn>, of which this
+    document defines the following types:</p>
+
+    <ul>
+      <li>A <dfn data-dfn-for="display surface" class="export">monitor</dfn>
+      <a>display surface</a> represents a physical display. Some systems have
+      multiple [= display surface/monitor =]s, which can be identified
+      separately. Multiple [= display surface/monitor =]s might also be
+      aggregated into a single logical [= display surface/monitor =]. An
+      aggregated <a>display surface</a> is captured as a single
+      {{MediaStreamTrack}}.
+      </li>
+
+      <li>A <dfn data-dfn-for="display surface" class="export">window</dfn> <a>
+        display surface</a> is a single contiguous surface that is used by a
+        single application.
+      </li>
+
+      <li>A <dfn data-dfn-for="display surface" class="export">browser</dfn>
+      <a>display surface</a> is the rendered form of a [=browsing context=].
+      This is not strictly limited to HTML [[HTML]] documents, though the
+      discussion in this document will address some specific concerns with the
+      capture of HTML.
+      </li>
+    </ul>
+
+    <p>This document draws a distinction between two variants of each type of
+    display surface:</p>
+
+    <ul>
+      <li>A <dfn class="export">logical display surface</dfn> is the surface
+      that an operating system makes available to an application for the
+      purposes of rendering.</li>
+
+      <li>a <dfn class="export">visible display surface</dfn> is the portion of
+      a [=logical display surface=] that is rendered to a [= display
+      surface/monitor=].</li>
+    </ul>
+
+    <p>Some operating systems permit windows from different applications to
+    occlude other windows, in whole or part, so the <a>visible display
+    surface</a> is a strict subset of the <a>logical display surface</a>.</p>
+
+    <p>The <dfn class="export">source pixel ratio</dfn> of a <a>display
+    surface</a> is 1/96th of 1 inch divided by its vertical pixel size.</p>
+
+    <p>The <dfn class="event">devicechange</dfn> event is defined in
+    [[GETUSERMEDIA]].</p>
+  </section>
+
+  <section>
+    <h2>Capturing Displayed Media</h2>
+    <!--
       Interesting Links
 
       https://bugzilla.mozilla.org/show_bug.cgi?id=742832
@@ -138,1061 +142,1127 @@
 
       https://docs.google.com/document/d/1-vFghorm8zDCeyg2Yk6kKFT-16GU1Ow1b1bor_jCqD8/edit
       -->
-      <p>
-        Capture of displayed media is enabled through the addition of a new
-        {{MediaDevices/getDisplayMedia}} method on the {{MediaDevices}}
-        interface, that is similar to {{MediaDevices/getUserMedia()}}
-        , except that it acquires media from one display device
-        chosen by the end-user each time.
-      </p>
-      <section>
-        <h2>
-          <dfn>MediaDevices</dfn> Additions
-        </h2>
-        <pre class="idl"
->partial interface MediaDevices {
+
+    <p>Capture of displayed media is enabled through the addition of a new
+    {{MediaDevices/getDisplayMedia}} method on the {{MediaDevices}} interface,
+    that is similar to {{MediaDevices/getUserMedia()}} , except that it
+    acquires media from one display device chosen by the end-user each
+    time.</p>
+
+    <section>
+      <h2><dfn>MediaDevices</dfn> Additions</h2>
+
+      <pre class="idl">partial interface MediaDevices {
   Promise&lt;MediaStream&gt; getDisplayMedia(optional DisplayMediaStreamOptions options = {});
 };</pre>
-        <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class="methods">
-          <dt>
-            <dfn>getDisplayMedia</dfn>
-          </dt>
-          <dd>
-            <p>Prompts the user for permission to live-capture their display.</p>
-            <p>
-              The user agent MUST let the end-user choose which [=display surface=] to share
-              out of all available choices every time, and MUST NOT use
-              any {{MediaTrackConstraints}} in <var>options</var>.<code>video</code>
-              or <var>options</var>.<code>audio</code> to limit that choice.
-            </p>
-            <p>
-              The user agent MAY use the presence of the {{displaySurface}} constraint and its value to
-              influence the presentation to the user of the sources to pick from. The user agent MUST still
-              offer the user unlimited choice of any [=display surface=].
-              The user agent is strongly recommended to steer users away from sharing a monitor,
-              as this poses
-              <a href="#security-and-permissions">risks to user privacy</a>.
-            </p>
-            <p>
-              Any {{MediaTrackConstraints}} in <var>options</var>.<code>video</code>
-              or <var>options</var>.<code>audio</code> MUST be applied
-              to the media chosen by the user only after the user has made their selection.
-            </p>
-            <p>
-              In the case of audio, the user agent MAY present the end-user with audio sources
-              to share. Which choices are available to choose from is up to the user agent, and
-              the audio source(s) are not necessarily the same as the video source(s). An audio
-              source may be a particular [= display surface/window =], [= display surface/browser =],
-              the entire system audio or any combination thereof. Unlike
-              {{MediaDevices/getUserMedia()}} with regards to audio+video, the user agent is
-              allowed not to return audio even if the audio constraint is present. If the user
-              agent knows no audio will be shared for the lifetime of the stream it MUST NOT
-              include an audio track in the resulting stream. The user agent MAY accept a
-              request for audio and video by only returning a video track in the resulting
-              stream, or it MAY accept the request by returning both an audio track and a video
-              track in the resulting stream. The user agent MUST reject audio-only requests.
-            </p>
-            <p>
-              In addition to drawing from a different set of sources and requiring user selection,
-              {{MediaDevices/getDisplayMedia}} also differs from
-              {{MediaDevices/getUserMedia()}} in that {{PermissionState/"granted"}} permissions cannot be persisted.
-            </p>
-            <p>When the {{MediaDevices/getDisplayMedia()}}
-            method is called, the user agent MUST run the following
-            steps:</p>
-            <ol>
-              <li>
-                <p>
-                  Let <var>controller</var> be <var>options</var>.<code>controller</code> if present,
-                  or <code>null</code> otherwise.
-                </p>
-              </li>
-              <li>
-                <p>
-                  If <var>controller</var> is not <code>null</code>, run the following steps:
-                </p>
-                <ol>
-                  <li>
-                    <p>
-                      If <var>controller</var>.{{CaptureController/[[IsBound]]}}
-                      is <code>true</code>, return a promise [=reject|rejected=] with
-                      a {{DOMException}} object whose {{DOMException/name}} attribute has
-                      the value {{InvalidStateError}}.
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      Set <var>controller</var>.{{CaptureController/[[IsBound]]}} to <code>true</code>.
-                    </p>
-                  </li>
-                </ol>
-              </li>
-              <li>
-                <p>
-                  If the [=relevant global object=] of [=this=] does not have
-                  [=transient activation=], return a promise <a>rejected</a>
+      <dl data-link-for="MediaDevices" data-dfn-for="MediaDevices" class=
+      "methods">
+        <dt><dfn>getDisplayMedia</dfn>
+        </dt>
+
+        <dd>
+          <p>Prompts the user for permission to live-capture their display.</p>
+
+          <p>The user agent MUST let the end-user choose which [=display
+          surface=] to share out of all available choices every time, and MUST
+          NOT use any {{MediaTrackConstraints}} in
+          <var>options</var>.<code>video</code> or
+          <var>options</var>.<code>audio</code> to limit that choice.</p>
+
+          <p>The user agent MAY use the presence of the {{displaySurface}}
+          constraint and its value to influence the presentation to the user of
+          the sources to pick from. The user agent MUST still offer the user
+          unlimited choice of any [=display surface=]. The user agent is
+          strongly recommended to steer users away from sharing a monitor, as
+          this poses <a href="#security-and-permissions">risks to user
+          privacy</a>.</p>
+
+          <p>Any {{MediaTrackConstraints}} in
+          <var>options</var>.<code>video</code> or
+          <var>options</var>.<code>audio</code> MUST be applied to the media
+          chosen by the user only after the user has made their selection.</p>
+
+          <p>In the case of audio, the user agent MAY present the end-user with
+          audio sources to share. Which choices are available to choose from is
+          up to the user agent, and the audio source(s) are not necessarily the
+          same as the video source(s). An audio source may be a particular [=
+          display surface/window =], [= display surface/browser =], the entire
+          system audio or any combination thereof. Unlike
+          {{MediaDevices/getUserMedia()}} with regards to audio+video, the user
+          agent is allowed not to return audio even if the audio constraint is
+          present. If the user agent knows no audio will be shared for the
+          lifetime of the stream it MUST NOT include an audio track in the
+          resulting stream. The user agent MAY accept a request for audio and
+          video by only returning a video track in the resulting stream, or it
+          MAY accept the request by returning both an audio track and a video
+          track in the resulting stream. The user agent MUST reject audio-only
+          requests.</p>
+
+          <p>In addition to drawing from a different set of sources and
+          requiring user selection, {{MediaDevices/getDisplayMedia}} also
+          differs from {{MediaDevices/getUserMedia()}} in that
+          {{PermissionState/"granted"}} permissions cannot be persisted.</p>
+
+          <p>When the {{MediaDevices/getDisplayMedia()}} method is called, the
+          user agent MUST run the following steps:</p>
+
+          <ol>
+            <li>
+              <p>Let <var>controller</var> be
+              <var>options</var>.<code>controller</code> if present, or
+              <code>null</code> otherwise.</p>
+            </li>
+
+            <li>
+              <p>If <var>controller</var> is not <code>null</code>, run the
+              following steps:</p>
+
+              <ol>
+                <li>
+                  <p>If <var>controller</var>.{{CaptureController/[[IsBound]]}}
+                  is <code>true</code>, return a promise [=reject|rejected=]
                   with a {{DOMException}} object whose {{DOMException/name}}
-                  attribute has the value {{InvalidStateError}}.
-                </p>
-              </li>
-              <li>
-                <p>Let <var>options</var> be the method's first
-                argument.</p>
-              </li>
-              <li>
-                <p>Let <var>constraints</var> be
-                <code>[</code><var>options</var>.<code>audio</code>,
-                <var>options</var>.<code>video</code><code>]</code>.</p>
-              </li>
-              <li>
-                <p>If <code>constraints.video</code> is <code>false</code>,
-                  return a promise [=reject|rejected=] with a newly
+                  attribute has the value {{InvalidStateError}}.</p>
+                </li>
+
+                <li>
+                  <p>Set
+                  <var>controller</var>.{{CaptureController/[[IsBound]]}} to
+                  <code>true</code>.</p>
+                </li>
+              </ol>
+            </li>
+
+            <li>
+              <p>If the [=relevant global object=] of [=this=] does not have
+              [=transient activation=], return a promise <a>rejected</a> with a
+              {{DOMException}} object whose {{DOMException/name}} attribute has
+              the value {{InvalidStateError}}.</p>
+            </li>
+
+            <li>
+              <p>Let <var>options</var> be the method's first argument.</p>
+            </li>
+
+            <li>
+              <p>Let <var>constraints</var> be
+              <code>[</code><var>options</var>.<code>audio</code>,
+              <var>options</var>.<code>video</code><code>]</code>.</p>
+            </li>
+
+            <li>
+              <p>If <code>constraints.video</code> is <code>false</code>,
+              return a promise [=reject|rejected=] with a newly
+              [=exception/created=] {{TypeError}}.</p>
+            </li>
+
+            <li>
+              <p>For each [= map/exist | existing =] member in
+              <var>constraints</var> whose value, <var>CS</var>, is a
+              dictionary, run the following steps:</p>
+
+              <ol>
+                <li>
+                  <p>If <var>CS</var> contains a member named
+                  <code>advanced</code>, return a promise [=reject|rejected=]
+                  with a newly [=exception/created=] {{TypeError}}.</p>
+                </li>
+
+                <li>
+                  <p>If <var>CS</var> contains a member whose name specifies a
+                  constrainable property applicable to [=display surface=]s,
+                  and whose value in turn is a dictionary containing a member
+                  named either <code>min</code> or <code>exact</code>, return a
+                  promise [=reject|rejected=] with a newly
                   [=exception/created=] {{TypeError}}.</p>
-              </li>
-              <li>
-                <p>For each [= map/exist | existing =] member
-                in <var>constraints</var> whose value, <var>CS</var>, is
-                a dictionary, run the following steps:</p>
-                <ol>
-                  <li>
-                    <p>If <var>CS</var> contains a member named <code>advanced</code>,
-                    return a promise [=reject|rejected=] with a newly
-                    [=exception/created=] {{TypeError}}.</p>
-                  </li>
-                  <li>
-                    <p>If <var>CS</var> contains a member whose name specifies a
-                    constrainable property applicable to [=display surface=]s,
-                    and whose value in turn is a dictionary containing a member
-                    named either <code>min</code> or <code>exact</code>, return
-                    a promise [=reject|rejected=] with a newly
-                    [=exception/created=] {{TypeError}}.</p>
-                  </li>
-                  <li>
-                    <p>If <var>CS</var> contains a member whose name specifies a
-                    constrainable property applicable to [=display surface=]s,
-                    and whose value in turn is a dictionary containing a member
-                    named <code>max</code>, and that member's value in turn is
-                    less than the constrainable property's [=floor value=], then let
-                    <var>failedConstraint</var> be the name of the
-                    member, let <var>message</var> be either
-                    <code>undefined</code> or an informative human-readable
-                    message, and return a promise [=reject|rejected=] with a new
-                    <code>OverconstrainedError</code> created by calling
-                    <code>OverconstrainedError(<var>failedConstraint</var>,
-                    <var>message</var>)</code>.
-                  </li>
-                </ol>
-              </li>
-              <li>
-                <p>Let <var>requestedMediaTypes</var> be the set of media
-                types in <var>constraints</var> with either a dictionary
-                value or a value of <code>true</code>.</p>
-              </li>
-              <li>
-                <p>If the <a>current settings object</a>'s [=relevant global object=]'s
-                [=associated `Document`=] is NOT [=Document/fully active=] or does NOT
-                <a data-cite="!HTML/#gains-focus">have focus</a>, return a promise
-                [=reject|rejected=] with a {{DOMException}} object whose {{DOMException/name}}
-                attribute has the value {{InvalidStateError}}.</p>
-              </li>
-              <li>
-                <p>Let <var>p</var> be a new promise.</p>
-              </li>
-              <li>
-                <p>Run the following steps  [=in parallel=]:</p>
-                <ol>
-                  <li>
-                    <p>For each media type <var>T</var> in
-                    <var>requestedMediaTypes</var>,</p>
-                    <ol>
-                      <li>
-                        <p>If no sources of type <var>T</var> are available,
-                        <a>reject</a> <var>p</var> with a new
-                        {{DOMException}} object whose
-                        {{DOMException/name}} attribute has the value
-                        {{NotFoundError}}.</p>
-                      </li>
-                      <li>
-                        <p>Read the current [= permission state=] for obtaining
-                        sources of type <var>T</var> in the current browsing
-                        context. If the permission state is {{PermissionState/"denied"}}, jump to
-                        the step labeled <em>PermissionFailure</em> below.</p>
-                      </li>
-                    </ol>
-                  </li>
-                  <li>
-                    <p>Optionally, e.g., based on a previously-established
-                    user preference, for security reasons, or due to platform
-                    limitations, jump to the step labeled <em>Permission Failure</em> below.</p>
-                  </li>
-                  <li>
-                    <p>[=Prompt the user to choose=]
-                    a display device, for a {{PermissionDescriptor}} with its
-                    {{PermissionDescriptor/name}} set to "display-capture", resulting in a set of
-                    provided media.</p>
-                    <p>The provided media MUST include precisely one video track.</p>
-                    <p>The provided media MUST include at most one audio track. This audio
-                    track MUST NOT be included if audio was not specified in
-                    <var>requestedMediaTypes</var>, or if it was specified as
-                    <code>false</code>.</p>
-                    <p>The devices chosen MUST be the ones determined by the user.
-                    Once selected, the source of a {{MediaStreamTrack}} MUST NOT change,
-                    unless the user permits it through their interaction with
-                    the user agent.</p>
-                    <p>User agents are encouraged to warn users against sharing
-                    [= display surface/browser =] display devices as well as [= display surface/monitor =]
-                    display devices where browser windows are visible, or
-                    otherwise try to discourage their selection on the basis
-                    that these represent a significantly higher risk when shared.</p>
-                    <p>If the result of the request is {{PermissionState/"granted"}}, then for
-                    each device that is sourcing the provided media, using
-                    a stable and private id for the device, <var>deviceId</var>,
-                    set [[\devicesLiveMap]]<var>[deviceId]</var> to
-                    <code>true</code>, if it isn’t already <code>true</code>,
-                    and set the
-                    [[\devicesAccessibleMap]]<var>[deviceId]</var> to
-                    <code>true</code>, if it isn’t already
-                    <code>true</code>.</p>
-                    <p>The user agent MUST NOT
-                    store a {{PermissionState/"granted"}} permission entry.
-                    </p>
-                    <p>If the result is {{PermissionState/"denied"}}, jump to the step labeled
-                    <em>Permission Failure</em> below. If the user never
-                    responds, this algorithm stalls on this step.</p>
-                    <p>If the user grants permission but a hardware error
-                    such as an OS/program/webpage lock prevents access,
-                    <a>reject</a> <var>p</var> with a new
-                    {{DOMException}} object whose
-                    {{DOMException/name}} attribute has the value
-                    {{NotReadableError}} and abort these steps.</p>
-                    <p>If the result is {{PermissionState/"granted"}} but device access fails for
-                    any reason other than those listed above, <a>reject</a>
-                    <var>p</var> with a new {{DOMException}}
-                    object whose {{DOMException/name}} attribute has the
-                    value {{AbortError}} and abort these steps.</p>
-                  </li>
-                  <li>
-                    <p>Let <var>stream</var> be the
-                    {{MediaStream}} object for which the user
-                    granted permission.</p>
-                  </li>
-                  <li>
-                    <p>Run the [=ApplyConstraints algorithm=] on all
-                    tracks in <var>stream</var> with the appropriate
-                    constraints. Should this fail, let <var>failedConstraint</var>
-                    be the result of the algorithm that failed, and let
-                    <var>message</var> be either <code>undefined</code> or an
-                    informative human-readable message, and then <a>reject</a>
-                    <var>p</var> with a new <code>OverconstrainedError</code>
-                    created by calling
-                    <code>OverconstrainedError(<var>failedConstraint</var>,
-                    <var>message</var>)</code>.</p>
-                  </li>
-                  <li>
-                    <p>
-                      This invocation of {{MediaDevices/getDisplayMedia()}} is now
-                      considered to have produced a new <dfn>capture-session</dfn>.
-                    </p>
-                  </li>
-                  <li>
-                    If <var>controller</var> is not <code>null</code>, run the following steps:
-                    <ol>
-                      <li>
-                        <p>
-                          Set <var>controller</var>.{{CaptureController/[[Source]]}}
-                          to <var>stream</var>'s video track's <a data-cite="GETUSERMEDIA#dfn-source-0">[[\Source]]</a>.
-                        </p>
-                      </li>
-                      <li>
-                        <p>
-                          Set <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}} to the 
-                          to <var>stream</var>'s video track's {{DisplayCaptureSurfaceType}}.
-                        </p>
-                      </li>
-                      <li>
-                        <p>
-                          Queue a task to run the [=finalize focus decision algorithm=]
-                          on <var>controller</var>.
-                        </p>
-                      </li>
-                    </ol>
-                  </li>
-                  <li>
-                    <p>
-                      <a>Resolve</a> <var>p</var> with <var>stream</var> and
-                      abort these steps. 
-                    </p>
-                  </li>
-                  <li>
-                    <p><em>Permission Failure</em>: [=Reject=]
-                    <var>p</var> with a new {{DOMException}}
-                    object whose {{DOMException/name}} attribute has the
-                    value {{NotAllowedError}}.</p>
-                  </li>
-                </ol>
-              </li>
-              <li>
-                <p>Return <var>p</var>.</p>
-              </li>
-            </ol>
-            <p>
-              When the top-level document loses focus, run the following steps on all
-              {{CaptureController}} objects in that document and in documents of its nested
-              [=browsing contexts=]:
-            </p>
-            <ol>
-              <li>
-                <p>
-                  If {{CaptureController/[[Source]]}} is <code>undefined</code>, abort these steps.
-                </p>
-              </li>
-              <li>
-                <p>
-                  Set {{CaptureController/[[FocusChangeDisabled]]}} to <code>true</code>.
-                </p>
-              </li>
-            </ol>
-            <p>
-              The <a>user agent</a> MUST NOT capture content that's behind a
-              partially transparent captured <a>display surface</a>.
-            </p>
-            <p>
-              For the newly created {{MediaStreamTrack}}, the <a>user agent</a> MUST NOT capture the
-              prompt that was shown to the user.
-            </p>
-            <p>
-              Information that is not currently rendered to the screen SHOULD be obscured in captures
-              unless the application has been specifically authorized to access that content (e.g.
-              through means such as <a>elevated permissions</a>).
-            </p>
-            <p>
-              The <a>user agent</a> MUST NOT share audio without <a>active user consent</a>, for example
-              if the capture of the video of a [= display surface/window =] is accompanied by capture of the audio of the
-              entire system, including applications unrelated to that window.
-            </p>
-          </dd>
-        </dl>
-      </section>
+                </li>
+
+                <li>
+                  <p>If <var>CS</var> contains a member whose name specifies a
+                  constrainable property applicable to [=display surface=]s,
+                  and whose value in turn is a dictionary containing a member
+                  named <code>max</code>, and that member's value in turn is
+                  less than the constrainable property's [=floor value=], then
+                  let <var>failedConstraint</var> be the name of the member,
+                  let <var>message</var> be either <code>undefined</code> or an
+                  informative human-readable message, and return a promise
+                  [=reject|rejected=] with a new
+                  <code>OverconstrainedError</code> created by calling
+                  <code>OverconstrainedError(<var>failedConstraint</var>,
+                  <var>message</var>)</code>.</p>
+                </li>
+              </ol>
+            </li>
+
+            <li>
+              <p>Let <var>requestedMediaTypes</var> be the set of media types
+              in <var>constraints</var> with either a dictionary value or a
+              value of <code>true</code>.</p>
+            </li>
+
+            <li>
+              <p>If the <a>current settings object</a>'s [=relevant global
+              object=]'s [=associated `Document`=] is NOT [=Document/fully
+              active=] or does NOT <a data-cite="!HTML/#gains-focus">have
+              focus</a>, return a promise [=reject|rejected=] with a
+              {{DOMException}} object whose {{DOMException/name}} attribute has
+              the value {{InvalidStateError}}.</p>
+            </li>
+
+            <li>
+              <p>Let <var>p</var> be a new promise.</p>
+            </li>
+
+            <li>
+              <p>Run the following steps [=in parallel=]:</p>
+
+              <ol>
+                <li>
+                  <p>For each media type <var>T</var> in
+                  <var>requestedMediaTypes</var>,</p>
+
+                  <ol>
+                    <li>
+                      <p>If no sources of type <var>T</var> are available,
+                      <a>reject</a> <var>p</var> with a new {{DOMException}}
+                      object whose {{DOMException/name}} attribute has the
+                      value {{NotFoundError}}.</p>
+                    </li>
+
+                    <li>
+                      <p>Read the current [= permission state=] for obtaining
+                      sources of type <var>T</var> in the current browsing
+                      context. If the permission state is
+                      {{PermissionState/"denied"}}, jump to the step labeled
+                      <em>PermissionFailure</em> below.</p>
+                    </li>
+                  </ol>
+                </li>
+
+                <li>
+                  <p>Optionally, e.g., based on a previously-established user
+                  preference, for security reasons, or due to platform
+                  limitations, jump to the step labeled <em>Permission
+                  Failure</em> below.</p>
+                </li>
+
+                <li>
+                  <p>[=Prompt the user to choose=] a display device, for a
+                  {{PermissionDescriptor}} with its
+                  {{PermissionDescriptor/name}} set to "display-capture",
+                  resulting in a set of provided media.</p>
+
+                  <p>The provided media MUST include precisely one video
+                  track.</p>
+
+                  <p>The provided media MUST include at most one audio track.
+                  This audio track MUST NOT be included if audio was not
+                  specified in <var>requestedMediaTypes</var>, or if it was
+                  specified as <code>false</code>.</p>
+
+                  <p>The devices chosen MUST be the ones determined by the
+                  user. Once selected, the source of a {{MediaStreamTrack}}
+                  MUST NOT change, unless the user permits it through their
+                  interaction with the user agent.</p>
+
+                  <p>User agents are encouraged to warn users against sharing
+                  [= display surface/browser =] display devices as well as [=
+                  display surface/monitor =] display devices where browser
+                  windows are visible, or otherwise try to discourage their
+                  selection on the basis that these represent a significantly
+                  higher risk when shared.</p>
+
+                  <p>If the result of the request is
+                  {{PermissionState/"granted"}}, then for each device that is
+                  sourcing the provided media, using a stable and private id
+                  for the device, <var>deviceId</var>, set
+                  [[\devicesLiveMap]]<var>[deviceId]</var> to
+                  <code>true</code>, if it isn’t already <code>true</code>, and
+                  set the [[\devicesAccessibleMap]]<var>[deviceId]</var> to
+                  <code>true</code>, if it isn’t already <code>true</code>.</p>
+
+                  <p>The user agent MUST NOT store a
+                  {{PermissionState/"granted"}} permission entry.</p>
+
+                  <p>If the result is {{PermissionState/"denied"}}, jump to the
+                  step labeled <em>Permission Failure</em> below. If the user
+                  never responds, this algorithm stalls on this step.</p>
+
+                  <p>If the user grants permission but a hardware error such as
+                  an OS/program/webpage lock prevents access, <a>reject</a>
+                  <var>p</var> with a new {{DOMException}} object whose
+                  {{DOMException/name}} attribute has the value
+                  {{NotReadableError}} and abort these steps.</p>
+
+                  <p>If the result is {{PermissionState/"granted"}} but device
+                  access fails for any reason other than those listed above,
+                  <a>reject</a> <var>p</var> with a new {{DOMException}} object
+                  whose {{DOMException/name}} attribute has the value
+                  {{AbortError}} and abort these steps.</p>
+                </li>
+
+                <li>
+                  <p>Let <var>stream</var> be the {{MediaStream}} object for
+                  which the user granted permission.</p>
+                </li>
+
+                <li>
+                  <p>Run the [=ApplyConstraints algorithm=] on all tracks in
+                  <var>stream</var> with the appropriate constraints. Should
+                  this fail, let <var>failedConstraint</var> be the result of
+                  the algorithm that failed, and let <var>message</var> be
+                  either <code>undefined</code> or an informative
+                  human-readable message, and then <a>reject</a> <var>p</var>
+                  with a new <code>OverconstrainedError</code> created by
+                  calling
+                  <code>OverconstrainedError(<var>failedConstraint</var>,
+                  <var>message</var>)</code>.</p>
+                </li>
+
+                <li>
+                  <p>This invocation of {{MediaDevices/getDisplayMedia()}} is
+                  now considered to have produced a new
+                  <dfn>capture-session</dfn>.</p>
+                </li>
+
+                <li>If <var>controller</var> is not <code>null</code>, run the
+                following steps:
+                  <ol>
+                    <li>
+                      <p>Set
+                      <var>controller</var>.{{CaptureController/[[Source]]}} to
+                      <var>stream</var>'s video track's <a data-cite=
+                      "GETUSERMEDIA#dfn-source-0">[[\Source]]</a>.</p>
+                    </li>
+
+                    <li>
+                      <p>Set
+                      <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}}
+                      to the to <var>stream</var>'s video track's
+                      {{DisplayCaptureSurfaceType}}.</p>
+                    </li>
+
+                    <li>
+                      <p>Queue a task to run the [=finalize focus decision
+                      algorithm=] on <var>controller</var>.</p>
+                    </li>
+                  </ol>
+                </li>
+
+                <li>
+                  <p><a>Resolve</a> <var>p</var> with <var>stream</var> and
+                  abort these steps.</p>
+                </li>
+
+                <li>
+                  <p><em>Permission Failure</em>: [=Reject=] <var>p</var> with
+                  a new {{DOMException}} object whose {{DOMException/name}}
+                  attribute has the value {{NotAllowedError}}.</p>
+                </li>
+              </ol>
+            </li>
+
+            <li>
+              <p>Return <var>p</var>.</p>
+            </li>
+          </ol>
+
+          <p>When the top-level document loses focus, run the following steps
+          on all {{CaptureController}} objects in that document and in
+          documents of its nested [=browsing contexts=]:</p>
+
+          <ol>
+            <li>
+              <p>If {{CaptureController/[[Source]]}} is <code>undefined</code>,
+              abort these steps.</p>
+            </li>
+
+            <li>
+              <p>Set {{CaptureController/[[FocusChangeDisabled]]}} to
+              <code>true</code>.</p>
+            </li>
+          </ol>
+
+          <p>The <a>user agent</a> MUST NOT capture content that's behind a
+          partially transparent captured <a>display surface</a>.</p>
+
+          <p>For the newly created {{MediaStreamTrack}}, the <a>user agent</a>
+          MUST NOT capture the prompt that was shown to the user.</p>
+
+          <p>Information that is not currently rendered to the screen SHOULD be
+          obscured in captures unless the application has been specifically
+          authorized to access that content (e.g. through means such as
+          <a>elevated permissions</a>).</p>
+
+          <p>The <a>user agent</a> MUST NOT share audio without <a>active user
+          consent</a>, for example if the capture of the video of a [= display
+          surface/window =] is accompanied by capture of the audio of the
+          entire system, including applications unrelated to that window.</p>
+        </dd>
+      </dl>
+    </section>
+
+    <section>
+      <h2 id="hidden-display-surfaces">Closed and Minimized Display
+      Surfaces</h2>
+
+      <p>A <a>display surface</a> that is being shared may temporarily or
+      permanently become inaccessible to the application because of actions
+      taken by the operating system or user agent. What makes a <a>display
+      surface</a> considered inaccesible is outside the scope of this
+      specification, but examples MAY include a [= display surface/monitor =]
+      disconnecting, [= display surface/window =] or [= display surface/browser
+      =] closing or becoming minimized, or due to an incoming call on a
+      phone.</p>
+
+      <p class="note">User agents ultimately control what inaccesible means in
+      this context, but are encouraged to only fire mute and unmute events for
+      interruptions that have external reasons.</p>
+
+      <p>When <a>display surface</a> enters an inaccessible state that is not
+      necessarily permanent, the user agent MUST queue a task that [= set a
+      track's muted state|sets the muted state =] of the corresponding media
+      track to <code>true</code>.</p>
+
+      <p>When <a>display surface</a> exits an inaccessible state and becomes
+      accessible, the user agent MUST queue a task that [= set a track's muted
+      state|sets the muted state =] of the corresponding media track to
+      <code>false</code>.</p>
+
+      <p>When a <a>display surface</a> enters an inaccessible state that is
+      permanent (such as the source [= display surface/window=] closing), the
+      user agent MUST queue a task that [= track/ended | ends =] the
+      corresponding media track.</p>
+
+      <p>A stream that was just returned by {{MediaDevices/getDisplayMedia}}
+      MAY contain tracks that are muted by default. Audio and video tracks
+      belonging to the same stream MAY be muted/unmuted independently of one
+      another.</p>
+    </section>
+
+    <section>
+      <h2 id="constraints">Unconstrained Display Surface Selection</h2>
+
+      <p class="fingerprint">Not accepting constraints for source selection
+      means that {{MediaDevices/getDisplayMedia}} only provides fingerprinting
+      surface that exposes whether audio, video or audio and video display
+      sources are present. <img alt="(This is a fingerprinting vector.)" src=
+      "images/fingerprint.png" width="15" height="21"></p>
+
+      <p>Note that accepting the {{displaySurface}} constraint does not limit
+      user selection.</p>
+    </section>
+
+    <section>
+      <h2 id="constrainable-properties">Constrainable Properties for Captured
+      Display Surfaces</h2>
+
+      <p>Constraints serve a different purpose in
+      {{MediaDevices/getDisplayMedia}} than they do in
+      {{MediaDevices/getUserMedia()}}. They do not aid discovery, instead they
+      are applied only after user-selection.</p>
+
+      <p>This section define which constraints apply to
+      {{MediaDevices/getDisplayMedia}} tracks; constraints defined for
+      {{MediaDevices/getUserMedia()}} do not apply unless listed here.</p>
+
+      <p>Some of these constraints enable user agent processing like
+      downscaling and frame decimation, as well as display-specific features.
+      Others enable observation of inherent properties of a user-selected
+      <a>display surface</a>, as capabilities and settings.</p>
+
+      <p>The following new and existing {{MediaStreamTrack}} <a data-cite=
+      "GETUSERMEDIA#constrainable-properties">Constrainable Properties</a> are
+      defined to apply to the user-selected video <a>display surface</a>, with
+      the following behavior:</p>
+
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>Property Name</th>
+            <th>Type</th>
+            <th>Behavior</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr id="def-constraint-width">
+            <td><dfn class="export">width</dfn>
+            </td>
+            <td>{{unsigned long}}</td>
+            <td>
+              The width, in pixels. As a capability, max MUST reflect the
+              <a>display surface</a>'s width, and min MUST reflect the width of
+              the smallest aspect-preserving representation available through
+              downscaling by the user agent.
+            </td>
+          </tr>
+
+          <tr id="def-constraint-height">
+            <td><dfn class="export">height</dfn>
+            </td>
+            <td>{{unsigned long}}</td>
+            <td>
+              The height, in pixels. As a capability, max MUST reflect the
+              <a>display surface</a>'s height, and min MUST reflect the height
+              of the smallest aspect-preserving representation available
+              through downscaling by the user agent.
+            </td>
+          </tr>
+
+          <tr id="def-constraint-frameRate">
+            <td><dfn class="export">frameRate</dfn>
+            </td>
+            <td>{{double}}</td>
+            <td>
+              The frame rate (frames per second). As a capability, max MUST
+              reflect the <a>display surface</a>'s frame rate, and min MUST
+              reflect the lowest frame rate available through frame decimation
+              by the user agent.
+            </td>
+          </tr>
+
+          <tr id="def-constraint-aspect">
+            <td><dfn class="export">aspectRatio</dfn>
+            </td>
+            <td>{{double}}</td>
+            <td>The exact aspect ratio (width in pixels divided by height in
+            pixels, represented as a double rounded to the tenth decimal place)
+            or aspect ratio range. As a setting, represents <code>width /
+            height</code>. As a capability, min and max both MUST be the
+            current setting value, rendering this property immutable from the
+            application viewpoint.</td>
+          </tr>
+
+          <tr id="def-constraint-resizeMode">
+            <td><dfn class="export">resizeMode</dfn>
+            </td>
+            <td>{{DOMString}}</td>
+            <td>
+              This string is one of the members of {{VideoResizeModeEnum}}. As
+              a setting, {{VideoResizeModeEnum/"none"}} means the
+              {{MediaStreamTrack}} contains all bits needed to render the
+              display in full detail, which if the <code><a>source pixel
+              ratio</a> &gt; 1</code>, means <code>width</code> and
+              <code>height</code> will be larger than the display's appearance
+              from an end-user viewpoint would suggest, whereas
+              {{VideoResizeModeEnum/"crop-and-scale"}} means the
+              {{MediaStreamTrack}} contains an aspect-preserved representation
+              of the <a>display surface</a> that has been downscaled by the
+              user agent, but not cropped. As a capability, the values
+              {{VideoResizeModeEnum/"none"}} and
+              {{VideoResizeModeEnum/"crop-and-scale"}} both MUST be present.
+            </td>
+          </tr>
+
+          <tr id="def-constraint-displaySurface">
+            <td><dfn class="export">displaySurface</dfn>
+            </td>
+            <td>{{DOMString}}</td>
+            <td>
+              <p>This string is one of the members of
+              {{DisplayCaptureSurfaceType}}.</p>
+
+              <p>As a setting, indicates the type of [=display surface=] that
+              is being captured.</p>
+
+              <p>As a capability, the setting value MUST be the lone value
+              present, rendering this property immutable from the application
+              viewpoint.</p>
+
+              <p>As a constraint, the value signals the application's
+              preference of a particular [=display surface=] type to the user
+              agent; the user agent MAY reorder the options offered to the user
+              according to that preference. This constraint is ignored for all
+              other purposes, and can therefore not cause any side effects
+              (such as being the cause of
+              <code>OverconstrainedError</code>).</p>
+            </td>
+          </tr>
+
+          <tr id="def-constraint-logicalSurface">
+            <td><dfn class="export">logicalSurface</dfn>
+            </td>
+            <td>{{boolean}}</td>
+            <td>As a setting, a value of <code>true</code> indicates capture of
+            a [=logical display surface=], whereas a value of
+            <code>false</code> indicates a capture of a [=visible display
+            surface=]. As a capability, this same value MUST be the lone value
+            present, rendering this property immutable from the application
+            viewpoint.</td>
+          </tr>
+
+          <tr id="def-constraint-cursor">
+            <td><dfn class="export">cursor</dfn>
+            </td>
+            <td>{{DOMString}}</td>
+            <td>This string is one of the members of
+            {{CursorCaptureConstraint}}. As a setting, indicates if and when
+            the cursor is included in the captured [=display surface=]. As a
+            capability, the user agent MUST include only the set of values from
+            {{CursorCaptureConstraint}} it is capable of supporting for this
+            [=display surface=].</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The following new and existing {{MediaStreamTrack}} <a data-cite=
+      "GETUSERMEDIA#constrainable-properties">Constrainable Properties</a> are
+      defined to apply to the user-selected audio sources, with the following
+      behavior:</p>
+
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>Property Name</th>
+            <th>Type</th>
+            <th>Behavior</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr id="def-constraint-restrictOwnAudio">
+            <td><dfn class="export">restrictOwnAudio</dfn>
+            </td>
+            <td>{{boolean}}</td>
+            <td>
+              <p>As a setting, this value indicates whether or not the user
+              agent is applying <a>own audio restriction</a> to the source.</p>
+
+              <p>As a constraint, this property can be constrained resulting in
+              a source with <a>own audio restriction</a> enabled or
+              disabled.</p>
+
+              <p>When <dfn>own audio restriction</dfn> is applied, the user
+              agent MUST attempt to remove any audio from the audio being
+              captured that was produced by the document that performed
+              {{MediaDevices/getDisplayMedia}}. If the user agent is not able
+              to remove the audio through processing it SHOULD remove the audio
+              by excluding the document's audio from being captured. If this
+              results in no audio being captured, the user agent MUST keep the
+              track muted until it is able to capture audio again.</p>
+            </td>
+          </tr>
+
+          <tr id="def-constraint-suppressLocalAudioPlayback">
+            <td><dfn class="export">suppressLocalAudioPlayback</dfn>
+            </td>
+            <td>{{boolean}}</td>
+            <td>
+              <p>As a setting, this value indicates whether or not the
+              application instructed the user agent to apply <a>local audio
+              playback suppression</a> to the source.</p>
+
+              <p>As a constraint, this value is only meaningful if the user
+              selects capturing a [= display surface/browser=] [=display
+              surface=]. In that case, a value of <code>true</code> indicates
+              that the user agent SHOULD perform <a>local audio playback
+              suppression</a> on the captured [= display surface/browser=]
+              [=display surface=].</p>
+
+              <p>When <dfn>local audio playback suppression</dfn> is applied,
+              the user agent SHOULD stop relaying audio to the local speakers,
+              but that audio MUST still be captured by any ongoing
+              audio-capturing [=capture-sessions=]. This suppression MUST NOT
+              be observable to the captured document. Furthermore, the
+              capturing document may only observe whether it is applying
+              <a>suppressLocalAudioPlayback</a>; not whether that suppression
+              is having an effect (i.e. can't observe if the user is overriding
+              this in the user agent).</p>
+
+              <p>When a [= display surface/browser=] [=display surface=] is
+              subject to multiple concurrent captures, <a>local audio playback
+              suppression</a> SHOULD be applied as long as at least one active
+              audio-capturing [=capture-session=] is constraining
+              <a>suppressLocalAudioPlayback</a> to <code>true</code>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>When inherent properties of the underlying source of a user-selected
+      <a>display surface</a> change, for example in response to the end-user
+      resizing a captured window, and these changes render the capabilities
+      and/or settings of one or more constrainable properties outdated, the
+      user agent MUST queue a task to run the following step:</p>
+
+      <ol>
+        <li>
+          <p>Update all affected constrainable properties at the same time.</p>
+
+          <p>If this causes an "overconstrained" situation, then the user agent
+          MUST ignore the culprit constraints for as long as they
+          overconstrain. The user agent MUST NOT mute the track.</p>
+        </li>
+      </ol>
+
+      <div class="note">
+        <p>While min and exact constraints produce TypeError on
+        getDisplayMedia(), this specification does not alter the
+        track.applyConstraints() method. Therefore, they may instead produce
+        OverconstrainedError or succeed depending on values, and therefore
+        potentially be present to cause this "overconstrained" situation. The
+        max constraint may also cause this, e.g. with aspectRatio. This spec
+        considers these to be edge cases that aren't useful.</p>
+      </div>
+
       <section>
-        <h2 id="hidden-display-surfaces">
-          Closed and Minimized Display Surfaces
-        </h2>
-        <p>
-          A <a>display surface</a> that is being shared may temporarily or permanently become
-          inaccessible to the application because of actions taken by the operating system or user
-          agent. What makes a <a>display surface</a> considered inaccesible is outside the scope
-          of this specification, but examples MAY include a [= display surface/monitor =] disconnecting,
-          [= display surface/window =] or [= display surface/browser =] closing or becoming minimized,
-          or due to an incoming call on a phone.
-        </p>
-        <p class="note">
-          User agents ultimately control what inaccesible means in this context, but are encouraged
-          to only fire mute and unmute events for interruptions that have external reasons.
-        </p>
-        <p>
-          When <a>display surface</a> enters an inaccessible state that is not necessarily
-          permanent, the user agent MUST queue a task that
-          [= set a track's muted state|sets the muted state =]
-          of the corresponding media track to <code>true</code>.
-        </p>
-        <p>
-          When <a>display surface</a> exits an inaccessible state and becomes accessible, the
-          user agent MUST queue a task that
-          [= set a track's muted state|sets the muted state =]
-          of the corresponding media track to <code>false</code>.
-        </p>
-        <p>
-          When a <a>display surface</a> enters an inaccessible state that is permanent (such as
-          the source [= display surface/window=] closing), the user agent MUST queue a task that
-          [= track/ended | ends =] the corresponding media track.
-        </p>
-        <p>
-          A stream that was just returned by {{MediaDevices/getDisplayMedia}} MAY contain
-          tracks that are muted by default. Audio and video tracks belonging to the same stream
-          MAY be muted/unmuted independently of one another.
-        </p>
-      </section>
-      <section>
-        <h2 id="constraints">
-          Unconstrained Display Surface Selection
-        </h2>
-        <p class="fingerprint">
-          Not accepting constraints for source selection means that
-          {{MediaDevices/getDisplayMedia}} only provides fingerprinting surface that exposes
-          whether audio, video or audio and video display sources are present. <img alt=
-          "(This is a fingerprinting vector.)" src="images/fingerprint.png" width="15" height="21">
-        </p>
-        <p>
-          Note that accepting the {{displaySurface}} constraint does not limit user selection.
-        </p>
-      </section>
-      <section>
-        <h2 id="constrainable-properties">
-          Constrainable Properties for Captured Display Surfaces
-        </h2>
-        <p>Constraints serve a different purpose in
-        {{MediaDevices/getDisplayMedia}} than they do in
-        {{MediaDevices/getUserMedia()}}.
-        They do not aid discovery, instead they are applied only after user-selection.</p>
-        <p>This section define which constraints apply to {{MediaDevices/getDisplayMedia}} tracks;
-        constraints defined for
-        {{MediaDevices/getUserMedia()}}
-        do not apply unless listed here.</p>
-        <p>Some of these constraints enable user agent processing like downscaling
-        and frame decimation, as well as display-specific features. Others enable
-        observation of inherent properties of a user-selected
-        <a>display surface</a>, as capabilities and settings.</p>
-        <p>The following new and existing {{MediaStreamTrack}}
-        <a data-cite="GETUSERMEDIA#constrainable-properties">
-        Constrainable Properties</a> are defined to apply to the user-selected
-        video <a>display surface</a>, with the following behavior:</p>
-        <table class="simple">
-          <thead>
-            <tr>
-              <th>Property Name</th>
-              <th>Type</th>
-              <th>Behavior</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr id="def-constraint-width">
-              <td><dfn class=export>width</dfn></td>
-              <td>{{unsigned long}}</td>
-              <td>The width, in pixels. As a capability, max MUST
-              reflect the <a>display surface</a>'s width, and min MUST reflect
-              the width of the smallest aspect-preserving representation
-              available through downscaling by the user agent.</td>
-            </tr>
-            <tr id="def-constraint-height">
-              <td><dfn class=export>height</dfn></td>
-              <td>{{unsigned long}}</td>
-              <td>The height, in pixels. As a capability, max
-              MUST reflect the <a>display surface</a>'s height, and min MUST
-              reflect the height of the smallest aspect-preserving
-              representation available through downscaling by the user agent.
-              </td>
-            </tr>
-            <tr id="def-constraint-frameRate">
-              <td><dfn class=export>frameRate</dfn></td>
-              <td>{{double}}</td>
-              <td>The frame rate (frames per second). As a
-              capability, max MUST reflect the <a>display surface</a>'s frame
-              rate, and min MUST reflect the lowest frame rate available through
-              frame decimation by the user agent.</td>
-            </tr>
-            <tr id="def-constraint-aspect">
-              <td><dfn class=export>aspectRatio</dfn></td>
-              <td>{{double}}</td>
-              <td>The exact aspect ratio (width in pixels divided by height in
-              pixels, represented as a double rounded to the tenth decimal
-              place) or aspect ratio range. As a setting, represents
-              <code>width / height</code>. As a capability, min
-              and max both MUST be the current setting value, rendering this
-              property immutable from the application viewpoint.</td>
-            </tr>
-            <tr id="def-constraint-resizeMode">
-              <td><dfn class=export>resizeMode</dfn></td>
-              <td>{{DOMString}}</td>
-              <td>
-                This string is one of the members of
-                {{VideoResizeModeEnum}}.
-                As a setting, {{VideoResizeModeEnum/"none"}} means the {{MediaStreamTrack}}
-                contains all bits needed to render the display in full detail,
-                which if the <code><a>source pixel ratio</a> &gt; 1</code>, means
-                <code>width</code> and <code>height</code> will be larger
-                than the display's appearance from an end-user viewpoint would
-                suggest, whereas {{VideoResizeModeEnum/"crop-and-scale"}} means the
-                {{MediaStreamTrack}} contains an
-                aspect-preserved representation of the <a>display surface</a>
-                that has been downscaled by the user agent, but not cropped. As
-                a capability, the values {{VideoResizeModeEnum/"none"}} and
-                {{VideoResizeModeEnum/"crop-and-scale"}} both MUST be present.
-              </td>
-            </tr>
-            <tr id="def-constraint-displaySurface">
-              <td><dfn class=export>displaySurface</dfn></td>
-              <td>{{DOMString}}</td>
-              <td>
-                <p>
-                  This string is one of the
-                  members of {{DisplayCaptureSurfaceType}}.
-                </p>
-                <p>
-                  As a setting, indicates the type of [=display surface=] that
-                  is being captured.
-                </p>
-                <p>
-                  As a capability, the setting value MUST be
-                  the lone value present, rendering this property immutable from
-                  the application viewpoint.
-                </p>
-                <p>
-                  As a constraint, the value signals the application's preference
-                  of a particular [=display surface=] type to the user agent;
-                  the user agent MAY reorder the options offered to the user
-                  according to that preference. This constraint is ignored for all
-                  other purposes, and can therefore not cause any side effects
-                  (such as being the cause of <code>OverconstrainedError</code>).
-                </p>
-              </td>
-            </tr>
-            <tr id="def-constraint-logicalSurface">
-              <td><dfn class=export>logicalSurface</dfn></td>
-              <td>{{boolean}}</td>
-              <td>
-                As a setting, a value of <code>true</code> indicates capture of
-                a [=logical display surface=], whereas a value of
-                <code>false</code> indicates a capture of a
-                [=visible display surface=]. As a capability, this same
-                value MUST be the lone value present, rendering this
-                property immutable from the application viewpoint.
-              </td>
-            </tr>
-            <tr id="def-constraint-cursor">
-              <td><dfn class=export>cursor</dfn></td>
-              <td>{{DOMString}}</td>
-              <td>
-                This string is one of the
-                members of {{CursorCaptureConstraint}}. As a
-                setting, indicates if and when the cursor is included in the
-                captured [=display surface=]. As a capability, the user
-                agent MUST include only the set of values from
-                {{CursorCaptureConstraint}} it is capable of
-                supporting for this [=display surface=].
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>The following new and existing {{MediaStreamTrack}}
-        <a data-cite="GETUSERMEDIA#constrainable-properties">
-        Constrainable Properties</a> are defined to apply to the user-selected
-        audio sources, with the following behavior:</p>
-        <table class="simple">
-          <thead>
-            <tr>
-              <th>Property Name</th>
-              <th>Type</th>
-              <th>Behavior</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr id="def-constraint-restrictOwnAudio">
-              <td><dfn class=export>restrictOwnAudio</dfn></td>
-              <td>{{boolean}}</td>
-              <td>
-                <p>As a setting, this value indicates whether or not the user
-                agent is applying <a>own audio restriction</a> to the
-                source.</p>
-                <p>As a constraint, this property can be constrained resulting
-                in a source with <a>own audio restriction</a> enabled or
-                disabled.</p>
-                <p>When <dfn>own audio restriction</dfn> is applied, the user
-                agent MUST attempt to remove any audio from the audio being
-                captured that was produced by the document that performed
-                {{MediaDevices/getDisplayMedia}}. If the user agent is not able to
-                remove the audio through processing it SHOULD remove the audio
-                by excluding the document's audio from being captured. If
-                this results in no audio being captured, the user agent MUST
-                keep the track muted until it is able to capture audio
-                again.</p>
-              </td>
-            </tr>
-            <tr id="def-constraint-suppressLocalAudioPlayback">
-              <td><dfn class=export>suppressLocalAudioPlayback</dfn></td>
-              <td>{{boolean}}</td>
-              <td>
-                <p>As a setting, this value indicates whether or not the application
-                instructed the user agent to apply <a>local audio playback suppression</a>
-                to the source.</p>
-                <p>As a constraint, this value is only meaningful if the user
-                selects capturing a [= display surface/browser=] [=display surface=]. In that
-                case, a value of <code>true</code> indicates that the user
-                agent SHOULD perform <a>local audio playback suppression</a>
-                on the captured [= display surface/browser=] [=display surface=].</p>
-                <p>When <dfn>local audio playback suppression</dfn> is applied,
-                the user agent SHOULD stop relaying audio to the local speakers,
-                but that audio MUST still be captured by any ongoing audio-capturing
-                [=capture-sessions=]. This suppression MUST NOT be observable to the
-                captured document. Furthermore, the capturing document may only
-                observe whether it is applying <a>suppressLocalAudioPlayback</a>;
-                not whether that suppression is having an effect (i.e. can't
-                observe if the user is overriding this in the user agent).</p>
-                <p>When a [= display surface/browser=] [=display surface=] is subject to multiple
-                concurrent captures, <a>local audio playback suppression</a>
-                SHOULD be applied as long as at least one active audio-capturing
-                [=capture-session=] is constraining <a>suppressLocalAudioPlayback</a>
-                to <code>true</code>.</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>When inherent properties of the underlying source of a user-selected
-        <a>display surface</a> change, for example in response to the end-user
-        resizing a captured window, and these changes render the capabilities
-        and/or settings of one or more constrainable properties outdated, the
-        user agent MUST queue a task to run the following step:</p>
-        <ol>
-          <li>
-            <p>Update all affected constrainable properties at the same time.</p>
-            <p>If this causes an "overconstrained" situation, then the user agent
-            MUST ignore the culprit constraints for as long as they
-            overconstrain. The user agent MUST NOT mute the track.</p>
-          </li>
-        </ol>
+        <h2>Downscaling and Frame Decimation</h2>
+
+        <p>For the purposes of the [=SelectSettings=] algorithm, the user agent
+        SHOULD consider all possible combinations of downscaled dimensions that
+        preserve the aspect ratio of the original <a>display surface</a> (to
+        the nearest pixel), and frame rates available through frame decimation,
+        as available [= settings dictionaries =].</p>
+
+        <p>The downscaling and decimation effects of constraints is then
+        effectively governed by the [= fitness distance =] algorithm.</p>
+
+        <p>The intent is for the user agent to produce output that is close to
+        the ideal <code>width</code>, ideal <code>height</code>, and/or ideal
+        <code>frameRate</code> when these are specified, while at all times
+        preserving the aspect ratio of the original <a>display surface</a>.</p>
+
+        <p>The user agent SHOULD downscale by the <a>source pixel ratio</a> by
+        default, unless otherwise directed by applied constraints.</p>
+
+        <p>The user agent MUST NOT crop the captured output.</p>
+
+        <p>The user agent MUST NOT upscale the captured output, or create
+        additional frames, except as needed to preserve high resolutions and
+        frame rates in an aggregated <a>display surface</a>.</p>
+
         <div class="note">
-          <p>While min and exact constraints produce TypeError on
-          getDisplayMedia(), this specification does not alter the
-          track.applyConstraints() method. Therefore, they may instead produce
-          OverconstrainedError or succeed depending on values, and therefore
-          potentially be present to cause this "overconstrained" situation.
-          The max constraint may also cause this, e.g. with aspectRatio. This
-          spec considers these to be edge cases that aren't useful.</p>
+          <p>The max constraint type lets a web application provide a maximum
+          envelope for constrainable properties like width and height. This is
+          helpful to limit extreme aspect ratios, should the end-user resize a
+          [= display surface/window =] or [= display surface/browser =] surface
+          to such an extreme while it is being captured.</p>
         </div>
-        <section>
-          <h2>
-            Downscaling and Frame Decimation
-          </h2>
-          <p>For the purposes of the
-          [=SelectSettings=]
-          algorithm, the user agent SHOULD consider all possible combinations of
-          downscaled dimensions that preserve the aspect ratio of the original
-          <a>display surface</a> (to the nearest pixel), and frame rates
-          available through frame decimation, as available
-          [= settings dictionaries =].
-          </p>
-          <p>The downscaling and decimation effects of constraints is then
-          effectively governed by the
-          [= fitness distance =] algorithm.</p>
-          <p>The intent is for the user agent to produce output that is close to
-          the ideal <code>width</code>, ideal <code>height</code>, and/or
-          ideal <code>frameRate</code> when these are specified, while at all
-          times preserving the aspect ratio of the original <a>display surface</a>.
-          </p>
-          <p>The user agent SHOULD downscale by the <a>source pixel ratio</a> by
-          default, unless otherwise directed by applied constraints.
-          </p>
-          <p>The user agent MUST NOT crop the captured output.</p>
-          <p>The user agent MUST NOT upscale the captured output, or create
-          additional frames, except as needed to preserve high resolutions and
-          frame rates in an aggregated <a>display surface</a>.</p>
-          <div class="note">
-            <p>The max constraint type lets a web application provide a maximum
-            envelope for constrainable properties like width and height. This is
-            helpful to limit extreme aspect ratios, should the end-user resize a
-            [= display surface/window =] or [= display surface/browser =] surface to such an extreme while
-            it is being captured.</p>
-          </div>
-          <p>For each constrainable property of positive numeric type in this
-          specification, the user agent MUST establish a <dfn>floor value</dfn>,
-          representing the smallest allowable value supported by the user agent
-          regardless of source. This value MUST be constant and MUST be greater
-          than <code>0</code>. The user agent is encouraged to support all
-          values above the <a>floor value</a> regardless of source.</p>
-          <div class="note">
-            <p>The purpose of the <a>floor value</a> is to help user agents
-            avoid failing {{MediaDevices/getDisplayMedia()}} with
-            <code>OverconstrainedError</code> after the user has already been
-            prompted, and avoid leaking information about the user's system.
-            </p>
-          </div>
-        </section>
-        <section>
-          <h2><dfn>CaptureStartFocusBehavior</dfn></h2>
-          <p>
-            Describes whether an application invoking {{CaptureController/setFocusBehavior()}}
-            would like the user agent to focus the [=display surface=] associated with
-            that {{CaptureController}}'s [=capture-session=].
-          </p>
-          <pre class="idl">
+
+        <p>For each constrainable property of positive numeric type in this
+        specification, the user agent MUST establish a <dfn>floor value</dfn>,
+        representing the smallest allowable value supported by the user agent
+        regardless of source. This value MUST be constant and MUST be greater
+        than <code>0</code>. The user agent is encouraged to support all values
+        above the <a>floor value</a> regardless of source.</p>
+
+        <div class="note">
+          <p>The purpose of the <a>floor value</a> is to help user agents avoid
+          failing {{MediaDevices/getDisplayMedia()}} with
+          <code>OverconstrainedError</code> after the user has already been
+          prompted, and avoid leaking information about the user's system.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2><dfn>CaptureStartFocusBehavior</dfn>
+        </h2>
+
+        <p>Describes whether an application invoking
+        {{CaptureController/setFocusBehavior()}} would like the user agent to
+        focus the [=display surface=] associated with that
+        {{CaptureController}}'s [=capture-session=].</p>
+
+        <pre class="idl">
             enum CaptureStartFocusBehavior {
               "focus-capturing-application",
               "focus-captured-surface",
               "no-focus-change"
             };    
           </pre>
-          <table  data-dfn-for="CaptureStartFocusBehavior" class="simple">
-            <tbody>
-              <tr>
-                <th colspan="2">
-                  Enumeration description
-                </th>
-              </tr>
-              <tr>
-                <td style="white-space:nowrap">
-                  <dfn id="idl-def-CaptureStartFocusBehavior.focus-capturing-application">focus-capturing-application</dfn>
-                </td>
-                <td>
-                  The application prefers to be focused.
-                </td>
-              </tr>
-              <tr>
-                <td style="white-space:nowrap">
-                  <dfn id="idl-def-CaptureStartFocusBehavior.focus-captured-surface">focus-captured-surface</dfn>
-                </td>
-                <td>
-                  The application prefers that the [=display surface=] associated with
-                  this {{CaptureController}}'s [=capture-session=] be focused.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-CaptureStartFocusBehavior.no-focus-change">no-focus-change</dfn>
-                </td>
-                <td>
-                  The application prefers that the user agent not change focus, leaving focus
-                  with whichever surface last had focus following the user's interaction with
-                  the user agent and/or operating system.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="note">
-            The Working Group is investigating the possibility of 
-            deprecating {{CaptureStartFocusBehavior/"no-focus-change"}}.
-          </div>
-        </section>
-        <section>
-          <h2><dfn>CaptureController</dfn></h2>
-          <p>
-            A {{CaptureController}} object may be associated with a [=capture-session=].
-            It would be used to expose functionality that's associated with
-            the [=capture-session=] itself, rather than with the call
-            to {{MediaDevices/getDisplayMedia()}} or its resulting stream or tracks.
-          </p>
-          <p>
-            Any given [=capture-session=] is associated with at most one {{CaptureController}}.
-          </p>
-          <p>
-            At most one {{CaptureController}} is associated with any given [=capture-session=].
-          </p>
-          <pre class="idl">
+        <table data-dfn-for="CaptureStartFocusBehavior" class="simple">
+          <tbody>
+            <tr>
+              <th colspan="2">Enumeration description</th>
+            </tr>
+
+            <tr>
+              <td style="white-space:nowrap"><dfn id=
+              "idl-def-CaptureStartFocusBehavior.focus-capturing-application">focus-capturing-application</dfn>
+              </td>
+              <td>The application prefers to be focused.</td>
+            </tr>
+
+            <tr>
+              <td style="white-space:nowrap"><dfn id=
+              "idl-def-CaptureStartFocusBehavior.focus-captured-surface">focus-captured-surface</dfn>
+              </td>
+              <td>The application prefers that the [=display surface=]
+              associated with this {{CaptureController}}'s [=capture-session=]
+              be focused.</td>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-CaptureStartFocusBehavior.no-focus-change">no-focus-change</dfn>
+              </td>
+              <td>The application prefers that the user agent not change focus,
+              leaving focus with whichever surface last had focus following the
+              user's interaction with the user agent and/or operating
+              system.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note">
+          The Working Group is investigating the possibility of deprecating
+          {{CaptureStartFocusBehavior/"no-focus-change"}}.
+        </div>
+      </section>
+
+      <section>
+        <h2><dfn>CaptureController</dfn>
+        </h2>
+
+        <p>A {{CaptureController}} object may be associated with a
+        [=capture-session=]. It would be used to expose functionality that's
+        associated with the [=capture-session=] itself, rather than with the
+        call to {{MediaDevices/getDisplayMedia()}} or its resulting stream or
+        tracks.</p>
+
+        <p>Any given [=capture-session=] is associated with at most one
+        {{CaptureController}}.</p>
+
+        <p>At most one {{CaptureController}} is associated with any given
+        [=capture-session=].</p>
+
+        <pre class="idl">
             [Exposed=Window, SecureContext]
             interface CaptureController : EventTarget {
               constructor();
               undefined setFocusBehavior(CaptureStartFocusBehavior focusBehavior);
             };
           </pre>
-          <div class="issue atrisk">
-            <p>
-              {{CaptureController}} does not yet define event handlers, so
-              it is not required to inherit from {{EventTarget}}.  This is
-              for the benefit of future specifications that extend
-              {{CaptureController}} with event handler attributes; if 
-              inheritance is not used, it can be removed.
-            </p>
-          </div>
-          <dl data-link-for="CaptureController" data-dfn-for="CaptureController" class="methods">
-            <dt>
-              <dfn>constructor</dfn>
-            </dt>
-            <dd>
-              Create a new {{CaptureController}} object with the following internal slots:
-              <table class="simple">
-                <thead>
-                  <tr>
-                    <th>Internal Slot</th>
-                    <th>Initial value</th>
-                    <th>Description (<em>non-normative</em>)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><dfn>[[\IsBound]]</dfn></td>
-                    <td><code>false</code></td>
-                    <td>
-                      Whether an application has attempted to associate [=this=]
-                      with a [=capture-session=].
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><dfn>[[\Source]]</dfn></td>
-                    <td><code>null</code></td>
-                    <td>
-                      The source of the associated [=capture-session=].
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><dfn>[[\DisplaySurfaceType]]</dfn></td>
-                    <td><code>null</code></td>
-                    <td>
-                      Once capture starts, this will be set to the type of the captured [=display surface=].
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><dfn>[[\FocusChangeDisabled]]</dfn></td>
-                    <td><code>false</code></td>
-                    <td>
-                      Whether focus-change has been disabled by an external event
-                      or a user agent consideration.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><dfn>[[\FocusDecisionFinalized]]</dfn></td>
-                    <td><code>false</code></td>
-                    <td>
-                      Set to true when the focus decision is finalized.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><dfn>[[\FocusBehavior]]</dfn></td>
-                    <td><code>null</code></td>
-                    <td>
-                      The focus behavior desired by the application.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <p>
-                The user agent MAY set {{CaptureController/[[FocusChangeDisabled]]}}
-                to <code>true</code> at any moment based on its own logic.
-              </p>
-            </dd>
-            <dt>
-              <dfn>setFocusBehavior</dfn>
-            </dt>
-            <dd>
-              <p>
-                Run the following steps:
-              </p>
-              <ol>
-                <li>
-                  <p>
-                    Let <var>focusBehavior</var> be the method's first argument.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    If {{CaptureController/[[Source]]}} is <code>null</code>,
-                    set {{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>
-                    and abort these steps.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    If {{CaptureController/[[Source]]}} has been
-                    <a data-cite="GETUSERMEDIA#source-stopped">stopped</a>,
-                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    If {{CaptureController/[[DisplaySurfaceType]]}} is neither
-                    {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
-                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    If {{CaptureController/[[FocusDecisionFinalized]]}} is <code>true</code>,
-                    [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    Set {{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    Run the [=finalize focus decision algorithm=] on [=this=].
-                  </p>
-                </li>
-              </ol>
-            </dd>
-          </dl>
-          <p>
-            The <dfn>finalize focus decision algorithm</dfn>, given a
-            <var>controller</var>, consists of running
-            the following steps:
-          </p>
-          <ol>
-            <li>
-              <p>
-                If too much time has elapsed since the [=capture-session=] started,
-                the user agent SHOULD set {{CaptureController/[[FocusDecisionFinalized]]}}
-                to <code>true</code>. The timespan is left up to the user agent,
-                but it is recommended that a value of one second be used.
-              </p>
-            </li>
-            <li>
-              <p>
-                If <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
-                is <code>true</code>, abort these steps.
-              </p>
-            </li>
-            <li>
-              <p>
-                Set <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
-                to <code>true</code>.
-              </p>
-            </li>
-            <li>
-              <p>
-                If <var>controller</var>.{{CaptureController/[[FocusChangeDisabled]]}}
-                is <code>true</code>, abort these steps.
-              </p>
-            </li>
-            <li>
-              <p>
-                If <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}} is neither
-                {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
-                abort these steps.
-              </p>
-            </li>
-            <li>
-              <p>
-                Run the following step  [=in parallel=]:
-              </p>
-              <ol>
-                <li>
-                  <p>
-                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
-                    is {{CaptureStartFocusBehavior/"focus-capturing-application"}},
-                    focus the [=display surface=] representing the capturing document.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
-                    is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
-                    focus the [=display surface=] referred to by
-                    <var>controller</var>.{{CaptureController/[[Source]]}}.
-                  </p>
-                </li>
-              </ol>
-            </li>
-          </ol>
-        </section>
-        <section>
-          <h2><dfn>SelfCapturePreferenceEnum</dfn></h2>
-          <p>
-            Describes the different hints an application can provide about whether the
-            [=display surface=] the application is in, should be among the choices
-            offered to the user.
-          </p>
-          <pre class="idl">
+        <div class="issue atrisk">
+          <p>{{CaptureController}} does not yet define event handlers, so it is
+          not required to inherit from {{EventTarget}}. This is for the benefit
+          of future specifications that extend {{CaptureController}} with event
+          handler attributes; if inheritance is not used, it can be
+          removed.</p>
+        </div>
+
+        <dl data-link-for="CaptureController" data-dfn-for="CaptureController"
+        class="methods">
+          <dt><dfn>constructor</dfn>
+          </dt>
+
+          <dd>
+            Create a new {{CaptureController}} object with the following
+            internal slots:
+            <table class="simple">
+              <thead>
+                <tr>
+                  <th>Internal Slot</th>
+                  <th>Initial value</th>
+                  <th>Description (<em>non-normative</em>)</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td><dfn>[[\IsBound]]</dfn>
+                  </td>
+                  <td><code>false</code>
+                  </td>
+                  <td>Whether an application has attempted to associate
+                  [=this=] with a [=capture-session=].</td>
+                </tr>
+
+                <tr>
+                  <td><dfn>[[\Source]]</dfn>
+                  </td>
+                  <td><code>null</code>
+                  </td>
+                  <td>The source of the associated [=capture-session=].</td>
+                </tr>
+
+                <tr>
+                  <td><dfn>[[\DisplaySurfaceType]]</dfn>
+                  </td>
+                  <td><code>null</code>
+                  </td>
+                  <td>Once capture starts, this will be set to the type of the
+                  captured [=display surface=].</td>
+                </tr>
+
+                <tr>
+                  <td><dfn>[[\FocusChangeDisabled]]</dfn>
+                  </td>
+                  <td><code>false</code>
+                  </td>
+                  <td>Whether focus-change has been disabled by an external
+                  event or a user agent consideration.</td>
+                </tr>
+
+                <tr>
+                  <td><dfn>[[\FocusDecisionFinalized]]</dfn>
+                  </td>
+                  <td><code>false</code>
+                  </td>
+                  <td>Set to true when the focus decision is finalized.</td>
+                </tr>
+
+                <tr>
+                  <td><dfn>[[\FocusBehavior]]</dfn>
+                  </td>
+                  <td><code>null</code>
+                  </td>
+                  <td>The focus behavior desired by the application.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>The user agent MAY set
+            {{CaptureController/[[FocusChangeDisabled]]}} to <code>true</code>
+            at any moment based on its own logic.</p>
+          </dd>
+
+          <dt><dfn>setFocusBehavior</dfn>
+          </dt>
+
+          <dd>
+            <p>Run the following steps:</p>
+
+            <ol>
+              <li>
+                <p>Let <var>focusBehavior</var> be the method's first
+                argument.</p>
+              </li>
+
+              <li>
+                <p>If {{CaptureController/[[Source]]}} is <code>null</code>,
+                set {{CaptureController/[[FocusBehavior]]}} to
+                <var>focusBehavior</var> and abort these steps.</p>
+              </li>
+
+              <li>
+                <p>If {{CaptureController/[[Source]]}} has been <a data-cite=
+                "GETUSERMEDIA#source-stopped">stopped</a>, [=exception/throw=]
+                an "{{InvalidStateError}}" {{DOMException}}.</p>
+              </li>
+
+              <li>
+                <p>If {{CaptureController/[[DisplaySurfaceType]]}} is neither
+                {{DisplayCaptureSurfaceType/"browser"}} nor
+                {{DisplayCaptureSurfaceType/"window"}}, [=exception/throw=] an
+                "{{InvalidStateError}}" {{DOMException}}.</p>
+              </li>
+
+              <li>
+                <p>If {{CaptureController/[[FocusDecisionFinalized]]}} is
+                <code>true</code>, [=exception/throw=] an
+                "{{InvalidStateError}}" {{DOMException}}.</p>
+              </li>
+
+              <li>
+                <p>Set {{CaptureController/[[FocusBehavior]]}} to
+                <var>focusBehavior</var>.</p>
+              </li>
+
+              <li>
+                <p>Run the [=finalize focus decision algorithm=] on
+                [=this=].</p>
+              </li>
+            </ol>
+          </dd>
+        </dl>
+
+        <p>The <dfn>finalize focus decision algorithm</dfn>, given a
+        <var>controller</var>, consists of running the following steps:</p>
+
+        <ol>
+          <li>
+            <p>If too much time has elapsed since the [=capture-session=]
+            started, the user agent SHOULD set
+            {{CaptureController/[[FocusDecisionFinalized]]}} to
+            <code>true</code>. The timespan is left up to the user agent, but
+            it is recommended that a value of one second be used.</p>
+          </li>
+
+          <li>
+            <p>If
+            <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
+            is <code>true</code>, abort these steps.</p>
+          </li>
+
+          <li>
+            <p>Set
+            <var>controller</var>.{{CaptureController/[[FocusDecisionFinalized]]}}
+            to <code>true</code>.</p>
+          </li>
+
+          <li>
+            <p>If
+            <var>controller</var>.{{CaptureController/[[FocusChangeDisabled]]}}
+            is <code>true</code>, abort these steps.</p>
+          </li>
+
+          <li>
+            <p>If
+            <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}}
+            is neither {{DisplayCaptureSurfaceType/"browser"}} nor
+            {{DisplayCaptureSurfaceType/"window"}}, abort these steps.</p>
+          </li>
+
+          <li>
+            <p>Run the following step [=in parallel=]:</p>
+
+            <ol>
+              <li>
+                <p>If
+                <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                is {{CaptureStartFocusBehavior/"focus-capturing-application"}},
+                focus the [=display surface=] representing the capturing
+                document.</p>
+              </li>
+
+              <li>
+                <p>If
+                <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
+                focus the [=display surface=] referred to by
+                <var>controller</var>.{{CaptureController/[[Source]]}}.</p>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h2><dfn>SelfCapturePreferenceEnum</dfn>
+        </h2>
+
+        <p>Describes the different hints an application can provide about
+        whether the [=display surface=] the application is in, should be among
+        the choices offered to the user.</p>
+
+        <pre class="idl">
             enum SelfCapturePreferenceEnum {
               "include",
               "exclude"
             };
           </pre>
-          <table  data-dfn-for="SelfCapturePreferenceEnum" class="simple">
-            <thead>
-              <tr>
-            <th>Enum value</th><th>Description</th>
-              </tr>
+        <table data-dfn-for="SelfCapturePreferenceEnum" class="simple">
+          <thead>
+            <tr>
+              <th>Enum value</th>
+              <th>Description</th>
+            </tr>
           </thead>
+
           <tbody>
-              <tr>
-                <td>
-                  <dfn id="idl-def-SelfCapturePreferenceEnum.include">include</dfn>
-                </td>
-                <td>
-                  The application prefers the surface be included
-                  among the choices offered.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-SelfCapturePreferenceEnum.exclude">exclude</dfn>
-                </td>
-                <td>
-                  The application prefers the surface be excluded
-                  from the choices offered.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section>
-          <h2><dfn>SystemAudioPreferenceEnum</dfn></h2>
-          <p>
-            Describes whether an application invoking {{MediaDevices/getDisplayMedia()}}
-            would like the user agent to include system audio among the audio sources
-            offered to the user.
-          </p>
-          <pre class="idl">
+            <tr>
+              <td><dfn id=
+              "idl-def-SelfCapturePreferenceEnum.include">include</dfn>
+              </td>
+              <td>The application prefers the surface be included among the
+              choices offered.</td>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-SelfCapturePreferenceEnum.exclude">exclude</dfn>
+              </td>
+              <td>The application prefers the surface be excluded from the
+              choices offered.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2><dfn>SystemAudioPreferenceEnum</dfn>
+        </h2>
+
+        <p>Describes whether an application invoking
+        {{MediaDevices/getDisplayMedia()}} would like the user agent to include
+        system audio among the audio sources offered to the user.</p>
+
+        <pre class="idl">
             enum SystemAudioPreferenceEnum {
               "include",
               "exclude"
             };
           </pre>
-          <table  data-dfn-for="SystemAudioPreferenceEnum" class="simple">
-            <tbody>
-              <tr>
-                <th colspan="2">
-                  Enumeration description
-                </th>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-SystemAudioPreferenceEnum.include">include</dfn>
-                </td>
-                <td>
-                  The application prefers that options to share system audio be offered to the user
-                  for [=display surface/monitor=] [=display surfaces=].
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-SystemAudioPreferenceEnum.exclude">exclude</dfn>
-                </td>
-                <td>
-                  The application prefers that options to share system audio not be offered to the user.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section>
-          <h2><dfn>SurfaceSwitchingPreferenceEnum</dfn></h2>
-          <p>
-            Describes whether an application invoking {{MediaDevices/getDisplayMedia()}}
-            would like the user agent to offer the user an option to dynamically switch
-            the source [=display surface=] during the capture.
-          </p>
-          <pre class="idl">
+        <table data-dfn-for="SystemAudioPreferenceEnum" class="simple">
+          <tbody>
+            <tr>
+              <th colspan="2">Enumeration description</th>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-SystemAudioPreferenceEnum.include">include</dfn>
+              </td>
+              <td>The application prefers that options to share system audio be
+              offered to the user for [=display surface/monitor=] [=display
+              surfaces=].</td>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-SystemAudioPreferenceEnum.exclude">exclude</dfn>
+              </td>
+              <td>The application prefers that options to share system audio
+              not be offered to the user.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2><dfn>SurfaceSwitchingPreferenceEnum</dfn>
+        </h2>
+
+        <p>Describes whether an application invoking
+        {{MediaDevices/getDisplayMedia()}} would like the user agent to offer
+        the user an option to dynamically switch the source [=display surface=]
+        during the capture.</p>
+
+        <pre class="idl">
             enum SurfaceSwitchingPreferenceEnum {
               "include",
               "exclude"
             };
           </pre>
-          <table  data-dfn-for="SurfaceSwitchingPreferenceEnum" class="simple">
-            <tbody>
-              <tr>
-                <th colspan="2">
-                  Enumeration description
-                </th>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-SurfaceSwitchingPreferenceEnum.include">include</dfn>
-                </td>
-                <td>
-                  The application prefers that an option to dynamically switch the source
-                  [=display surface=] during the capture be offered to the user.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-SurfaceSwitchingPreferenceEnum.exclude">exclude</dfn>
-                </td>
-                <td>
-                  The application prefers that an option to dynamically switch the source
-                  [=display surface=] during the capture NOT be offered to the user.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section>
-          <h2>DisplayMediaStreamOptions</h2>
-          <p>The <dfn>DisplayMediaStreamOptions</dfn> dictionary is used to
-          instruct the user agent what sort of {{MediaStreamTrack}}s may be
-          included in the {{MediaStream}} returned by
-          {{MediaDevices/getDisplayMedia}}.</p>
-          <div>
-            <pre class="idl">
+        <table data-dfn-for="SurfaceSwitchingPreferenceEnum" class="simple">
+          <tbody>
+            <tr>
+              <th colspan="2">Enumeration description</th>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-SurfaceSwitchingPreferenceEnum.include">include</dfn>
+              </td>
+              <td>The application prefers that an option to dynamically switch
+              the source [=display surface=] during the capture be offered to
+              the user.</td>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-SurfaceSwitchingPreferenceEnum.exclude">exclude</dfn>
+              </td>
+              <td>The application prefers that an option to dynamically switch
+              the source [=display surface=] during the capture NOT be offered
+              to the user.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>DisplayMediaStreamOptions</h2>
+
+        <p>The <dfn>DisplayMediaStreamOptions</dfn> dictionary is used to
+        instruct the user agent what sort of {{MediaStreamTrack}}s may be
+        included in the {{MediaStream}} returned by
+        {{MediaDevices/getDisplayMedia}}.</p>
+
+        <div>
+          <pre class="idl">
 dictionary DisplayMediaStreamOptions {
   (boolean or MediaTrackConstraints) video = true;
   (boolean or MediaTrackConstraints) audio = false;
@@ -1201,732 +1271,704 @@ dictionary DisplayMediaStreamOptions {
   SystemAudioPreferenceEnum systemAudio;
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
 };</pre>
-            <section>
-              <h2>Dictionary <a class="idlType">DisplayMediaStreamOptions</a>
-                Members</h2>
-              <dl data-link-for="DisplayMediaStreamOptions" data-dfn-for=
-                "DisplayMediaStreamOptions" class="dictionary-members">
-                <dt><dfn><code>video</code></dfn> of type <code>(boolean or {{MediaTrackConstraints}})</code>,
-                defaulting to <code>true</code></dt>
-                <dd>
-                  <p>If <code>true</code>, it requests that the returned
-                  {{MediaStream}} contain a video track. If a <code>Constraints</code>
-                  structure is provided, it further specifies desired processing
-                  options to be applied to the video track rendition of the
-                  display surface chosen by the user. If <code>false</code>, the
-                  request will be [=rejected=] with a {{TypeError}}, as per the
-                  <a href="#dom-mediadevices-getdisplaymedia">getDisplayMedia
-                  algorithm</a>.</p>
-                </dd>
-                <dt><dfn><code>audio</code></dfn> of type <code>(boolean or {{MediaTrackConstraints}})</code>,
-                defaulting to <code>false</code></dt>
-                <dd>
-                  <p>If <code>true</code>, it signals an interest that the
-                  returned {{MediaStream}} contain an audio track, if
-                  supported and audio is available for display surface chosen by
-                  the user. If a <code>Constraints</code> structure is provided, it
-                  further specifies desired processing options to be applied to
-                  the audio track. If <code>false</code>, the {{MediaStream}}
-                  will not contain an audio track.</p>
-                </dd>
-                <dt>
-                  <dfn><code>controller</code></dfn> of type <code>{{CaptureController}}</code>
-                  </dt>
-                  <dd>
-                    <p>
-                      If present, this {{CaptureController}} object will be associated with the
-                      [=capture-session=]. Through the methods exposed on this object,
-                      the [=capture-session=] can be manipulated.
-                    </p>
-                  </dd>
-                  <dt>
-                  <dfn><code>selfBrowserSurface</code></dfn> of type {{SelfCapturePreferenceEnum}}
-                </dt>
-                <dd>
-                  If present, signals application preference for whether the
-                  [=display surface/browser=] [=display surface=] which is associated with
-                  [=this=]'s [=relevant global object=]'s [=associated Document=]'s
-                  [=top-level browsing context=], should be among the choices
-                  offered to the user. The user agent MAY ignore this hint.
-                </dd>
-                <dt>
-                  <dfn><code>systemAudio</code></dfn> of type {{SystemAudioPreferenceEnum}}
-                </dt>
-                <dd>
-                  If present, signals whether the application would like system audio
-                  to be included among the possible audio sources offered to the user.
-                </dd>
-                <dt>
-                  <dfn><code>surfaceSwitching</code></dfn> of type {{SurfaceSwitchingPreferenceEnum}}
-                </dt>
-                <dd>
-                  If present, signals whether the application would like the
-                  user agent to offer the user an option to dynamically switch
-                  the captured [=display surface=].
-                </dd>
-              </dl>
-            </section>
-          </div>
-        </section>
-        <section>
-          <h2>
-            Extensions to {{MediaTrackSupportedConstraints}}
-          </h2>
-          <p>
-            {{MediaTrackSupportedConstraints}} is extended here with the list of
-            constraints that a user agent recognizes.
-          </p>
-          <pre class="idl"
->partial dictionary MediaTrackSupportedConstraints {
+          <section>
+            <h2>Dictionary <a class="idlType">DisplayMediaStreamOptions</a>
+            Members</h2>
+
+            <dl data-link-for="DisplayMediaStreamOptions" data-dfn-for=
+            "DisplayMediaStreamOptions" class="dictionary-members">
+              <dt><dfn><code>video</code></dfn> of type <code>(boolean or
+              {{MediaTrackConstraints}})</code>, defaulting to
+              <code>true</code></dt>
+
+              <dd>
+                <p>If <code>true</code>, it requests that the returned
+                {{MediaStream}} contain a video track. If a
+                <code>Constraints</code> structure is provided, it further
+                specifies desired processing options to be applied to the video
+                track rendition of the display surface chosen by the user. If
+                <code>false</code>, the request will be [=rejected=] with a
+                {{TypeError}}, as per the <a href=
+                "#dom-mediadevices-getdisplaymedia">getDisplayMedia
+                algorithm</a>.</p>
+              </dd>
+
+              <dt><dfn><code>audio</code></dfn> of type <code>(boolean or
+              {{MediaTrackConstraints}})</code>, defaulting to
+              <code>false</code></dt>
+
+              <dd>
+                <p>If <code>true</code>, it signals an interest that the
+                returned {{MediaStream}} contain an audio track, if supported
+                and audio is available for display surface chosen by the user.
+                If a <code>Constraints</code> structure is provided, it further
+                specifies desired processing options to be applied to the audio
+                track. If <code>false</code>, the {{MediaStream}} will not
+                contain an audio track.</p>
+              </dd>
+
+              <dt><dfn><code>controller</code></dfn> of type
+              <code>{{CaptureController}}</code></dt>
+
+              <dd>
+                <p>If present, this {{CaptureController}} object will be
+                associated with the [=capture-session=]. Through the methods
+                exposed on this object, the [=capture-session=] can be
+                manipulated.</p>
+              </dd>
+
+              <dt><dfn><code>selfBrowserSurface</code></dfn> of type
+              {{SelfCapturePreferenceEnum}}</dt>
+
+              <dd>If present, signals application preference for whether the
+              [=display surface/browser=] [=display surface=] which is
+              associated with [=this=]'s [=relevant global object=]'s
+              [=associated Document=]'s [=top-level browsing context=], should
+              be among the choices offered to the user. The user agent MAY
+              ignore this hint.</dd>
+
+              <dt><dfn><code>systemAudio</code></dfn> of type
+              {{SystemAudioPreferenceEnum}}</dt>
+
+              <dd>If present, signals whether the application would like system
+              audio to be included among the possible audio sources offered to
+              the user.</dd>
+
+              <dt><dfn><code>surfaceSwitching</code></dfn> of type
+              {{SurfaceSwitchingPreferenceEnum}}</dt>
+
+              <dd>If present, signals whether the application would like the
+              user agent to offer the user an option to dynamically switch the
+              captured [=display surface=].</dd>
+            </dl>
+          </section>
+        </div>
+      </section>
+
+      <section>
+        <h2>Extensions to {{MediaTrackSupportedConstraints}}</h2>
+
+        <p>{{MediaTrackSupportedConstraints}} is extended here with the list of
+        constraints that a user agent recognizes.</p>
+
+        <pre class="idl">partial dictionary MediaTrackSupportedConstraints {
   boolean displaySurface = true;
   boolean logicalSurface = true;
   boolean cursor = true;
   boolean restrictOwnAudio = true;
   boolean suppressLocalAudioPlayback = true;
 };</pre>
-          <dl  data-dfn-for="MediaTrackSupportedConstraints"
-          class="dictionary-members">
-            <dt>
-              <dfn>displaySurface</dfn> of type {{boolean}}, defaulting to <code>true</code>
-            </dt>
-            <dd>
-              <p>
-                Whether {{displaySurface}} constraint is recognized.
-              </p>
-            </dd>
-            <dt>
-              <dfn><code>logicalSurface</code></dfn> of type {{boolean}}, defaulting to <code>true</code>
-            </dt>
-            <dd>
-              <p>
-                Whether {{logicalSurface}} constraint is recognized.
-              </p>
-            </dd>
-            <dt>
-              <dfn>cursor</dfn> of type {{boolean}}, defaulting to <code>true</code>
-            </dt>
-            <dd>
-              <p>
-                Whether {{cursor}} constraint is recognized.
-              </p>
-            </dd>
-            <dt>
-              <dfn>restrictOwnAudio</dfn> of type {{boolean}}, defaulting to <code>true</code>
-            </dt>
-            <dd>
-              <p>
-                Whether {{restrictOwnAudio}} constraint is
-                recognized.
-              </p>
-            </dd>
-            <dt>
-              <dfn>suppressLocalAudioPlayback</dfn> of type {{boolean}}, defaulting to <code>true</code>
-            </dt>
-            <dd>
-              <p>
-                Whether {{suppressLocalAudioPlayback}} constraint is recognized.
-              </p>
-            </dd>
-          </dl>
-        </section>
-        <section>
-          <h2>
-            Extensions to {{MediaTrackConstraintSet}}
-          </h2>
-          <p>
-            {{MediaTrackConstraintSet}} is used for reading the current status of constraints.
-          </p>
-          <pre class="idl"
->partial dictionary MediaTrackConstraintSet {
+        <dl data-dfn-for="MediaTrackSupportedConstraints" class=
+        "dictionary-members">
+          <dt><dfn>displaySurface</dfn> of type {{boolean}}, defaulting to
+          <code>true</code></dt>
+
+          <dd>
+            <p>Whether {{displaySurface}} constraint is recognized.</p>
+          </dd>
+
+          <dt><dfn><code>logicalSurface</code></dfn> of type {{boolean}},
+          defaulting to <code>true</code></dt>
+
+          <dd>
+            <p>Whether {{logicalSurface}} constraint is recognized.</p>
+          </dd>
+
+          <dt><dfn>cursor</dfn> of type {{boolean}}, defaulting to
+          <code>true</code></dt>
+
+          <dd>
+            <p>Whether {{cursor}} constraint is recognized.</p>
+          </dd>
+
+          <dt><dfn>restrictOwnAudio</dfn> of type {{boolean}}, defaulting to
+          <code>true</code></dt>
+
+          <dd>
+            <p>Whether {{restrictOwnAudio}} constraint is recognized.</p>
+          </dd>
+
+          <dt><dfn>suppressLocalAudioPlayback</dfn> of type {{boolean}},
+          defaulting to <code>true</code></dt>
+
+          <dd>
+            <p>Whether {{suppressLocalAudioPlayback}} constraint is
+            recognized.</p>
+          </dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>Extensions to {{MediaTrackConstraintSet}}</h2>
+
+        <p>{{MediaTrackConstraintSet}} is used for reading the current status
+        of constraints.</p>
+
+        <pre class="idl">partial dictionary MediaTrackConstraintSet {
   ConstrainDOMString displaySurface;
   ConstrainBoolean logicalSurface;
   ConstrainDOMString cursor;
   ConstrainBoolean restrictOwnAudio;
   ConstrainBoolean suppressLocalAudioPlayback;
 };</pre>
-          <dl data-dfn-for="MediaTrackConstraintSet" class=
-          "dictionary-members">
-            <dt>
-              <dfn><code>displaySurface</code></dfn> of type {{ConstrainDOMString}}
-            </dt>
-            <dd>
-              <p>
-                The type of [=display surface=] that is being captured. This assumes values from
-                the {{DisplayCaptureSurfaceType}} enumeration.
-              </p>
-            </dd>
-            <dt>
-              <dfn>logicalSurface</dfn> of type {{ConstrainBoolean}}
-            </dt>
-            <dd>
-              <p>
-                A value of <code>true</code> indicates capture of a [=logical display surface=];
-                a value of <code>false</code> indicates a capture of a [=visible display surface=].
-              </p>
-            </dd>
-            <dt>
-               <dfn>cursor</dfn> of type {{ConstrainDOMString}}
-            </dt>
-            <dd>
-              <p>
-                Assumes values from the {{CursorCaptureConstraint}} enumeration that
-                determines if and when the cursor is included in the captured display surface.
-              </p>
-            </dd>
-            <dt>
-              <dfn>restrictOwnAudio</dfn> of type {{ConstrainBoolean}}
-            </dt>
-            <dd>
-              <p>
-                This constraint is only applicable to audio tracks. See
-                {{restrictOwnAudio}}.
-              </p>
-            </dd>
-            <dt>
-              <dfn>suppressLocalAudioPlayback</dfn> of type {{ConstrainBoolean}}
-            </dt>
-            <dd>
-              <p>
-                This constraint is only applicable to audio tracks. See
-                {{suppressLocalAudioPlayback}}.
-              </p>
-            </dd>
-          </dl>
-        </section>
-        <section>
-          <h2>
-            Extensions to {{MediaTrackSettings}}
-          </h2>
-          <p>
-            When the {{MediaStreamTrack/getSettings()}}
-            method is invoked on a video stream track, the user agent must return the extended
-            {{MediaTrackSettings}}
-            dictionary, representing the current status of the underlying user agent.
-          </p>
-          <pre class="idl"
->partial dictionary MediaTrackSettings {
+        <dl data-dfn-for="MediaTrackConstraintSet" class="dictionary-members">
+          <dt><dfn><code>displaySurface</code></dfn> of type
+          {{ConstrainDOMString}}</dt>
+
+          <dd>
+            <p>The type of [=display surface=] that is being captured. This
+            assumes values from the {{DisplayCaptureSurfaceType}}
+            enumeration.</p>
+          </dd>
+
+          <dt><dfn>logicalSurface</dfn> of type {{ConstrainBoolean}}</dt>
+
+          <dd>
+            <p>A value of <code>true</code> indicates capture of a [=logical
+            display surface=]; a value of <code>false</code> indicates a
+            capture of a [=visible display surface=].</p>
+          </dd>
+
+          <dt><dfn>cursor</dfn> of type {{ConstrainDOMString}}</dt>
+
+          <dd>
+            <p>Assumes values from the {{CursorCaptureConstraint}} enumeration
+            that determines if and when the cursor is included in the captured
+            display surface.</p>
+          </dd>
+
+          <dt><dfn>restrictOwnAudio</dfn> of type {{ConstrainBoolean}}</dt>
+
+          <dd>
+            <p>This constraint is only applicable to audio tracks. See
+            {{restrictOwnAudio}}.</p>
+          </dd>
+
+          <dt><dfn>suppressLocalAudioPlayback</dfn> of type
+          {{ConstrainBoolean}}</dt>
+
+          <dd>
+            <p>This constraint is only applicable to audio tracks. See
+            {{suppressLocalAudioPlayback}}.</p>
+          </dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>Extensions to {{MediaTrackSettings}}</h2>
+
+        <p>When the {{MediaStreamTrack/getSettings()}} method is invoked on a
+        video stream track, the user agent must return the extended
+        {{MediaTrackSettings}} dictionary, representing the current status of
+        the underlying user agent.</p>
+
+        <pre class="idl">partial dictionary MediaTrackSettings {
   DOMString displaySurface;
   boolean logicalSurface;
   DOMString cursor;
   boolean restrictOwnAudio;
   boolean suppressLocalAudioPlayback;
 };</pre>
-          <dl data-link-for="MediaTrackSettings" data-dfn-for="MediaTrackSettings" class=
-          "dictionary-members">
-            <dt>
-              <dfn>displaySurface</dfn> of type {{DOMString}}
-            </dt>
-            <dd>
-              <p>
-                The type of [=display surface=] that is being captured. This assumes values from
-                the {{DisplayCaptureSurfaceType}} enumeration.
-              </p>
-            </dd>
-            <dt>
-              <dfn>logicalSurface</dfn> of type {{boolean}}
-            </dt>
-            <dd>
-              <p>
-                A value of <code>true</code> indicates capture of a <a>logical display surface</a>;
-                a value of <code>false</code> indicates a capture capture of a <a>visible display
-                surface</a>.
-              </p>
-            </dd>
-            <dt>
-               <dfn>cursor</dfn> of type {{DOMString}}
-            </dt>
-            <dd>
-              <p>
-                Assumes values from the {{CursorCaptureConstraint}} enumeration that
-                determines if and when the cursor is included in the captured display surface.
-              </p>
-            </dd>
-            <dt>
-               <dfn>restrictOwnAudio</dfn> of type {{boolean}}
-            </dt>
-            <dd>
-              <p>
-                Indicates whether the <a href="#dfn-restrictownaudio">restrictOwnAudio</a>
-                constraint is applied (<code>true</code>) or not (<code>false</code>).
-              </p>
-            </dd>
-            <dt>
-               <dfn>suppressLocalAudioPlayback</dfn> of type {{boolean}}
-            </dt>
-            <dd>
-              <p>
-                Indicates whether or not the application instructed the user agent to apply
-                [=local audio playback suppression=] to the source.
-              </p>
-            </dd>
-          </dl>
-        </section>
-        <section>
-          <h2>
-            Extensions to {{MediaTrackCapabilities}}
-          </h2>
-          <p>
-            When the {{MediaStreamTrack/getCapabilities()}} method is invoked on a video stream track,
-            the user agent must return the extended {{MediaTrackCapabilities}} dictionary,
-            representing the capabilities of the underlying user agent.
-          </p>
-          <pre class="idl"
->partial dictionary MediaTrackCapabilities {
+        <dl data-link-for="MediaTrackSettings" data-dfn-for=
+        "MediaTrackSettings" class="dictionary-members">
+          <dt><dfn>displaySurface</dfn> of type {{DOMString}}</dt>
+
+          <dd>
+            <p>The type of [=display surface=] that is being captured. This
+            assumes values from the {{DisplayCaptureSurfaceType}}
+            enumeration.</p>
+          </dd>
+
+          <dt><dfn>logicalSurface</dfn> of type {{boolean}}</dt>
+
+          <dd>
+            <p>A value of <code>true</code> indicates capture of a <a>logical
+            display surface</a>; a value of <code>false</code> indicates a
+            capture capture of a <a>visible display surface</a>.</p>
+          </dd>
+
+          <dt><dfn>cursor</dfn> of type {{DOMString}}</dt>
+
+          <dd>
+            <p>Assumes values from the {{CursorCaptureConstraint}} enumeration
+            that determines if and when the cursor is included in the captured
+            display surface.</p>
+          </dd>
+
+          <dt><dfn>restrictOwnAudio</dfn> of type {{boolean}}</dt>
+
+          <dd>
+            <p>Indicates whether the <a href=
+            "#dfn-restrictownaudio">restrictOwnAudio</a> constraint is applied
+            (<code>true</code>) or not (<code>false</code>).</p>
+          </dd>
+
+          <dt><dfn>suppressLocalAudioPlayback</dfn> of type {{boolean}}</dt>
+
+          <dd>
+            <p>Indicates whether or not the application instructed the user
+            agent to apply [=local audio playback suppression=] to the
+            source.</p>
+          </dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>Extensions to {{MediaTrackCapabilities}}</h2>
+
+        <p>When the {{MediaStreamTrack/getCapabilities()}} method is invoked on
+        a video stream track, the user agent must return the extended
+        {{MediaTrackCapabilities}} dictionary, representing the capabilities of
+        the underlying user agent.</p>
+
+        <pre class="idl">partial dictionary MediaTrackCapabilities {
   DOMString displaySurface;
   boolean logicalSurface;
   sequence&lt;DOMString&gt; cursor;
 };</pre>
-          <dl data-link-for="MediaTrackCapabilities" data-dfn-for="MediaTrackCapabilities" class=
-          "dictionary-members">
-            <dt>
-              <dfn>displaySurface</dfn> of type {{DOMString}}
-            </dt>
-            <dd>
-              <p>
-                MUST be the same value as is returned by {{MediaStreamTrack/getSettings()}},
-                rendering this property immutable from the application's viewpoint.
-              </p>
-            </dd>
-            <dt>
-              <dfn>logicalSurface</dfn> of type {{boolean}}
-            </dt>
-            <dd>
-              <p>
-                MUST be the same value as is returned by {{MediaStreamTrack/getSettings()}},
-                rendering this property immutable from the application's viewpoint.
-              </p>
-            </dd>
-            <dt>
-               <dfn>cursor</dfn> of type sequence&lt;DOMString&gt;
-            </dt>
-            <dd>
-              <p>
-                MUST consist of exactly the set of values from {{CursorCaptureConstraint}}
-                that the user agent is capable of supporting for this track.
-              </p>
-            </dd>
+        <dl data-link-for="MediaTrackCapabilities" data-dfn-for=
+        "MediaTrackCapabilities" class="dictionary-members">
+          <dt><dfn>displaySurface</dfn> of type {{DOMString}}</dt>
+
+          <dd>
+            <p>MUST be the same value as is returned by
+            {{MediaStreamTrack/getSettings()}}, rendering this property
+            immutable from the application's viewpoint.</p>
+          </dd>
+
+          <dt><dfn>logicalSurface</dfn> of type {{boolean}}</dt>
+
+          <dd>
+            <p>MUST be the same value as is returned by
+            {{MediaStreamTrack/getSettings()}}, rendering this property
+            immutable from the application's viewpoint.</p>
+          </dd>
+
+          <dt><dfn>cursor</dfn> of type sequence&lt;DOMString&gt;</dt>
+
+          <dd>
+            <p>MUST consist of exactly the set of values from
+            {{CursorCaptureConstraint}} that the user agent is capable of
+            supporting for this track.</p>
+          </dd>
         </dl>
-        </section>
-        <section>
-          <h2>
-            <dfn>DisplayCaptureSurfaceType</dfn>
-          </h2>
-          <p>
-            The {{DisplayCaptureSurfaceType}} enumeration describes the different
-            types of display surface.
-          </p>
-          <pre class="idl"
->enum DisplayCaptureSurfaceType {
+      </section>
+
+      <section>
+        <h2><dfn>DisplayCaptureSurfaceType</dfn>
+        </h2>
+
+        <p>The {{DisplayCaptureSurfaceType}} enumeration describes the
+        different types of display surface.</p>
+
+        <pre class="idl">enum DisplayCaptureSurfaceType {
   "monitor",
   "window",
   "browser"
 };</pre>
-          <table  data-dfn-for="DisplayCaptureSurfaceType"
-              class="simple">
-            <thead>
-              <tr>
-            <th>Enum value</th><th>Description</th>
-              </tr>
+        <table data-dfn-for="DisplayCaptureSurfaceType" class="simple">
+          <thead>
+            <tr>
+              <th>Enum value</th>
+              <th>Description</th>
+            </tr>
           </thead>
+
           <tbody>
-              <tr>
-                <td>
-                  <dfn id="idl-def-DisplayCaptureSurfaceType.monitor">monitor</dfn>
-                </td>
-                <td>
-                  a [=display surface/monitor=] [=display surface=], physical display, or collection of
-                  physical displays
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-DisplayCaptureSurfaceType.window">window</dfn>
-                </td>
-                <td>
-                  a [= display surface/window =] [=display surface=], or single application window
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-DisplayCaptureSurfaceType.browser">browser</dfn>
-                </td>
-                <td>
-                  a [=display surface/browser=] [=display surface=], or single browser window
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section>
-          <h2>
-            <dfn>CursorCaptureConstraint</dfn>
-          </h2>
-          <p>
-            The {{CursorCaptureConstraint}} enumerates the conditions
-            under which the cursor is captured.
-          </p>
-          <pre class="idl"
->enum CursorCaptureConstraint {
+            <tr>
+              <td><dfn id=
+              "idl-def-DisplayCaptureSurfaceType.monitor">monitor</dfn>
+              </td>
+              <td>a [=display surface/monitor=] [=display surface=], physical
+              display, or collection of physical displays</td>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-DisplayCaptureSurfaceType.window">window</dfn>
+              </td>
+              <td>a [= display surface/window =] [=display surface=], or single
+              application window</td>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-DisplayCaptureSurfaceType.browser">browser</dfn>
+              </td>
+              <td>a [=display surface/browser=] [=display surface=], or single
+              browser window</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2><dfn>CursorCaptureConstraint</dfn>
+        </h2>
+
+        <p>The {{CursorCaptureConstraint}} enumerates the conditions under
+        which the cursor is captured.</p>
+
+        <pre class="idl">enum CursorCaptureConstraint {
   "never",
   "always",
   "motion"
 };</pre>
-          <table  data-dfn-for="CursorCaptureConstraint"
-              class="simple">
+        <table data-dfn-for="CursorCaptureConstraint" class="simple">
           <thead>
-              <tr>
-            <th>Enum value</th><th>Description</tH>
-              </tr>
+            <tr>
+              <th>Enum value</th>
+              <th>Description</th>
+            </tr>
           </thead>
+
           <tbody>
-              <tr>
-                <td>
-                  <dfn id="idl-def-CursorCaptureConstraint.never">never</dfn>
-                </td>
-                <td>
-                  a {{CursorCaptureConstraint/"never"}} cursor capture constraint omits the cursor from the captured display surface.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id="idl-def-CursorCaptureConstraint.always">always</dfn>
-                </td>
-                <td>
-                  a {{CursorCaptureConstraint/"always"}} cursor capture constraint includes the cursor in the captured display surface.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <dfn id=
-                  "idl-def-CursorCaptureConstraint.motion">motion</dfn>
-                </td>
-                <td>
-                  a {{CursorCaptureConstraint/"motion"}} cursor capture constraint includes the cursor in the captured display
-                  surface when the cursor/pointer is moved. The captured cursor is removed when there
-                  is no further movement of the pointer/cursor for certain period of time, as determined
-                  by the <a>user agent</a>.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-      </section>
-      <section>
-        <h2 id="deviceId">
-          Device Identifiers
-        </h2>
-        <p>
-          Each potential source of capture is treated by this API as a discrete media source.
-          However, display capture sources MUST NOT be enumerated by {{MediaDevices/enumerateDevices()}},
-          since this would reveal too much information about the host
-          system.
-        </p>
-        <p>
-          Display capture sources therefore cannot be selected with the {{MediaTrackSupportedConstraints/deviceId}}
-          constraint, since their {{MediaDeviceInfo/deviceId}}s are not exposed.
-        </p>
-        <div class="note">
-          <p>
-          This is not to be confused with the stable and private id of the same
-          name used in algorithms to implement privacy indicators.
-          </p>
-        </div>
+            <tr>
+              <td><dfn id="idl-def-CursorCaptureConstraint.never">never</dfn>
+              </td>
+              <td>a {{CursorCaptureConstraint/"never"}} cursor capture
+              constraint omits the cursor from the captured display
+              surface.</td>
+            </tr>
+
+            <tr>
+              <td><dfn id="idl-def-CursorCaptureConstraint.always">always</dfn>
+              </td>
+              <td>a {{CursorCaptureConstraint/"always"}} cursor capture
+              constraint includes the cursor in the captured display
+              surface.</td>
+            </tr>
+
+            <tr>
+              <td><dfn id="idl-def-CursorCaptureConstraint.motion">motion</dfn>
+              </td>
+              <td>
+                a {{CursorCaptureConstraint/"motion"}} cursor capture
+                constraint includes the cursor in the captured display surface
+                when the cursor/pointer is moved. The captured cursor is
+                removed when there is no further movement of the pointer/cursor
+                for certain period of time, as determined by the <a>user
+                agent</a>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     </section>
-    <section data-cite="permissions">
-      <h1 id="permissions-intergration">Permissions Integration</h1>
-      <p>
-        <cite>Screen Capture</cite> is a [=powerful feature=] which is identified by the
-        [=powerful feature/name=] "display-capture", requiring [=express permission=] to be used.
-      </p>
-      <p>
-        As required for integration with the [[[Permissions]]] specification, this specification defines the following:
-      </p>
-      <dl>
-        <dt>
-          [=powerful feature/permission state constraints=]
-        </dt>
-        <dd>
-          Valid values for this descriptor's <a>permission state</a> are
-          {{PermissionState/"prompt"}} and {{PermissionState/"denied"}}. The user agent MUST NOT
-          ever set this descriptor's <a>permission state</a> to {{PermissionState/"granted"}}.
-        </dd>
-      </dl>
-    </section>
+
     <section>
-      <h1 id=feature-policy-integration>Permissions Policy Integration</h1>
-      <p>This specification defines a [=policy-controlled feature=]
-      identified by the string
-      <dfn class="permission export"><code>"display-capture"</code></dfn>.
-      Its [=policy-controlled feature/default allowlist=] is <code>"self"</code>.
+      <h2 id="deviceId">Device Identifiers</h2>
+
+      <p>Each potential source of capture is treated by this API as a discrete
+      media source. However, display capture sources MUST NOT be enumerated by
+      {{MediaDevices/enumerateDevices()}}, since this would reveal too much
+      information about the host system.</p>
+
+      <p>Display capture sources therefore cannot be selected with the
+      {{MediaTrackSupportedConstraints/deviceId}} constraint, since their
+      {{MediaDeviceInfo/deviceId}}s are not exposed.</p>
+
       <div class="note">
-        <p>A [=document=]'s
-        [=Document/permissions policy=]
-        determines whether any content in that document is allowed to use
-        {{MediaDevices/getDisplayMedia}}. If disabled in any document, no content in
-        the document will be
-        [=allowed to use=]
-        {{MediaDevices/getDisplayMedia}}. This is enforced by the
-        [=prompt the user to choose=] algorithm.
-        </p>
+        <p>This is not to be confused with the stable and private id of the
+        same name used in algorithms to implement privacy indicators.</p>
       </div>
     </section>
+  </section>
+
+  <section data-cite="permissions">
+    <h1 id="permissions-intergration">Permissions Integration</h1>
+
+    <p><cite>Screen Capture</cite> is a [=powerful feature=] which is
+    identified by the [=powerful feature/name=] "display-capture", requiring
+    [=express permission=] to be used.</p>
+
+    <p>As required for integration with the [[[Permissions]]] specification,
+    this specification defines the following:</p>
+
+    <dl>
+      <dt>[=powerful feature/permission state constraints=]</dt>
+
+      <dd>
+        Valid values for this descriptor's <a>permission state</a> are
+        {{PermissionState/"prompt"}} and {{PermissionState/"denied"}}. The user
+        agent MUST NOT ever set this descriptor's <a>permission state</a> to
+        {{PermissionState/"granted"}}.
+      </dd>
+    </dl>
+  </section>
+
+  <section>
+    <h1 id="feature-policy-integration">Permissions Policy Integration</h1>
+
+    <p>This specification defines a [=policy-controlled feature=] identified by
+    the string <dfn class=
+    "permission export"><code>"display-capture"</code></dfn>. Its
+    [=policy-controlled feature/default allowlist=] is <code>"self"</code>.</p>
+
+    <div class="note">
+      <p>A [=document=]'s [=Document/permissions policy=] determines whether
+      any content in that document is allowed to use
+      {{MediaDevices/getDisplayMedia}}. If disabled in any document, no content
+      in the document will be [=allowed to use=]
+      {{MediaDevices/getDisplayMedia}}. This is enforced by the [=prompt the
+      user to choose=] algorithm.</p>
+    </div>
+  </section>
+
+  <section>
+    <h1>Privacy Indicator Requirements</h1>
+
+    <p>This specification extends the <a data-cite=
+    "GETUSERMEDIA#privacy-indicator-requirements">Privacy Indicator
+    Requirements</a> of {{MediaDevices/getUserMedia()}} to include
+    {{MediaDevices/getDisplayMedia}}.</p>
+
+    <p>References in this specification to [[\devicesLiveMap]],
+    [[\devicesAccessibleMap]], and [[\kindsAccessibleMap]] refer to the
+    definitions already created to support Privacy Indicator Requirements for
+    {{MediaDevices/getUserMedia()}}.</p>
+
+    <p>For each <var>kind</var> of device that {{MediaDevices/getDisplayMedia}}
+    exposes, using a stable and private id for the device, <var>deviceId</var>,
+    set <var>kind</var> to <code>"Display"</code> + <var>kind</var>, and do the
+    following:</p>
+
+    <ul>
+      <li>Define <var>any&lt;kind&gt;Accessible</var> (e.g.
+      <var>anyDisplayVideoAccessible</var>) as the logical OR of the
+      [[\kindsAccessibleMap]]<var>[kind]</var> value and all the
+      [[\devicesAccessibleMap]]<var>[deviceId]</var> values for devices of that
+      kind, and initialize all values to <code>false</code>.</li>
+
+      <li>Define <var>any&lt;kind&gt;Accessible</var> (e.g.
+      <var>anyDisplayVideoAccessible</var>) as the logical OR of the
+      [[\kindsAccessibleMap]]<var>[kind]</var> value and all the
+      [[\devicesAccessibleMap]]<var>[deviceId]</var> values for devices of that
+      kind, and initialize all values to <code>false</code>.</li>
+
+      <li>Define any<var>&lt;kind&gt;Live</var> (e.g.
+      <var>anyDisplayVideoLive</var>) to be the logical OR of all the
+      [[\devicesLiveMap]]<var>[deviceId]</var> values for devices of that
+      kind.</li>
+    </ul>
+
+    <p>Then, given the new definitions above, the requirements on the user
+    agent are those specified in <a data-cite=
+    "GETUSERMEDIA#privacy-indicator-requirements">Privacy Indicator
+    Requirements</a> of {{MediaDevices/getUserMedia()}}.</p>
+
+    <div class="note">
+      <p>Even though there's a single permission descriptor for
+      {{MediaDevices/getDisplayMedia}}, the above definitions distinguish by
+      kind to enable user agents to implement privacy indicators that show the
+      end-user the specific kinds of display sources that are being shared at
+      any point.</p>
+    </div>
+
+    <div class="note">
+      <p>Since this specification forbids user agents from persisting
+      {{PermissionState/"granted"}} permissions, only the "Live" indicators are
+      significant.</p>
+    </div>
+
+    <p>The user agent MUST NOT fire the <code><a>devicechange</a></code> event
+    based on changes in the set of available sources from
+    {{MediaDevices/getDisplayMedia}}.</p>
+  </section>
+
+  <section>
+    <h2>Security and Permissions</h2>
+
+    <p>This section is informative; however, it notes some serious risks to
+    platform security if the advice it contains are not adhered to.</p>
+
+    <p>The risks to user privacy and security posed by capture of displayed
+    content are twofold. The immediate and obvious risk is that users
+    inadvertently share content that they did not wish to share, or might not
+    have realized would be shared.</p>
+
+    <p>Display capture presents a less obvious risk to the cross site request
+    forgery protections offered by the browser sandbox. Display and capture of
+    information that is also under the control of an application, even
+    indirectly, can allow that application to access information that would
+    otherwise be inaccessible to it directly. For example, the canvas API does
+    not permit sampling of a canvas, or conversion to an accessible form if it
+    is not origin-clean [[2DCONTEXT]].</p>
+
+    <p>This issue is discussed in further detail in [[!RTCWEB-SECURITY-ARCH]]
+    and [[!RTCWEB-SECURITY]].</p>
+
+    <p>Display capture that includes browser windows, particularly those that
+    are under any form of control by the application, risks violation of these
+    basic security protections. This risk is not entirely contained to browser
+    windows, since control channels between browser applications and other
+    applications, depending on the operating system. The key consideration is
+    whether the captured <a>display surface</a> could be somehow induced to
+    present information that would otherwise be secret from the application
+    that is receiving the resulting media.</p>
+
     <section>
-      <h1>Privacy Indicator Requirements</h1>
-      <p>This specification extends the <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
-        Privacy Indicator Requirements</a> of
-      {{MediaDevices/getUserMedia()}} to include {{MediaDevices/getDisplayMedia}}.</p>
-      <p>References in this specification to [[\devicesLiveMap]],
-      [[\devicesAccessibleMap]], and [[\kindsAccessibleMap]] refer to the
-      definitions already created to support Privacy Indicator Requirements for
-      {{MediaDevices/getUserMedia()}}.</p>
-      <p>For each <var>kind</var> of device that
-      {{MediaDevices/getDisplayMedia}} exposes, using a stable and private id
-      for the device, <var>deviceId</var>, set <var>kind</var>
-      to <code>"Display"</code> + <var>kind</var>, and do the following:
-      <ul>
-        <li>Define <var>any&lt;kind&gt;Accessible</var> (e.g.
-          <var>anyDisplayVideoAccessible</var>) as the
-          logical OR of the [[\kindsAccessibleMap]]<var>[kind]</var> value and all
-          the [[\devicesAccessibleMap]]<var>[deviceId]</var> values for devices of
-          that kind, and initialize all values to <code>false</code>.
-        </li>
-        <li>Define <var>any&lt;kind&gt;Accessible</var> (e.g.
-          <var>anyDisplayVideoAccessible</var>) as the
-          logical OR of the [[\kindsAccessibleMap]]<var>[kind]</var> value and all
-          the [[\devicesAccessibleMap]]<var>[deviceId]</var> values for devices of
-          that kind, and initialize all values to <code>false</code>.
-        </li>
-        <li>Define any<var>&lt;kind&gt;Live</var> (e.g.
-          <var>anyDisplayVideoLive</var>) to be the logical OR of all the
-          [[\devicesLiveMap]]<var>[deviceId]</var> values for devices of that
-          kind.
-        </li>
-      </ul>
-      <p>Then, given the new definitions above, the requirements on the user
-      agent are those specified in <a data-cite="GETUSERMEDIA#privacy-indicator-requirements">
-        Privacy Indicator Requirements</a> of
-      {{MediaDevices/getUserMedia()}}.</p>
-      <div class="note">
-        <p>
-        Even though there's a single permission descriptor for {{MediaDevices/getDisplayMedia}},
-        the above definitions distinguish by kind to enable user agents
-        to implement privacy indicators that show the end-user the specific kinds
-        of display sources that are being shared at any point.
-        </p>
-      </div>
-      <div class="note">
-        <p>
-        Since this specification forbids user agents from persisting {{PermissionState/"granted"}}
-        permissions, only the "Live" indicators are significant.
-        </p>
-      </div>
-      <p>The user agent MUST NOT fire the <code><a>devicechange</a></code> event based on
-      changes in the set of available sources from {{MediaDevices/getDisplayMedia}}.</p>
+      <h2>Capturing Logical or Visible Display Surfaces</h2>
+
+      <p>Capture of <a>logical display surfaces</a> causes there to be a
+      potential for content to be shared that a user is not made aware of. A
+      <a>logical display surface</a> might render information that a user did
+      not intend to expose. This can be more easily recognized if this
+      information is visible. Such means are likely ineffectual against a
+      machine, but a human recipient is less able to process content that
+      appears only briefly.</p>
+
+      <p>It is encouraged that information that is not currently rendered to
+      the screen be obscured in captures unless the application has been
+      specifically authorized to access that content through <a>elevated
+      permissions</a>.</p>
+
+      <p>How obscured areas of the <a>logical display surface</a> are captured
+      to produce a <a>visible display surface</a> capture MAY vary. Some
+      applications, like presentation software, benefit from having obscured
+      portions of the screen render the image that appeared prior to being
+      obscured. Freezing images can cause visual artifacts for changing
+      content, or hide the fact that content is being obscured. Note that
+      frozen portions of a capture can be incorrectly perceived as a bug.
+      Alternatively, obscured areas might be replaced with content that marks
+      them as being obscured, such as a grey color or hatching.</p>
+
+      <p>Some systems may only capture the <a>logical display surface</a>.
+      Devices with small screens, for instance, do not typically have the
+      concept of a [= display surface/window =], and render applications in
+      full screen modes only. These systems might provide a capture of an
+      application that is not currently visible, which could be unusable
+      without capturing the <a>logical display surface</a>.</p>
+
+      <p>When capturing a [= display surface/window =] or other <a>display
+      surface</a> that is partially transparent, any content behind it will not
+      be captured.</p>
+
+      <p>There is a risk that the user prompt be exposed to the web page for a
+      short amount of time by the newly created {{MediaStreamTrack}}, for
+      instance if the user selects the screen on which the user prompt is
+      displayed. In the case of the user prompt displaying previews of the
+      various surfaces available for selection, those previews will not be
+      captured by the newly created {{MediaStreamTrack}}.</p>
+
+      <h2>Capturing Audio</h2>
+
+      <p>{{MediaDevices/getDisplayMedia}} allows capturing audio alongside
+      video, this poses privacy and security concern as this may expose
+      additional information about system applications, and the set of shared
+      audio sources are not necessarily the same as the set of shared video
+      sources. For example, the capture of the video of a [= display
+      surface/window =] that is accompanied by the audio of the entire system,
+      including applications unrelated to that window, will not be shared
+      without <a>active user consent</a>. It is important that the user is
+      aware of what content will be shared, including any possible audio. It is
+      strongly encouraged that the user is allowed to give consent to video but
+      not audio, resulting in a video-only stream. This ensures that the
+      request for audio is always optional and does not restrict the user's
+      choices compared to a video-only request.</p>
     </section>
+
     <section>
-      <h2>
-        Security and Permissions
-      </h2>
-      <p>
-        This section is informative; however, it notes some serious risks to platform security if
-        the advice it contains are not adhered to.
-      </p>
-      <p>
-        The risks to user privacy and security posed by capture of displayed content are twofold.
-        The immediate and obvious risk is that users inadvertently share content that they did not
-        wish to share, or might not have realized would be shared.
-      </p>
-      <p>
-        Display capture presents a less obvious risk to the cross site request forgery protections
-        offered by the browser sandbox. Display and capture of information that is also under the
-        control of an application, even indirectly, can allow that application to access
-        information that would otherwise be inaccessible to it directly. For example, the canvas
-        API does not permit sampling of a canvas, or conversion to an accessible form if it is not
-        origin-clean [[2DCONTEXT]].
-      </p>
-      <p>
-        This issue is discussed in further detail in [[!RTCWEB-SECURITY-ARCH]] and
-        [[!RTCWEB-SECURITY]].
-      </p>
-      <p>
-        Display capture that includes browser windows, particularly those that are under any form
-        of control by the application, risks violation of these basic security protections. This
-        risk is not entirely contained to browser windows, since control channels between browser
-        applications and other applications, depending on the operating system. The key
-        consideration is whether the captured <a>display surface</a> could be somehow induced to
-        present information that would otherwise be secret from the application that is receiving
-        the resulting media.
-      </p>
+      <h2>Authorizing Display Capture</h2>
+
+      <p>This document encourages implementations to provide additional
+      limitations on the mechanisms used to affirm user consent. These
+      limitations are designed to mitigate the security and privacy risks that
+      the API poses.</p>
+
+      <p>Two forms of consent interaction are described: <a>active user
+      consent</a> and a range of <a>elevated permissions</a>. These are
+      non-normative recommandations only.</p>
+
       <section>
-        <h2>
-          Capturing Logical or Visible Display Surfaces
-        </h2>
-        <p>
-          Capture of <a>logical display surfaces</a> causes there to be a potential for content to
-          be shared that a user is not made aware of. A <a>logical display surface</a> might render
-          information that a user did not intend to expose. This can be more easily recognized if
-          this information is visible. Such means are likely ineffectual against a machine, but a
-          human recipient is less able to process content that appears only briefly.
-        </p>
-        <p>
-          It is encouraged that information that is not currently rendered to the screen be
-          obscured in captures unless the application has been specifically authorized to access
-          that content through <a>elevated permissions</a>.
-        </p>
-        <p>
-          How obscured areas of the <a>logical display surface</a> are captured to produce a
-          <a>visible display surface</a> capture MAY vary. Some applications, like presentation
-          software, benefit from having obscured portions of the screen render the image that
-          appeared prior to being obscured. Freezing images can cause visual artifacts for changing
-          content, or hide the fact that content is being obscured. Note that frozen portions of a
-          capture can be incorrectly perceived as a bug. Alternatively, obscured areas might be
-          replaced with content that marks them as being obscured, such as a grey color or
-          hatching.
-        </p>
-        <p>
-          Some systems may only capture the <a>logical display surface</a>. Devices with small
-          screens, for instance, do not typically have the concept of a [= display surface/window =], and render
-          applications in full screen modes only. These systems might provide a capture of an
-          application that is not currently visible, which could be unusable without capturing the
-          <a>logical display surface</a>.
-        </p>
-        <p>
-          When capturing a [= display surface/window =] or other <a>display surface</a> that is partially transparent,
-          any content behind it will not be captured.
-        </p>
-        <p>
-          There is a risk that the user prompt be exposed to the web page for a short amount of time
-          by the newly created {{MediaStreamTrack}}, for instance if the user
-          selects the screen on which the user prompt is displayed.
-          In the case of the user prompt displaying previews of the various surfaces available for selection,
-          those previews will not be captured by the newly created {{MediaStreamTrack}}.
-        </p>
-        <h2>
-          Capturing Audio
-        </h2>
-        <p>
-          {{MediaDevices/getDisplayMedia}} allows capturing audio alongside video, this poses
-          privacy and security concern as this may expose additional information about system
-          applications, and the set of shared audio sources are not necessarily the same as the set
-          of shared video sources. For example, the capture of the video of a
-          [= display surface/window =] that is accompanied by the audio of the entire system, including applications
-          unrelated to that window, will not be shared without <a>active
-          user consent</a>. It is important that the user is aware of what content will be shared,
-          including any possible audio. It is strongly encouraged that the user is allowed to give
-          consent to video but not audio, resulting in a video-only stream. This ensures that the
-          request for audio is always optional and does not restrict the user's choices compared to
-          a video-only request.
-        </p>
+        <h2>Active User Consent</h2>
+
+        <p><dfn>Active user consent</dfn> is sufficient where there is little
+        or no risk of an application gaining information that the user did not
+        intend to share. These cases can be identified by those where the
+        application that requests capture has no control over what is rendered
+        to the captured <a>display surface</a>.</p>
+
+        <p>To prevent applications from limiting the available choices
+        presented to a user with the goal of promoting a particular choice, the
+        {{MediaDevices/getDisplayMedia}} API does not permit the use of
+        constraints to narrow the set of options presented.</p>
       </section>
+
       <section>
-        <h2>
-          Authorizing Display Capture
-        </h2>
-        <p>
-          This document encourages implementations to provide additional limitations on
-          the mechanisms used to affirm user consent. These limitations are designed to mitigate
-          the security and privacy risks that the API poses.
-        </p>
-        <p>
-          Two forms of consent interaction are described: <a>active user consent</a> and a range of
-          <a>elevated permissions</a>. These are non-normative recommandations only.
-        </p>
-        <section>
-          <h2>
-            Active User Consent
-          </h2>
-          <p>
-            <dfn>Active user consent</dfn> is sufficient where there is little or no risk of an
-            application gaining information that the user did not intend to share. These cases can
-            be identified by those where the application that requests capture has no control over
-            what is rendered to the captured <a>display surface</a>.
-          </p>
-          <p>
-            To prevent applications from limiting the available choices presented to a user with
-            the goal of promoting a particular choice, the {{MediaDevices/getDisplayMedia}} API
-            does not permit the use of constraints to narrow the set of options presented.
-          </p>
-        </section>
-        <section>
-          <h2>
-            Elevated Permissions
-          </h2>
-          <p>
-            It is strongly advised that <dfn>elevated permissions</dfn> be required to access any
-            <a>display surface</a> that might be used to circumvent cross-origin protections for
-            content. The key goal of this consent process is not just to demonstrate that a user
-            intends to share content, but to also to determine that the user exhibits an elevated
-            level of trust in the application that is being granted access.
-          </p>
-          <p>
-            Several different controls might be provided to grant <a>elevated permissions</a>. This
-            section describes several different capabilities that could be independently granted. A
-            <a>user agent</a> might opt to prohibit access to any capability that requires
-            <a>elevated permissions</a>.
-          </p>
-          <p>
-            If access to these surfaces is supported, it is strongly advised that any mechanism to
-            acquire <a>elevated permissions</a> not rely solely on simple prompts for user consent.
-            Any action needs to ensure that a decision to authorize an application with elevated
-            privileges is deliberate. For instance, a <a>user agent</a> might require a process
-            equivalent to software installation to signify that user consent for <a>elevated
-            permissions</a> is granted.
-          </p>
-          <p>
-            An <a>elevated permissions</a> experience could allow the <a>user agent</a> to
-            communicate the risks associated with enabling this feature, or at least to convey the
-            need for augmented trust in the application.
-          </p>
-          <p>
-            Note that <a>elevated permissions</a> are not a substitute for <a>active user
-            consent</a>. It is advised that <a>user agents</a> still present users with the ability
-            to select what is shared, even for applications that have <a>elevated permissions</a>.
-          </p>
-        </section>
-        <section>
-          <h2>
-            Capabilities Depending on Elevated Permissions
-          </h2>
-          <p>
-            <a>Elevated permissions</a> are encouraged as a prerequisite for access to capture of
-            [= display surface/monitor =] or [= display surface/browser =] <a>display surfaces</a>. Note that capture of a
-            complete [= display surface/monitor =] is included because this could include a window from the
-            <a>user agent</a>.
-          </p>
-          <p>
-            Similarly, <a>elevated permissions</a> are an encouraged prerequisite for access to
-            <a>logical display surfaces</a>, where that would not ordinarily be provided.
-          </p>
-          <p>
-            It is encouraged that <a>elevated permissions</a> that are granted to an origin
-            be persisted. An <a>elevated permissions</a> process in part relies on its novelty to
-            ensure that it correctly captures user intent.
-          </p>
-        </section>
+        <h2>Elevated Permissions</h2>
+
+        <p>It is strongly advised that <dfn>elevated permissions</dfn> be
+        required to access any <a>display surface</a> that might be used to
+        circumvent cross-origin protections for content. The key goal of this
+        consent process is not just to demonstrate that a user intends to share
+        content, but to also to determine that the user exhibits an elevated
+        level of trust in the application that is being granted access.</p>
+
+        <p>Several different controls might be provided to grant <a>elevated
+        permissions</a>. This section describes several different capabilities
+        that could be independently granted. A <a>user agent</a> might opt to
+        prohibit access to any capability that requires <a>elevated
+        permissions</a>.</p>
+
+        <p>If access to these surfaces is supported, it is strongly advised
+        that any mechanism to acquire <a>elevated permissions</a> not rely
+        solely on simple prompts for user consent. Any action needs to ensure
+        that a decision to authorize an application with elevated privileges is
+        deliberate. For instance, a <a>user agent</a> might require a process
+        equivalent to software installation to signify that user consent for
+        <a>elevated permissions</a> is granted.</p>
+
+        <p>An <a>elevated permissions</a> experience could allow the <a>user
+        agent</a> to communicate the risks associated with enabling this
+        feature, or at least to convey the need for augmented trust in the
+        application.</p>
+
+        <p>Note that <a>elevated permissions</a> are not a substitute for
+        <a>active user consent</a>. It is advised that <a>user agents</a> still
+        present users with the ability to select what is shared, even for
+        applications that have <a>elevated permissions</a>.</p>
       </section>
+
       <section>
-        <h2>
-          Feedback and Interface During Capture
-        </h2>
-        <p>
-          Implementations are advised to provide user feedback and control mechanisms similar to
-          those offered users when sharing a camera or microphone, as encouraged in
-          [[GETUSERMEDIA]].
-        </p>
-        <p>
-          It is important that a user be aware that content is being shared when content is
-          actively being captured. <a>User agents</a> are advised to display a prominent indicator
-          while content is being captured. In addition to an indicator, a <a>user agent</a> is
-          advised to provide a means to learn precisely what is being shared; while this capability
-          is trivially provided by an application by rendering the captured content, this
-          information allows a user to accurately assess what is being shared.
-        </p>
-        <p>
-          In addition to feedback mechanisms, a means to for the user to stop any active capture is
-          advisable.
-        </p>
+        <h2>Capabilities Depending on Elevated Permissions</h2>
+
+        <p><a>Elevated permissions</a> are encouraged as a prerequisite for
+        access to capture of [= display surface/monitor =] or [= display
+        surface/browser =] <a>display surfaces</a>. Note that capture of a
+        complete [= display surface/monitor =] is included because this could
+        include a window from the <a>user agent</a>.</p>
+
+        <p>Similarly, <a>elevated permissions</a> are an encouraged
+        prerequisite for access to <a>logical display surfaces</a>, where that
+        would not ordinarily be provided.</p>
+
+        <p>It is encouraged that <a>elevated permissions</a> that are granted
+        to an origin be persisted. An <a>elevated permissions</a> process in
+        part relies on its novelty to ensure that it correctly captures user
+        intent.</p>
       </section>
     </section>
-  </body>
+
+    <section>
+      <h2>Feedback and Interface During Capture</h2>
+
+      <p>Implementations are advised to provide user feedback and control
+      mechanisms similar to those offered users when sharing a camera or
+      microphone, as encouraged in [[GETUSERMEDIA]].</p>
+
+      <p>It is important that a user be aware that content is being shared when
+      content is actively being captured. <a>User agents</a> are advised to
+      display a prominent indicator while content is being captured. In
+      addition to an indicator, a <a>user agent</a> is advised to provide a
+      means to learn precisely what is being shared; while this capability is
+      trivially provided by an application by rendering the captured content,
+      this information allows a user to accurately assess what is being
+      shared.</p>
+
+      <p>In addition to feedback mechanisms, a means to for the user to stop
+      any active capture is advisable.</p>
+    </section>
+  </section>
+</body>
 </html>
