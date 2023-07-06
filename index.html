@@ -962,34 +962,34 @@
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[Source]]}} is <code>null</code>,
-                    set {{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>
+                    If [=this=].{{CaptureController/[[Source]]}} is <code>null</code>,
+                    set [=this=].{{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>
                     and abort these steps.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[Source]]}} has been
+                    If [=this=].{{CaptureController/[[Source]]}} has been
                     <a data-cite="GETUSERMEDIA#source-stopped">stopped</a>,
                     [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[DisplaySurfaceType]]}} is neither
+                    If [=this=].{{CaptureController/[[DisplaySurfaceType]]}} is neither
                     {{DisplayCaptureSurfaceType/"browser"}} nor {{DisplayCaptureSurfaceType/"window"}},
                     [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If {{CaptureController/[[FocusDecisionFinalized]]}} is <code>true</code>,
+                    If [=this=].{{CaptureController/[[FocusDecisionFinalized]]}} is <code>true</code>,
                     [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
                   </p>
                 </li>
                 <li>
                   <p>
-                    Set {{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>.
+                    Set [=this=].{{CaptureController/[[FocusBehavior]]}} to <var>focusBehavior</var>.
                   </p>
                 </li>
                 <li>
@@ -1041,19 +1041,24 @@
             </li>
             <li>
               <p>
-                Run the following step  [=in parallel=]:
+                Let <var>focusBehavior</var> be
+                <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}.
+              </p>
+            <li>
+              <p>
+                Run the following steps [=in parallel=]:
               </p>
               <ol>
                 <li>
                   <p>
-                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                    If <var>focusBehavior</var>
                     is {{CaptureStartFocusBehavior/"focus-capturing-application"}},
                     focus the [=display surface=] representing the capturing document.
                   </p>
                 </li>
                 <li>
                   <p>
-                    If <var>controller</var>.{{CaptureController/[[FocusBehavior]]}}
+                    If <var>focusBehavior</var>
                     is {{CaptureStartFocusBehavior/"focus-captured-surface"}},
                     focus the [=display surface=] referred to by
                     <var>controller</var>.{{CaptureController/[[Source]]}}.
