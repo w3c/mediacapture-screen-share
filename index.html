@@ -1173,6 +1173,47 @@
           </table>
         </section>
         <section>
+          <h2><dfn>MonitorTypeSurfacesEnum</dfn></h2>
+          <p>
+            Describes whether an application invoking {{MediaDevices/getDisplayMedia()}}
+            would like the user agent to offer the user an option to dynamically switch
+            the source [=display surface=] during the capture.
+          </p>
+          <pre class="idl">
+            enum MonitorTypeSurfacesEnum {
+              "include",
+              "exclude"
+            };
+          </pre>
+          <table  data-dfn-for="MonitorTypeSurfacesEnum" class="simple">
+            <tbody>
+              <tr>
+                <th colspan="2">
+                  Enumeration description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-MonitorTypeSurfacesEnum.include">include</dfn>
+                </td>
+                <td>
+                  The application prefers that [=display surfaces=] presented to the include
+                  those of type [=display surface/monitor=].
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn id="idl-def-MonitorTypeSurfacesEnum.exclude">exclude</dfn>
+                </td>
+                <td>
+                  The application prefers that [=display surfaces=] presented to the exclude
+                  those of type [=display surface/monitor=].
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
           <h2>DisplayMediaStreamOptions</h2>
           <p>The <dfn>DisplayMediaStreamOptions</dfn> dictionary is used to
           instruct the user agent what sort of {{MediaStreamTrack}}s may be
@@ -1187,6 +1228,7 @@ dictionary DisplayMediaStreamOptions {
   SelfCapturePreferenceEnum selfBrowserSurface;
   SystemAudioPreferenceEnum systemAudio;
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
+  MonitorTypeSurfacesEnum monitorTypeSurfaces;
 };</pre>
             <section>
               <h2>Dictionary <a class="idlType">DisplayMediaStreamOptions</a>
@@ -1250,6 +1292,24 @@ dictionary DisplayMediaStreamOptions {
                   If present, signals whether the application would like the
                   user agent to offer the user an option to dynamically switch
                   the captured [=display surface=].
+                </dd>
+                <dt>
+                  <dfn><code>monitorTypeSurfaces</code></dfn> of type {{MonitorTypeSurfacesEnum}}
+                </dt>
+                <dd>
+                  <p>
+                    If present, signals whether the application would like the user agent
+                    to offer the user the option to choose [=display surfaces=] whose type
+                    is [=display surface/monitor=].
+                  </p>
+                  <div class="note">
+                    <p>
+                      {{monitorTypeSurfaces}} is just a hint. The user agent may still offer to the user
+                      the option to capture [=display surfaces=] of type [=display surface/monitor=].
+                      Applications are therefore encouraged to still check the type of the tracks
+                      they receive.
+                    </p>
+                  </div>        
                 </dd>
               </dl>
             </section>
