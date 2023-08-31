@@ -1185,8 +1185,8 @@
                   <dfn id="idl-def-MonitorTypeSurfacesEnum.include">include</dfn>
                 </td>
                 <td>
-                  The application prefers that [=display surfaces=] presented to the include
-                  those of type [=display surface/monitor=].
+                  The application prefers that the [=display surfaces=] presented
+                  to the user include those of type [=display surface/monitor=].
                 </td>
               </tr>
               <tr>
@@ -1194,8 +1194,8 @@
                   <dfn id="idl-def-MonitorTypeSurfacesEnum.exclude">exclude</dfn>
                 </td>
                 <td>
-                  The application prefers that [=display surfaces=] presented to the exclude
-                  those of type [=display surface/monitor=].
+                  The application prefers that the [=display surfaces=] presented
+                  to the user exclude those of type [=display surface/monitor=].
                 </td>
               </tr>
             </tbody>
@@ -1294,8 +1294,8 @@ dictionary DisplayMediaStreamOptions {
                     <p>
                       {{monitorTypeSurfaces}} is just a hint. The user agent may still offer to the user
                       the option to capture [=display surfaces=] of type [=display surface/monitor=].
-                      Applications are therefore encouraged to still check the type of the tracks
-                      they receive.
+                      Applications are therefore encouraged to still check the {{displaySurface}} setting
+                      of  of the tracks they receive.
                     </p>
                   </div>        
                 </dd>
