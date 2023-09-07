@@ -397,6 +397,28 @@
                   <li>
                     If <var>controller</var> is not <code>null</code>, run the following steps:
                     <ol>
+                    <li>
+                      <p>Let <var>toplevelTraversable</var> be the <a>current settings object</a>'s's [=relevant global object=]'s
+                        [=navigable=]'s [=top-level traversable=].</p>
+                    </li>
+                    <li>
+                      <p>Listen to <var>toplevelTraversable</var>'s change of <a data-cite="!HTML/#system-focus">system focus</a>.</p>
+                      <p>The first time <var>toplevelTraversable</var> is losing <a data-cite="!HTML/#system-focus">focus</a>,
+                        queue a global task on the <a data-cite="!HTML/#user-interaction-task-source">user interaction task source</a>
+                        given <a>current settings object</a>'s [=relevant global object=] to run the following step:
+                        <ol>
+                          <li><p>Set <var>controller</var>.{{CaptureController/[[FocusChangeDisabled]]}} to <code>true</code>.</p></li>
+                        </ol>
+                      </p>
+                      <p class="note">
+                        These steps ensure {{CaptureController}} will not override explicit focus actions made by the user,
+                        typically if a user decides to switch to another surface shortly after starting capture.
+                        This algorithm describes what to do for surface pickers implemented by the <a>user agent</a> but the same
+                        requirement applies to surface pickers implemented outside of the <a>user agent</a>,
+                        where the loss of capturing document focus is not necessarily the signal triggering setting
+                        {{CaptureController/[[FocusChangeDisabled]]}} to <code>true</code>.
+                      </p>
+                    </li>
                       <li>
                         <p>
                           Set <var>controller</var>.{{CaptureController/[[Source]]}}
