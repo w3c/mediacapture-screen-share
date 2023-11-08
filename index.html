@@ -301,6 +301,16 @@
 
 
             <li>
+              <p>If <var>options</var>.{{DisplayMediaStreamOptions/windowAudio}}
+              is set to {{WindowAudioPreferenceEnum/"exclude"}}, and
+              <var>options</var>.{{DisplayMediaStreamOptions/systemAudio}}
+              is either unset or set to {{SystemAudioPreferenceEnum/"include"}},
+              return a promise [=reject|rejected=] with a newly [=exception/created=]
+              {{TypeError}}.</p>
+            </li>
+
+
+            <li>
               <p>For each [= map/exist | existing =] member in
               <var>constraints</var> whose value, <var>CS</var>, is a
               dictionary, run the following steps:</p>
@@ -1400,6 +1410,53 @@
 
 
       <section>
+        <h2><dfn>WindowAudioPreferenceEnum</dfn>
+        </h2>
+
+
+        <p>Describes whether an application invoking
+        {{MediaDevices/getDisplayMedia()}} would like the user agent to include
+        window audio among the audio sources offered to the user.</p>
+
+        <pre class="idl">
+            enum WindowAudioPreferenceEnum {
+              "include",
+              "exclude"
+            };
+          </pre>
+
+        <table data-dfn-for="WindowAudioPreferenceEnum" class="simple">
+          <tbody>
+            <tr>
+              <th colspan="2">Enumeration description</th>
+            </tr>
+
+
+            <tr>
+              <td><dfn id=
+              "idl-def-WindowAudioPreferenceEnum.include">include</dfn>
+              </td>
+
+              <td>The application prefers that options to share window audio be
+              offered to the user for [=display surface/monitor=] [=display
+              surfaces=].</td>
+            </tr>
+
+
+            <tr>
+              <td><dfn id=
+              "idl-def-WindowAudioPreferenceEnum.exclude">exclude</dfn>
+              </td>
+
+              <td>The application prefers that options to share window audio
+              not be offered to the user.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <section>
         <h2><dfn>SystemAudioPreferenceEnum</dfn>
         </h2>
 
@@ -1560,6 +1617,7 @@ dictionary DisplayMediaStreamOptions {
   (boolean or MediaTrackConstraints) audio = false;
   CaptureController controller;
   SelfCapturePreferenceEnum selfBrowserSurface;
+  WindowAudioPreferenceEnum windowAudio;
   SystemAudioPreferenceEnum systemAudio;
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
   MonitorTypeSurfacesEnum monitorTypeSurfaces;
@@ -1628,6 +1686,15 @@ dictionary DisplayMediaStreamOptions {
               [=associated Document=]'s [=top-level browsing context=], should
               be among the choices offered to the user. The user agent MAY
               ignore this hint.</dd>
+
+
+              <dt><dfn><code>windowAudio</code></dfn> of type
+              {{WindowAudioPreferenceEnum}}</dt>
+
+
+              <dd>If present, signals whether the application would like window
+              audio to be included among the possible audio sources offered to
+              the user.</dd>
 
 
               <dt><dfn><code>systemAudio</code></dfn> of type
