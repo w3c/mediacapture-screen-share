@@ -404,25 +404,37 @@
 
                 <li>
                   <p>[=Prompt the user to choose=] a display device, for a
-                  {{PermissionDescriptor}} with its
-                  {{PermissionDescriptor/name}} set to "display-capture",
-                  resulting in a set of provided media.</p>
+                    {{PermissionDescriptor}} with its
+                    {{PermissionDescriptor/name}} set to "display-capture",
+                    resulting in a <dfn>capture-source-set</dfn>,
+                    <var>sources</var>, that meets the following
+                    requirements:</p>
 
 
-                  <p>The provided media MUST include precisely one video
-                  track.</p>
+                  <ol>
+                    <li>
+                      <p>The [=capture-source-set=] MUST include precisely one
+                      video track.</p>
+                    </li>
 
 
-                  <p>The provided media MUST include at most one audio track.
-                  This audio track MUST NOT be included if audio was not
-                  specified in <var>requestedMediaTypes</var>, or if it was
-                  specified as <code>false</code>.</p>
+                    <li>
+                      <p>The [=capture-source-set=] MUST include at most one
+                        audio track. This audio track MUST NOT be included if
+                        audio was not specified in
+                        <var>requestedMediaTypes</var>, or if it was specified
+                        as <code>false</code>.</p>
+                    </li>
 
 
-                  <p>The devices chosen MUST be the ones determined by the
-                  user. Once selected, the source of a {{MediaStreamTrack}}
-                  MUST NOT change, unless the user permits it through their
-                  interaction with the user agent.</p>
+                    <li>
+                      <p>The sources in the [=capture-source-set=] MUST
+                        represent the devices determined by the user. Once
+                        selected, the source of a {{MediaStreamTrack}} MUST NOT
+                        change, unless the user permits it through their
+                        interaction with the user agent.</p>
+                    </li>
+                  </ol>
 
 
                   <p>User agents are encouraged to warn users against sharing
@@ -434,9 +446,9 @@
 
 
                   <p>If the result of the request is
-                  {{PermissionState/"granted"}}, then for each device that is
-                  sourcing the provided media, using a stable and private id
-                  for the device, <var>deviceId</var>, set
+                  {{PermissionState/"granted"}}, then for each device with a
+                  source in [=capture-source-set=], using a stable and private
+                  id for the device, <var>deviceId</var>, set
                   [[\devicesLiveMap]]<var>[deviceId]</var> to
                   <code>true</code>, if it isn’t already <code>true</code>, and
                   set the [[\devicesAccessibleMap]]<var>[deviceId]</var> to
@@ -490,7 +502,8 @@
                 <li>
                   <p>This invocation of {{MediaDevices/getDisplayMedia()}} is
                   now considered to have produced a new
-                  <dfn>capture-session</dfn>.</p>
+                  <dfn>capture-session</dfn>, with the associated
+                  [=capture-source-set=], <var>sources</var>.</p>
                 </li>
 
 
@@ -643,6 +656,106 @@
 
       <p>Note that accepting the {{displaySurface}} constraint does not limit
       user selection.</p>
+    </section>
+
+
+    <section>
+      <h2 id="changing-display-surfaces">Changing Display Surfaces</h2>
+
+
+      <p>
+        The user agent MUST NOT change the [=display surface=]
+        associated with a [=capture-session=] unless the user has
+        explicitly indicated that they want this change to be
+        performed by interacting with user agent or operating system.
+
+        If the user indicates a change of [=display surface=], the
+        user agent MUST run the following steps:
+      </p>
+
+
+      <ol>
+        <li>
+          <p>If the [=capture-sessions=] does not have an associated
+          {{CaptureController}}, <var>controller</var>, abort these steps.</p>
+        </li>
+
+
+        <li>
+          <p>If <var>controller.{{CaptureController/[[DisplaySurfaceChangeCallback]]}}</var>
+              is null, abort these steps.</p>
+        </li>
+
+
+        <li>
+          <p>Stop delivering frames from all sources in the
+            [=capture-source-set=] associated with the [=capture-session=].
+          </p>
+        </li>
+
+
+         <li>
+           <p>Queue tasks to stop all tracks connected to sources in the
+             [=capture-source-set=] associated with the [=capture-session=].
+          </p>
+        </li>
+
+
+        <li>
+          <p>Let <var>newSources</var> be the set of sources selected by the
+            user when the user chose a new [=display surface=].</p>
+
+
+          <p>
+            <var>newSources</var> MUST fulfill the same requirements as the
+            [=capture-source-set=] formed when {{MediaDevices/getDisplayMedia}}
+            is called.</p>
+        </li>
+
+
+        <li>
+          <p>
+            Let <var>newSources</var> replace the [=capture-source-set=]
+            associated with the [=capture-session=]
+          </p>
+        </li>
+
+
+        <li>
+          <p>Let <var>stream</var> be a new {{MediaStream}} with a new
+            {{MediaStreamTrack}} for each source in <var>newSources</var>.
+        </li>
+
+
+        <li>
+          <p>Run the [=ApplyConstraints algorithm=] on all tracks in
+            <var>stream</var> with the appropriate constraints. Should
+            this fail, abort these steps.</p>
+        </li>
+
+
+        <li>
+          <p>Set
+            <var>controller</var>.{{CaptureController/[[Source]]}} to
+            the <var>stream</var>'s video track's
+            <a data-cite="GETUSERMEDIA#dfn-source-0">[[\Source]]</a>.</p>
+        </li>
+
+
+        <li>
+          <p>Set
+            <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}}
+            to the <var>stream</var>'s video track's
+            {{DisplayCaptureSurfaceType}}.</p>
+        </li>
+
+
+        <li>
+          <p>Invoke
+            <var>controller</var>.{{CaptureController/[[DisplaySurfaceChangeCallback]]}}
+            with <var>stream</var> as the argument.</p>
+        </li>
+      </ol>
     </section>
 
 
@@ -1077,6 +1190,30 @@
         </div>
       </section>
 
+      <section>
+        <h2><dfn>DisplaySurfaceChangeCallback</dfn></h2>
+        <p>
+          Used to receive a new {{MediaStream}} if the [=display surface=]
+          associated with a [=capture-session=] changes.
+        </p>
+        <div>
+          <pre class="idl" >callback DisplaySurfaceChangeCallback = undefined
+               (MediaStream stream);</pre>
+          <section>
+            <h2>Callback <a class="idlType">DisplaySurfaceChangeCallback</a>
+              Parameters</h2>
+            <dl data-link-for="NavigatorUserMediaSuccessCallback" data-dfn-for=
+                "NavigatorUserMediaSuccessCallback" class="callback-members">
+              <dt>stream of type {{MediaStream}}</dt>
+              <dd>
+                A new {{MediaStream}} with a new {{MediaStreamTrack}} for each
+                source in the [=capture-source-set=] associated with the
+                [=display surface=] that the user has selected.
+              </dd>
+            </dl>
+          </section>
+        </div>
+      </section>
 
       <section>
         <h2><dfn>CaptureController</dfn>
@@ -1102,6 +1239,7 @@
             interface CaptureController : EventTarget {
               constructor();
               undefined setFocusBehavior(CaptureStartFocusBehavior focusBehavior);
+              undefined setDisplaySurfaceChangeCallback(DisplaySurfaceChangeCallback callback);
             };
           </pre>
 
@@ -1204,6 +1342,19 @@
 
                   <td>The focus behavior desired by the application.</td>
                 </tr>
+
+
+                <tr>
+                  <td><dfn>[[\DisplaySurfaceChangeCallback]]</dfn>
+                  </td>
+
+                  <td><code>null</code>
+                  </td>
+
+                  <td>A callback called when the [=display surface=] of the
+                  associated [=capture-session=] changes.</td>
+                </tr>
+
               </tbody>
             </table>
 
@@ -1269,6 +1420,45 @@
               <li>
                 <p>Run the [=finalize focus decision algorithm=] on
                 [=this=].</p>
+              </li>
+            </ol>
+          </dd>
+
+
+          <dt><dfn>setDisplaySurfaceChangeCallback</dfn>
+          </dt>
+
+
+          <dd>
+            <p>Run the following steps:</p>
+
+
+            <ol>
+              <li>
+                <p>Let <var>callback</var> be the method's first argument.</p>
+              </li>
+
+
+              <li>
+                <p>If [=this=].{{CaptureController/[[IsBound]]}} is
+                <code>true</code>,
+                [=exception/throw=] an "{{InvalidStateError}}"
+                {{DOMException}}.</p>
+              </li>
+
+
+              <li>
+                <p>If
+                  [=this=].{{CaptureController/[[DisplaySurfaceChangeCallback]]}}
+                  is not <code>null</code>, [=exception/throw=] an
+                  "{{InvalidStateError}}" {{DOMException}}.</p>
+              </li>
+
+
+              <li>
+                <p>Set
+                [=this=].{{CaptureController/[[DisplaySurfaceChangeCallback]]}}
+                to <var>callback</var>.</p>
               </li>
             </ol>
           </dd>
