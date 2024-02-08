@@ -244,6 +244,11 @@
 
           <ol>
             <li>
+              <p>Let <var>mediaDevices</var> be [=this=].</p>
+            </li>
+
+
+            <li>
               <p>Let <var>controller</var> be
               <var>options</var>.<code>controller</code> if present, or
               <code>null</code> otherwise.</p>
@@ -468,8 +473,25 @@
 
 
                 <li>
-                  <p>Let <var>stream</var> be the {{MediaStream}} object for
-                  which the user granted permission.</p>
+                  <p>Let <var>stream</var> be a {{MediaStream}} object.</p>
+                </li>
+
+                <li>
+                  <p>For each <var>source</var> that the user granted permission
+                  to, run the following steps:</p>
+                    <ol>
+                      <li>
+                        <p>Let <var>track</var> be the result of [=create a
+                        MediaStreamTrack|creating a MediaStreamTrack=]
+                        with <var>source</var> and <var>mediaDevices</var>.</p>
+                      </li>
+                      <li>
+                        <p>Add <var>track</var> to <var>stream</var>'s track set.</p>
+                      </li>
+                      <li>
+                        <p>[=Tie track source to MediaDevices=] with <var>source</var> and <var>mediaDevices</var>.</p>
+                      </li>
+                    </ol>
                 </li>
 
 
