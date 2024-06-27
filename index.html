@@ -634,14 +634,14 @@
 
       <p>When <a>display surface</a> enters an inaccessible state that is not
       necessarily permanent, the user agent MUST [=queue a task=] on the
-      [=user interaction task source=] that [= set a
+      [=user interaction task source=] that [= MediaStreamTrack/set a
       track's muted state|sets the muted state =] of the corresponding media
       track to <code>true</code>.</p>
 
 
       <p>When <a>display surface</a> exits an inaccessible state and becomes
       accessible, the user agent MUST [=queue a task=] on the
-      [=user interaction task source=] that [= set a track's muted
+      [=user interaction task source=] that [= MediaStreamTrack/set a track's muted
       state|sets the muted state =] of the corresponding media track to
       <code>false</code>.</p>
 
@@ -649,7 +649,7 @@
       <p>When a <a>display surface</a> enters an inaccessible state that is
       permanent (such as the source [= display surface/window=] closing), the
       user agent MUST [=queue a task=] on the [=user interaction task source=]
-      that [= track/ended | ends =] the corresponding media track.</p>
+      that [= MediaStreamTrack/ended | ends =] the corresponding media track.</p>
 
 
       <p>A stream that was just returned by {{MediaDevices/getDisplayMedia}}
