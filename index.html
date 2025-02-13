@@ -382,9 +382,10 @@
                   <ol>
                     <li>
                       <p>If no sources of type <var>T</var> are available,
-                      <a>reject</a> <var>p</var> with a new {{DOMException}}
+                      [=queue a task=] on the [=user interaction task source=]
+                      to [=reject=] <var>p</var> with a new {{DOMException}}
                       object whose {{DOMException/name}} attribute has the
-                      value {{NotFoundError}}.</p>
+                      value {{NotFoundError}}, and abort these steps.</p>
                     </li>
 
 
@@ -458,17 +459,19 @@
 
 
                   <p>If the user grants permission but a hardware error such as
-                  an OS/program/webpage lock prevents access, <a>reject</a>
+                  an OS/program/webpage lock prevents access, [=queue a task=]
+                  on the [=user interaction task source=] to [=reject=]
                   <var>p</var> with a new {{DOMException}} object whose
                   {{DOMException/name}} attribute has the value
-                  {{NotReadableError}} and abort these steps.</p>
+                  {{NotReadableError}}, and abort these steps.</p>
 
 
                   <p>If the result is {{PermissionState/"granted"}} but device
                   access fails for any reason other than those listed above,
-                  <a>reject</a> <var>p</var> with a new {{DOMException}} object
+                  [=queue a task=] on the [=user interaction task source=] to
+                  [=reject=] <var>p</var> with a new {{DOMException}} object
                   whose {{DOMException/name}} attribute has the value
-                  {{AbortError}} and abort these steps.</p>
+                  {{AbortError}}, and abort these steps.</p>
                 </li>
 
 
@@ -501,11 +504,12 @@
                   this fail, let <var>failedConstraint</var> be the result of
                   the algorithm that failed, and let <var>message</var> be
                   either <code>undefined</code> or an informative
-                  human-readable message, and then <a>reject</a> <var>p</var>
+                  human-readable message, and then [=queue a task=] on the
+                  [=user interaction task source=] to [=reject=] <var>p</var>
                   with a new <code>OverconstrainedError</code> created by
                   calling
                   <code>OverconstrainedError(<var>failedConstraint</var>,
-                  <var>message</var>)</code>.</p>
+                  <var>message</var>)</code>, and abort these steps.</p>
                 </li>
 
 
@@ -514,44 +518,45 @@
                   now considered to have produced a new
                   <dfn>capture-session</dfn>.</p>
                 </li>
-
-
-                <li>If <var>controller</var> is not <code>null</code>, run the
-                following steps:
-
+                <li>
+                  <p>[=Queue a task=] on the [=user interaction task source=] to
+                  run the following steps:</p>
                   <ol>
                     <li>
-                      <p>Set
-                      <var>controller</var>.{{CaptureController/[[Source]]}} to
-                      <var>stream</var>'s video track's <a data-cite=
-                      "GETUSERMEDIA#dfn-source-0">[[\Source]]</a>.</p>
+                      <p>If <var>controller</var> is not `null`, run the
+                      following steps:</p>
+                      <ol>
+                        <li>
+                          <p>Set
+                          <var>controller</var>.{{CaptureController/[[Source]]}} to
+                          <var>stream</var>'s video track's <a data-cite=
+                          "GETUSERMEDIA#dfn-source-0">[[\Source]]</a>.</p>
+                        </li>
+                        <li>
+                          <p>Set
+                          <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}}
+                          to the to <var>stream</var>'s video track's
+                          {{DisplayCaptureSurfaceType}}.</p>
+                        </li>
+                      </ol>
                     </li>
-
-
                     <li>
-                      <p>Set
-                      <var>controller</var>.{{CaptureController/[[DisplaySurfaceType]]}}
-                      to the to <var>stream</var>'s video track's
-                      {{DisplayCaptureSurfaceType}}.</p>
-                    </li>
-
-
-                    <li>
-                      <p>Queue a task to run the [=finalize focus decision
-                      algorithm=] on <var>controller</var>.</p>
+                      <p>[=Resolve=] <var>p</var> with <var>stream</var>.</p>
                     </li>
                   </ol>
                 </li>
-
-
                 <li>
-                  <p><a>Resolve</a> <var>p</var> with <var>stream</var> and
-                  abort these steps.</p>
+                  <p>If <var>controller</var> is not `null`, [=queue a task=]
+                  on the [=user interaction task source=] to run the
+                  [=finalize focus decision algorithm=] on <var>controller</var>.</p>
                 </li>
-
-
                 <li>
-                  <p><em>Permission Failure</em>: [=Reject=] <var>p</var> with
+                  <p>Abort these steps.</p>
+                </li>
+                <li>
+                  <p><em>Permission Failure</em>: [=Queue a task=] on the
+                  [=user interaction task source=] to
+                  [=reject=] <var>p</var> with
                   a new {{DOMException}} object whose {{DOMException/name}}
                   attribute has the value {{NotAllowedError}}.</p>
                 </li>
@@ -628,21 +633,23 @@
 
 
       <p>When <a>display surface</a> enters an inaccessible state that is not
-      necessarily permanent, the user agent MUST queue a task that [= MediaStreamTrack/set a
+      necessarily permanent, the user agent MUST [=queue a task=] on the
+      [=user interaction task source=] that [= MediaStreamTrack/set a
       track's muted state|sets the muted state =] of the corresponding media
       track to <code>true</code>.</p>
 
 
       <p>When <a>display surface</a> exits an inaccessible state and becomes
-      accessible, the user agent MUST queue a task that [= MediaStreamTrack/set a track's muted
+      accessible, the user agent MUST [=queue a task=] on the
+      [=user interaction task source=] that [= MediaStreamTrack/set a track's muted
       state|sets the muted state =] of the corresponding media track to
       <code>false</code>.</p>
 
 
       <p>When a <a>display surface</a> enters an inaccessible state that is
       permanent (such as the source [= display surface/window=] closing), the
-      user agent MUST queue a task that [= MediaStreamTrack/ended | ends =] the
-      corresponding media track.</p>
+      user agent MUST [=queue a task=] on the [=user interaction task source=]
+      that [= MediaStreamTrack/ended | ends =] the corresponding media track.</p>
 
 
       <p>A stream that was just returned by {{MediaDevices/getDisplayMedia}}
@@ -969,7 +976,8 @@
       <a>display surface</a> change, for example in response to the end-user
       resizing a captured window, and these changes render the capabilities
       and/or settings of one or more constrainable properties outdated, the
-      user agent MUST queue a task to run the following step:</p>
+      user agent MUST [=queue a task=] on the [=user interaction task source=]
+      to run the following step:</p>
 
 
       <ol>
