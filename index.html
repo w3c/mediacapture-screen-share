@@ -150,7 +150,6 @@
     <p>The <dfn class="export">source pixel ratio</dfn> of a <a>display
     surface</a> is 1/96th of 1 inch divided by its vertical pixel size.</p>
 
-
     <p>The <dfn class="event">devicechange</dfn> event is defined in
     [[GETUSERMEDIA]].</p>
   </section>
@@ -878,6 +877,22 @@
             capability, the user agent MUST include only the set of values from
             {{CursorCaptureConstraint}} it is capable of supporting for this
             [=display surface=].</td>
+          </tr>
+
+          <tr id="def-constraint-pixel-ratio">
+            <td><dfn class="export">screenPixelRatio</dfn>
+            </td>
+
+            <td>{{double}}</td>
+
+            <td>As a setting, it is the result of dividing the size of a 
+            <a data-xref-type="css-value" data-xref-for="<length>" data-lt="px">CSS pixel</a>
+            at a <a href="https://drafts.csswg.org/cssom-view/#page-zoom">page zoom</a>
+            of 1.0 and using a
+            <a href="https://drafts.csswg.org/cssom-view/#scale-factor">scale factor</a>
+            of 1.0 by the vertical size of a pixel from the [=display surface=].
+            It cannot be used as a constraint or capability.
+            </td>
           </tr>
         </tbody>
       </table>
@@ -1872,6 +1887,7 @@ dictionary DisplayMediaStreamOptions {
   DOMString cursor;
   boolean restrictOwnAudio;
   boolean suppressLocalAudioPlayback;
+  double screenPixelRatio;
 };</pre>
 
         <dl data-link-for="MediaTrackSettings" data-dfn-for=
@@ -1923,6 +1939,14 @@ dictionary DisplayMediaStreamOptions {
             <p>Indicates whether or not the application instructed the user
             agent to apply [=local audio playback suppression=] to the
             source.</p>
+          </dd>
+
+
+          <dt><dfn>screenPixelRatio</dfn> of type {{double}}</dt>
+
+
+          <dd>
+            <p>The screen pixel ratio of of the [=display surface=] being captured.</p>
           </dd>
         </dl>
       </section>
