@@ -1512,6 +1512,65 @@
 
 
       <section>
+        <h2><dfn>WindowAudioPreferenceEnum</dfn>
+        </h2>
+
+
+        <p>Describes whether an application invoking
+        {{MediaDevices/getDisplayMedia()}} would like the user agent to include
+        window audio among the audio sources offered to the user.</p>
+
+        <pre class="idl">
+            enum WindowAudioPreferenceEnum {
+              "system",
+              "window",
+              "exclude"
+            };
+          </pre>
+
+        <table data-dfn-for="WindowAudioPreferenceEnum" class="simple">
+          <tbody>
+            <tr>
+              <th colspan="2">Enumeration description</th>
+            </tr>
+
+
+            <tr>
+              <td><dfn id=
+              "idl-def-WindowAudioPreferenceEnum.system">system</dfn>
+              </td>
+
+              <td>The application prefers that options to share system audio be
+              offered to the user for [=display surface/window=] [=display
+              surfaces=].</td>
+            </tr>
+
+
+            <tr>
+              <td><dfn id=
+              "idl-def-WindowAudioPreferenceEnum.window">window</dfn>
+              </td>
+
+              <td>The application prefers that options to share window audio be
+              offered to the user for [=display surface/window=] [=display
+              surfaces=].</td>
+            </tr>
+
+            <tr>
+              <td><dfn id=
+              "idl-def-WindowAudioPreferenceEnum.exclude">exclude</dfn>
+              </td>
+
+              <td>The application prefers that options to share audio not be
+              offered to the user for [=display surface/window=] [=display
+              surfaces=].</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <section>
         <h2><dfn>SurfaceSwitchingPreferenceEnum</dfn>
         </h2>
 
@@ -1626,6 +1685,7 @@ dictionary DisplayMediaStreamOptions {
   CaptureController controller;
   SelfCapturePreferenceEnum selfBrowserSurface;
   SystemAudioPreferenceEnum systemAudio;
+  WindowAudioPreferenceEnum windowAudio;
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
   MonitorTypeSurfacesEnum monitorTypeSurfaces;
 };</pre>
@@ -1700,6 +1760,15 @@ dictionary DisplayMediaStreamOptions {
 
 
               <dd>If present, signals whether the application would like system
+              audio to be included among the possible audio sources offered to
+              the user. The user agent MAY ignore this hint.</dd>
+
+
+              <dt><dfn><code>windowAudio</code></dfn> of type
+              {{WindowAudioPreferenceEnum}}</dt>
+
+
+              <dd>If present, signals whether the application would like window
               audio to be included among the possible audio sources offered to
               the user. The user agent MAY ignore this hint.</dd>
 
