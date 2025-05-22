@@ -1518,7 +1518,9 @@
 
         <p>Describes whether an application invoking
         {{MediaDevices/getDisplayMedia()}} would like the user agent to include
-        window audio among the audio sources offered to the user.</p>
+        window or system audio among the audio sources offered to the user for
+        [=display surface/window=] [=display surfaces=].</p>
+
 
         <pre class="idl">
             enum WindowAudioPreferenceEnum {
@@ -1526,7 +1528,7 @@
               "window",
               "exclude"
             };
-          </pre>
+        </pre>
 
         <table data-dfn-for="WindowAudioPreferenceEnum" class="simple">
           <tbody>
@@ -1769,8 +1771,9 @@ dictionary DisplayMediaStreamOptions {
 
 
               <dd>If present, signals whether the application would like window
-              audio to be included among the possible audio sources offered to
-              the user. The user agent MAY ignore this hint.</dd>
+              or system audio among the possible audio sources offered to the
+              user for [=display surface/window=] [=display surfaces=]. The
+              user agent MAY ignore this hint.</dd>
 
 
               <dt><dfn><code>surfaceSwitching</code></dfn> of type
