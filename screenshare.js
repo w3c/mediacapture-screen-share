@@ -40,7 +40,7 @@ var respecConfig = {
     { name: "Jan-Ivar Bruaroey", company: "Mozilla", w3cid: 79152},
     { name: "Elad Alon", company: "Google", w3cid: 118124}
   ],
-  
+
   formerEditors: [
     { name: "Martin Thomson", company: "Mozilla", w3cid: 68503 },
     { name: "Keith Griffin", company: "Cisco", w3cid: 65606 },
@@ -59,7 +59,7 @@ var respecConfig = {
 
   // name of the WG
   group: "webrtc",
-  xref: ["html", "infra", "permissions", "permissions-policy", "dom", "mediacapture-streams", "webidl", "cssom-view", "css-values"],
+  xref: ["html", "infra", "permissions", "permissions-policy", "dom", "mediacapture-streams", "webidl", "cssom-view", "css-values", "hr-time"],
   // name (without the @w3.org) of the public mailing to which comments are due
   wgPublicList: "public-webrtc",
 
