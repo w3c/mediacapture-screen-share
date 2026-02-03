@@ -291,65 +291,8 @@
 
 
             <li>
-              <p>Let <var>constraints</var> be
-              <code>[</code><var>options</var>.<code>audio</code>,
-              <var>options</var>.<code>video</code><code>]</code>.</p>
-            </li>
-
-
-            <li>
-              <p>If <code>constraints.video</code> is <code>false</code>,
-              return a promise [=reject|rejected=] with a newly
-              [=exception/created=] {{TypeError}}.</p>
-            </li>
-
-
-            <li>
-              <p>For each [= map/exist | existing =] member in
-              <var>constraints</var> whose value, <var>CS</var>, is a
-              dictionary, run the following steps:</p>
-
-
-              <ol>
-                <li>
-                  <p>If <var>CS</var> contains a member named
-                  <code>advanced</code>, return a promise [=reject|rejected=]
-                  with a newly [=exception/created=] {{TypeError}}.</p>
-                </li>
-
-
-                <li>
-                  <p>If <var>CS</var> contains a member whose name specifies a
-                  constrainable property applicable to [=display surface=]s,
-                  and whose value in turn is a dictionary containing a member
-                  named either <code>min</code> or <code>exact</code>, return a
-                  promise [=reject|rejected=] with a newly
-                  [=exception/created=] {{TypeError}}.</p>
-                </li>
-
-
-                <li>
-                  <p>If <var>CS</var> contains a member whose name specifies a
-                  constrainable property applicable to [=display surface=]s,
-                  and whose value in turn is a dictionary containing a member
-                  named <code>max</code>, and that member's value in turn is
-                  less than the constrainable property's [=floor value=], then
-                  let <var>failedConstraint</var> be the name of the member,
-                  let <var>message</var> be either <code>undefined</code> or an
-                  informative human-readable message, and return a promise
-                  [=reject|rejected=] with a new
-                  <code>OverconstrainedError</code> created by calling
-                  <code>OverconstrainedError(<var>failedConstraint</var>,
-                  <var>message</var>)</code>.</p>
-                </li>
-              </ol>
-            </li>
-
-
-            <li>
-              <p>Let <var>requestedMediaTypes</var> be the set of media types
-              in <var>constraints</var> with either a dictionary value or a
-              value of <code>true</code>.</p>
+              <p>Let <var>requestedMediaTypes</var> be the result of [=get media types=]
+              with <var>options</var>.</p>
             </li>
 
 
@@ -610,6 +553,75 @@
           consent</a>, for example if the capture of the video of a [= display
           surface/window =] is accompanied by capture of the audio of the
           entire system, including applications unrelated to that window.</p>
+
+
+          <p>To <dfn  class="abstract-op" id=
+          "get-media-types">get media types</dfn> with <var>options</var>,
+          run the following steps:</p>
+
+
+          <ol class=algorithm>
+            <li>
+              <p>Let <var>constraints</var> be
+              <code>[</code><var>options</var>.<code>audio</code>,
+              <var>options</var>.<code>video</code><code>]</code>.</p>
+            </li>
+
+
+            <li>
+              <p>If <code>constraints.video</code> is <code>false</code>,
+              return a promise [=reject|rejected=] with a newly
+              [=exception/created=] {{TypeError}}.</p>
+            </li>
+
+
+            <li>
+              <p>For each [= map/exist | existing =] member in
+              <var>constraints</var> whose value, <var>CS</var>, is a
+              dictionary, run the following steps:</p>
+
+
+              <ol>
+                <li>
+                  <p>If <var>CS</var> contains a member named
+                  <code>advanced</code>, return a promise [=reject|rejected=]
+                  with a newly [=exception/created=] {{TypeError}}.</p>
+                </li>
+
+
+                <li>
+                  <p>If <var>CS</var> contains a member whose name specifies a
+                  constrainable property applicable to [=display surface=]s,
+                  and whose value in turn is a dictionary containing a member
+                  named either <code>min</code> or <code>exact</code>, return a
+                  promise [=reject|rejected=] with a newly
+                  [=exception/created=] {{TypeError}}.</p>
+                </li>
+
+
+                <li>
+                  <p>If <var>CS</var> contains a member whose name specifies a
+                  constrainable property applicable to [=display surface=]s,
+                  and whose value in turn is a dictionary containing a member
+                  named <code>max</code>, and that member's value in turn is
+                  less than the constrainable property's [=floor value=], then
+                  let <var>failedConstraint</var> be the name of the member,
+                  let <var>message</var> be either <code>undefined</code> or an
+                  informative human-readable message, and return a promise
+                  [=reject|rejected=] with a new
+                  <code>OverconstrainedError</code> created by calling
+                  <code>OverconstrainedError(<var>failedConstraint</var>,
+                  <var>message</var>)</code>.</p>
+                </li>
+              </ol>
+            </li>
+
+
+            <li>
+              <p>Return the set of media types in <var>constraints</var>
+              with either a dictionary value or a value of <code>true</code>.</p>
+            </li>
+          </ol>
         </dd>
       </dl>
     </section>
