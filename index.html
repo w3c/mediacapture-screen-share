@@ -2586,5 +2586,135 @@ dictionary DisplayMediaStreamOptions {
       any active capture is advisable.</p>
     </section>
   </section>
+
+
+  <section>
+    <h2 id="automation">Automation</h2>
+
+
+    <p>The <dfn class="export">capture a browser tab</dfn> algorithm is used to capture a
+    browser tab for automation purposes, such as by [[WEBDRIVER-BIDI]].</p>
+
+
+    <p>Given a <var>browsingContext</var> and <var>options</var>, run the following
+    steps:</p>
+
+
+    <ol>
+      <li>
+        <p>Let <var>requestedMediaTypes</var> be the result of [=get media types=]
+        with <var>options</var>.</p>
+      </li>
+
+
+      <li>
+        <p>Let <var>p</var> be a new promise.</p>
+      </li>
+
+
+      <li>
+        <p>Run the following steps [=in parallel=]:</p>
+
+
+        <ol>
+          <li>
+            <p>For each media type <var>T</var> in
+            <var>requestedMediaTypes</var>,</p>
+
+
+            <ol>
+              <li>
+                <p>If no sources of type <var>T</var> are available,
+                [=queue a task=] to [=reject=] <var>p</var> with a new
+                {{DOMException}} object whose {{DOMException/name}}
+                attribute has the value {{NotFoundError}}, and abort
+                these steps.</p>
+              </li>
+            </ol>
+          </li>
+
+
+          <li>
+            <p>Let <var>videoSource</var> be the video source derived
+            from <var>browsingContext</var>.</p>
+          </li>
+
+
+          <li>
+            <p>If <var>options</var>.<code>audio</code> is
+            <code>true</code> or a dictionary, let <var>audioSource</var>
+            be the audio source from <var>browsingContext</var>.</p>
+          </li>
+
+
+          <li>
+            <p>If a hardware error such as an OS/program/webpage lock
+            prevents access, [=queue a task=] to [=reject=] <var>p</var>
+            with a new {{DOMException}} object whose {{DOMException/name}}
+            attribute has the value {{NotReadableError}}, and abort these
+            steps.</p>
+          </li>
+
+
+          <li>
+            <p>If device access fails for any reason other than those
+            listed above, [=queue a task=] to [=reject=] <var>p</var>
+            with a new {{DOMException}} object whose {{DOMException/name}}
+            attribute has the value {{AbortError}}, and abort these
+            steps.</p>
+          </li>
+
+
+          <li>
+            <p>Let <var>stream</var> be a {{MediaStream}} object.</p>
+          </li>
+
+
+          <li>
+            <p>For each source (<var>videoSource</var> and, if present,
+            <var>audioSource</var>), run the following steps:</p>
+
+            <ol>
+              <li>
+                <p>Let <var>track</var> be the result of [=create a
+                MediaStreamTrack|creating a MediaStreamTrack=] with the
+                source.</p>
+              </li>
+
+              <li>
+                <p>Add <var>track</var> to <var>stream</var>'s track
+                set.</p>
+              </li>
+            </ol>
+          </li>
+
+
+          <li>
+            <p>Run the [=ApplyConstraints algorithm=] on all tracks in
+            <var>stream</var> with the appropriate constraints. Should
+            this fail, let <var>failedConstraint</var> be the result of
+            the algorithm that failed, and let <var>message</var> be
+            either <code>undefined</code> or an informative
+            human-readable message, and then [=queue a task=] to
+            [=reject=] <var>p</var> with a new
+            <code>OverconstrainedError</code> created by calling
+            <code>OverconstrainedError(<var>failedConstraint</var>,
+            <var>message</var>)</code>, and abort these steps.</p>
+          </li>
+
+
+          <li>
+            <p>[=Queue a task=] to [=resolve=] <var>p</var> with
+            <var>stream</var>.</p>
+          </li>
+        </ol>
+      </li>
+
+
+      <li>
+        <p>Return <var>p</var>.</p>
+      </li>
+    </ol>
+  </section>
 </body>
 </html>
