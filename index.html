@@ -1677,6 +1677,52 @@
 
 
       <section>
+        <h2><dfn>AudioPreferenceEnum</dfn>
+        </h2>
+
+
+        <p>Describes whether an application invoking
+        {{MediaDevices/getDisplayMedia()}} would like the user agent to prefer
+        capturing audio along with video.</p>
+
+        <pre class="idl">
+            enum AudioPreferenceEnum {
+              "high",
+              "default"
+            };
+        </pre>
+
+        <table data-dfn-for="AudioPreferenceEnum" class="simple">
+          <tbody>
+            <tr>
+              <th colspan="2">Enumeration description</th>
+            </tr>
+
+
+            <tr>
+              <td><dfn id=
+              "idl-def-AudioPreferenceEnum.high">high</dfn>
+              </td>
+
+              <td>The application prefers that the user agent prioritize capturing
+              audio along with video.</td>
+            </tr>
+
+
+            <tr>
+              <td><dfn id=
+              "idl-def-AudioPreferenceEnum.default">default</dfn>
+              </td>
+
+              <td>The application prefers that the user agent follow its default
+              behavior regarding audio capture.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <section>
         <h2>DisplayMediaStreamOptions</h2>
 
 
@@ -1697,6 +1743,7 @@ dictionary DisplayMediaStreamOptions {
   WindowAudioPreferenceEnum windowAudio;
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
   MonitorTypeSurfacesEnum monitorTypeSurfaces;
+  AudioPreferenceEnum audioPreference;
 };</pre>
 
           <section>
@@ -1812,6 +1859,17 @@ dictionary DisplayMediaStreamOptions {
                   still check the {{MediaTrackSettings/displaySurface}} setting
                   of the tracks they receive.</p>
                 </div>
+              </dd>
+
+
+              <dt><dfn><code>audioPreference</code></dfn> of type
+              {{AudioPreferenceEnum}}</dt>
+
+
+              <dd>
+                <p>If present, signals whether the application would like the
+                user agent to prefer capturing audio along with video. The user agent
+                MAY ignore this hint.</p>
               </dd>
             </dl>
           </section>
