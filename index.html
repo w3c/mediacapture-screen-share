@@ -1677,6 +1677,41 @@
 
 
       <section>
+        <h2><dfn>AudioSelectionPreferenceEnum</dfn>
+        </h2>
+
+
+        <p>Describes whether an application invoking
+        {{MediaDevices/getDisplayMedia()}} would like the user agent to prefer
+        capturing audio along with the video.</p>
+
+        <pre class="idl">
+            enum AudioSelectionPreferenceEnum {
+              "preferred"
+            };
+        </pre>
+
+        <table data-dfn-for="AudioSelectionPreferenceEnum" class="simple">
+          <tbody>
+            <tr>
+              <th colspan="2">Enumeration description</th>
+            </tr>
+
+
+            <tr>
+              <td><dfn id=
+              "idl-def-AudioSelectionPreferenceEnum.preferred">preferred</dfn>
+              </td>
+
+              <td>The application prefers that the user agent prioritize
+              capturing audio along with the video.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <section>
         <h2>DisplayMediaStreamOptions</h2>
 
 
@@ -1697,6 +1732,7 @@ dictionary DisplayMediaStreamOptions {
   WindowAudioPreferenceEnum windowAudio;
   SurfaceSwitchingPreferenceEnum surfaceSwitching;
   MonitorTypeSurfacesEnum monitorTypeSurfaces;
+  AudioSelectionPreferenceEnum audioSelection;
 };</pre>
 
           <section>
@@ -1812,6 +1848,17 @@ dictionary DisplayMediaStreamOptions {
                   still check the {{MediaTrackSettings/displaySurface}} setting
                   of the tracks they receive.</p>
                 </div>
+              </dd>
+
+
+              <dt><dfn><code>audioSelection</code></dfn> of type
+              {{AudioSelectionPreferenceEnum}}</dt>
+
+
+              <dd>
+                <p>If present, signals whether the application would like the
+                user agent to steer the user towards sharing audio along with the video. The user
+                agent MAY ignore this hint.</p>
               </dd>
             </dl>
           </section>
