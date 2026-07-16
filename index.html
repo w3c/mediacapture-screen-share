@@ -1683,12 +1683,11 @@
 
         <p>Describes whether an application invoking
         {{MediaDevices/getDisplayMedia()}} would like the user agent to prefer
-        capturing audio along with video.</p>
+        capturing audio.</p>
 
         <pre class="idl">
             enum AudioPreferenceEnum {
-              "high",
-              "default"
+              "high"
             };
         </pre>
 
@@ -1704,18 +1703,8 @@
               "idl-def-AudioPreferenceEnum.high">high</dfn>
               </td>
 
-              <td>The application prefers that the user agent prioritize capturing
-              audio along with video.</td>
-            </tr>
-
-
-            <tr>
-              <td><dfn id=
-              "idl-def-AudioPreferenceEnum.default">default</dfn>
-              </td>
-
-              <td>The application prefers that the user agent follow its default
-              behavior regarding audio capture.</td>
+              <td>The application prefers that the user agent prioritize
+              capturing audio.</td>
             </tr>
           </tbody>
         </table>
@@ -1868,8 +1857,8 @@ dictionary DisplayMediaStreamOptions {
 
               <dd>
                 <p>If present, signals whether the application would like the
-                user agent to prefer capturing audio along with video. The user agent
-                MAY ignore this hint.</p>
+                user agent to steer the user towards sharing audio. The user
+                agent MAY ignore this hint.</p>
               </dd>
             </dl>
           </section>
