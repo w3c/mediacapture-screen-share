@@ -59,7 +59,7 @@ var respecConfig = {
 
   // name of the WG
   group: "webrtc",
-  xref: ["html", "infra", "permissions", "permissions-policy", "dom", "mediacapture-streams", "webidl", "cssom-view", "css-values", "hr-time"],
+  xref: ["html", "infra", "permissions", "permissions-policy", "dom", "mediacapture-streams", "webidl", "css-values", "css-viewport", "hr-time"],
   // name (without the @w3.org) of the public mailing to which comments are due
   wgPublicList: "public-webrtc",
 
